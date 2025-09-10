@@ -34,28 +34,29 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
 
   return (
-    <div className="card-elegant rounded-2xl overflow-hidden hover-lift">
+    <div className="card-elegant rounded-2xl overflow-hidden hover-lift hover-glow">
       {/* Image */}
-      <div className="relative">
+      <div className="relative group">
         <img 
           src={property.image} 
           alt={property.title}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         {property.isNew && (
-          <Badge className="absolute top-3 left-3 bg-green-500 hover:bg-green-600">
+          <Badge className="absolute top-3 left-3 bg-green-500 hover:bg-green-600 animate-bounce-in">
             New
           </Badge>
         )}
         <Button
           variant="ghost"
           size="icon"
-          className={`absolute top-3 right-3 h-8 w-8 rounded-full ${
-            isFavorited ? 'bg-red-500 text-white' : 'bg-white/80 text-red-500'
+          className={`absolute top-3 right-3 h-8 w-8 rounded-full hover-scale transition-all duration-300 ${
+            isFavorited ? 'bg-red-500 text-white animate-pulse' : 'bg-white/80 text-red-500 hover:bg-white'
           }`}
           onClick={() => setIsFavorited(!isFavorited)}
         >
-          <Heart className={`h-4 w-4 ${isFavorited ? 'fill-current' : ''}`} />
+          <Heart className={`h-4 w-4 transition-all duration-300 ${isFavorited ? 'fill-current scale-110' : 'hover:scale-110'}`} />
         </Button>
       </div>
 
@@ -63,55 +64,55 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
       <div className="p-6">
         <div className="space-y-4">
           {/* Title and Location */}
-          <div>
-            <h3 className="text-lg font-semibold text-foreground mb-1 line-clamp-2">
+          <div className="text-slide-up">
+            <h3 className="text-lg font-semibold text-foreground mb-1 line-clamp-2 hover:text-primary transition-colors duration-300">
               {property.title}
             </h3>
-            <div className="flex items-center text-muted-foreground">
-              <MapPin className="h-4 w-4 mr-1" />
+            <div className="flex items-center text-muted-foreground hover:text-foreground transition-colors duration-300">
+              <MapPin className="h-4 w-4 mr-1 animate-float" />
               <span className="text-sm">{property.location}</span>
             </div>
           </div>
 
           {/* Property Details */}
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-1">
+          <div className="flex items-center gap-4 text-sm text-muted-foreground stagger-children">
+            <div className="flex items-center gap-1 hover:text-primary transition-colors duration-300 cursor-pointer hover-scale">
               <Bed className="h-4 w-4" />
               <span>{property.bedrooms}</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 hover:text-primary transition-colors duration-300 cursor-pointer hover-scale">
               <Bath className="h-4 w-4" />
               <span>{property.bathrooms}</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 hover:text-primary transition-colors duration-300 cursor-pointer hover-scale">
               <Maximize className="h-4 w-4" />
               <span>{property.area} sq ft</span>
             </div>
           </div>
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="outline">{property.type}</Badge>
-            <Badge variant="outline">{property.furnishing}</Badge>
+          <div className="flex flex-wrap gap-2 stagger-children">
+            <Badge variant="outline" className="hover-scale cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all duration-300">{property.type}</Badge>
+            <Badge variant="outline" className="hover-scale cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all duration-300">{property.furnishing}</Badge>
           </div>
 
           {/* Price */}
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-primary">
+            <div className="text-2xl font-bold text-primary animate-glow">
               {formatPrice(property.price)}
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex gap-2 pt-2">
+          <div className="flex gap-2 pt-2 stagger-children">
             <Link to={`/property/${property.id}`} className="flex-1">
-              <Button variant="outline" className="w-full hover-scale">
-                <Eye className="h-4 w-4 mr-2" />
+              <Button variant="outline" className="w-full hover-lift ripple group">
+                <Eye className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
                 View Details
               </Button>
             </Link>
-            <Button className="flex-1 btn-hero">
-              <Phone className="h-4 w-4 mr-2" />
+            <Button className="flex-1 btn-hero ripple group">
+              <Phone className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
               Contact
             </Button>
           </div>

@@ -34,9 +34,9 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive(item.path)
-                    ? 'text-primary bg-accent'
+                    ? 'text-primary bg-accent active'
                     : 'text-foreground hover:text-primary hover:bg-accent/50'
                 }`}
               >
@@ -48,13 +48,13 @@ const Navbar = () => {
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-2">
             <Link to="/sign-in">
-              <Button variant="outline" size="sm" className="hover-lift">
+              <Button variant="outline" size="sm" className="hover-lift ripple">
                 <User className="h-4 w-4 mr-2" />
                 Sign In
               </Button>
             </Link>
             <Link to="/sign-up">
-              <Button size="sm" className="btn-hero">
+              <Button size="sm" className="btn-hero ripple">
                 Sign Up
               </Button>
             </Link>
@@ -73,15 +73,15 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+          <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm slide-in-down">
+            <div className="px-2 pt-2 pb-3 space-y-1 stagger-children">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                  className={`nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors ${
                     isActive(item.path)
-                      ? 'text-primary bg-accent'
+                      ? 'text-primary bg-accent active'
                       : 'text-foreground hover:text-primary hover:bg-accent/50'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
@@ -91,13 +91,13 @@ const Navbar = () => {
               ))}
               <div className="flex flex-col space-y-2 pt-2 border-t border-border">
                 <Link to="/sign-in" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" size="sm" className="w-full">
+                  <Button variant="outline" size="sm" className="w-full ripple">
                     <User className="h-4 w-4 mr-2" />
                     Sign In
                   </Button>
                 </Link>
                 <Link to="/sign-up" onClick={() => setIsMenuOpen(false)}>
-                  <Button size="sm" className="w-full btn-hero">
+                  <Button size="sm" className="w-full btn-hero ripple">
                     Sign Up
                   </Button>
                 </Link>
