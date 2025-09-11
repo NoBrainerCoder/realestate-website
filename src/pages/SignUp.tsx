@@ -9,17 +9,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
 const SignUp = () => {
-  const { toast } = useToast();
+  const { signUp, signInWithGoogle, user } = useAuth();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
+    fullName: '',
     email: '',
     phone: '',
     password: '',
     confirmPassword: '',
     agreeToTerms: false,
   });
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({
@@ -28,60 +37,55 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Password Mismatch",
-        description: "Passwords do not match. Please try again.",
-        variant: "destructive",
-      });
       return;
     }
 
     if (!formData.agreeToTerms) {
-      toast({
-        title: "Terms Required",
-        description: "Please agree to the terms and conditions to continue.",
-        variant: "destructive",
-      });
       return;
     }
 
-    // Show backend integration message
-    toast({
-      title: "Account Creation",
-      description: "Connect to Supabase to enable user registration and account management.",
-    });
+    setLoading(true);
+    
+    const { error } = await signUp(formData.email, formData.password);
+    
+    if (!error) {
+      // Success is handled by the auth hook
+    }
+    
+    setLoading(false);
   };
 
-  const handleGoogleSignUp = () => {
-    toast({
-      title: "Google Sign-Up",
-      description: "Connect to Supabase to enable Google authentication.",
-    });
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    await signInWithGoogle();
+    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-muted/30 flex items-center justify-center py-8">
+    <div className="min-h-screen bg-muted/30 flex items-center justify-center py-8 page-transition">
       <div className="container mx-auto px-4 max-w-md">
-        <Card className="card-elegant">
+        <Card className="card-elegant fade-in-scale">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 hover-glow">
               <Building2 className="h-6 w-6 text-primary" />
             </div>
-            <CardTitle className="text-2xl">Create Account</CardTitle>
-            <CardDescription>
-              Join MyInfraHub and start your property journey
+            <CardTitle className="text-2xl text-slide-up">Create Account</CardTitle>
+            <CardDescription className="text-fade-in">
+              Join MyInfraHub to post and find properties
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 stagger-children">
             {/* Google Sign Up */}
             <Button 
               variant="outline" 
-              className="w-full" 
-              onClick={handleGoogleSignUp}
+              className="w-full hover-lift ripple" 
+              onClick={handleGoogleSignIn}
+              loading={loading}
+              disabled={loading}
             >
               <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
                 <path
@@ -110,29 +114,30 @@ const SignUp = () => {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with email
+                  Or create with email
                 </span>
               </div>
             </div>
 
             {/* Sign Up Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+            <form onSubmit={handleSubmit} className="space-y-4 stagger-children">
+              <div className="space-y-2 form-group">
+                <Label htmlFor="fullName">Full Name</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder="Enter your full name"
-                    className="pl-10"
+                    id="fullName"
+                    type="text"
+                    value={formData.fullName}
+                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+                    placeholder="Your full name"
+                    className="pl-10 form-input"
                     required
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 form-group">
                 <Label htmlFor="email">Email Address</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -142,13 +147,13 @@ const SignUp = () => {
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     placeholder="your.email@example.com"
-                    className="pl-10"
+                    className="pl-10 form-input"
                     required
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 form-group">
                 <Label htmlFor="phone">Phone Number</Label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -157,14 +162,14 @@ const SignUp = () => {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    placeholder="10-digit phone number"
-                    className="pl-10"
+                    placeholder="+91 98765 43210"
+                    className="pl-10 form-input"
                     required
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 form-group">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -174,14 +179,14 @@ const SignUp = () => {
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     placeholder="Create a strong password"
-                    className="pl-10 pr-10"
+                    className="pl-10 pr-10 form-input"
                     required
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent hover-scale"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -193,7 +198,7 @@ const SignUp = () => {
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 form-group">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -203,14 +208,14 @@ const SignUp = () => {
                     value={formData.confirmPassword}
                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                     placeholder="Confirm your password"
-                    className="pl-10 pr-10"
+                    className="pl-10 pr-10 form-input"
                     required
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent hover-scale"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
@@ -220,28 +225,36 @@ const SignUp = () => {
                     )}
                   </Button>
                 </div>
+                {formData.password !== formData.confirmPassword && formData.confirmPassword && (
+                  <p className="text-sm text-destructive animate-fade-in">Passwords don't match</p>
+                )}
               </div>
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 form-group">
                 <input
                   id="terms"
                   name="terms"
                   type="checkbox"
                   checked={formData.agreeToTerms}
                   onChange={(e) => handleInputChange('agreeToTerms', e.target.checked)}
-                  className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+                  className="h-4 w-4 rounded border-border text-primary focus:ring-primary hover-scale"
                   required
                 />
                 <Label htmlFor="terms" className="text-sm">
                   I agree to the{' '}
-                  <Link to="/privacy-policy" className="text-primary hover:underline">
-                    Terms and Conditions
+                  <Link to="/privacy-policy" className="text-primary hover:underline story-link">
+                    Terms of Service and Privacy Policy
                   </Link>
                 </Label>
               </div>
 
-              <Button type="submit" className="w-full btn-hero">
-                Create Account
+              <Button 
+                type="submit" 
+                className="w-full btn-hero hover-lift" 
+                loading={loading} 
+                disabled={loading || formData.password !== formData.confirmPassword || !formData.agreeToTerms}
+              >
+                {loading ? 'Creating Account...' : 'Create Account'}
               </Button>
             </form>
 
@@ -249,16 +262,16 @@ const SignUp = () => {
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
                 Already have an account?{' '}
-                <Link to="/sign-in" className="text-primary hover:underline font-medium">
+                <Link to="/sign-in" className="text-primary hover:underline font-medium story-link">
                   Sign in
                 </Link>
               </p>
             </div>
 
-            {/* Backend Integration Notice */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-center">
-              <p className="text-sm text-amber-800">
-                <strong>Note:</strong> Connect to Supabase to enable full authentication functionality including Google sign-in and user management.
+            {/* Backend Integration Status */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center animate-fade-in">
+              <p className="text-sm text-green-800">
+                <strong>✓ Connected:</strong> Supabase authentication is enabled. You can now create accounts with email/password or Google.
               </p>
             </div>
           </CardContent>
