@@ -1,20 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Eye, EyeOff, Building2, Mail, Lock } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useToast } from '@/hooks/use-toast';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 const SignIn = () => {
-  const { toast } = useToast();
+  const { signIn, signInWithGoogle, user } = useAuth();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -23,21 +32,23 @@ const SignIn = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     
-    // Show backend integration message
-    toast({
-      title: "Authentication Required",
-      description: "Connect to Supabase to enable user authentication and sign-in functionality.",
-    });
+    const { error } = await signIn(formData.email, formData.password);
+    
+    if (!error) {
+      navigate('/');
+    }
+    
+    setLoading(false);
   };
 
-  const handleGoogleSignIn = () => {
-    toast({
-      title: "Google Sign-In",
-      description: "Connect to Supabase to enable Google authentication.",
-    });
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    await signInWithGoogle();
+    setLoading(false);
   };
 
   return (
@@ -57,8 +68,10 @@ const SignIn = () => {
             {/* Google Sign In */}
             <Button 
               variant="outline" 
-              className="w-full" 
+              className="w-full hover-lift" 
               onClick={handleGoogleSignIn}
+              loading={loading}
+              disabled={loading}
             >
               <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
                 <path
@@ -159,8 +172,8 @@ const SignIn = () => {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full btn-hero">
-                Sign In
+              <Button type="submit" className="w-full btn-hero" loading={loading} disabled={loading}>
+                {loading ? 'Signing In...' : 'Sign In'}
               </Button>
             </form>
 
@@ -174,10 +187,10 @@ const SignIn = () => {
               </p>
             </div>
 
-            {/* Backend Integration Notice */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-center">
-              <p className="text-sm text-amber-800">
-                <strong>Note:</strong> Connect to Supabase to enable full authentication functionality including Google sign-in and user management.
+            {/* Backend Integration Status */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+              <p className="text-sm text-green-800">
+                <strong>✓ Connected:</strong> Supabase authentication is enabled. You can now sign in with email/password or Google.
               </p>
             </div>
           </CardContent>

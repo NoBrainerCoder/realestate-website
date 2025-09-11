@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
+import { SliderWithInput } from '@/components/ui/slider-with-input';
 import { Badge } from '@/components/ui/badge';
 import { Search, Filter, X } from 'lucide-react';
 
@@ -13,7 +13,7 @@ interface SearchFiltersProps {
 const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [area, setArea] = useState('');
-  const [budget, setBudget] = useState([0, 10000000]);
+  const [budget, setBudget] = useState<[number, number]>([0, 10000000]);
   const [bhk, setBhk] = useState('');
   const [furnishing, setFurnishing] = useState('');
   const [propertyType, setPropertyType] = useState('');
@@ -120,17 +120,16 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
           <div className="space-y-4 border-t pt-4 slide-in-down">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 stagger-children">
               {/* Budget Slider */}
-              <div className="space-y-2 form-group">
-                <label className="text-sm font-medium text-foreground">
-                  Budget Range: ₹{budget[0].toLocaleString()} - ₹{budget[1].toLocaleString()}
-                </label>
-                <Slider
+              <div className="form-group">
+                <SliderWithInput
                   value={budget}
                   onValueChange={setBudget}
-                  max={100000000}
                   min={0}
+                  max={100000000}
                   step={100000}
-                  className="w-full hover-glow"
+                  label="Budget Range"
+                  formatValue={(value) => `₹${value.toLocaleString()}`}
+                  className="w-full"
                 />
               </div>
 
