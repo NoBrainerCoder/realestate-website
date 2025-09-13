@@ -6,12 +6,16 @@ import SearchFilters from './SearchFilters';
 import { ArrowRight, Calculator, Search } from 'lucide-react';
 import heroBg from '@/assets/hero-bg.jpg';
 
+interface HeroSectionProps {
+  onFiltersChange?: (filters: any) => void;
+}
+
 const backgroundImages = [
   heroBg,
   heroBg, // Add more images here when needed
 ];
 
-const HeroSection = () => {
+const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showContent, setShowContent] = useState(false);
 
@@ -36,8 +40,9 @@ const HeroSection = () => {
   }, []);
 
   const handleFiltersChange = (filters: any) => {
-    console.log('Filters changed:', filters);
-    // Handle filter changes - this will be connected to property listing later
+    if (onFiltersChange) {
+      onFiltersChange(filters);
+    }
   };
 
   return (
@@ -83,7 +88,7 @@ const HeroSection = () => {
                 </Button>
               </Link>
               <Link to="/emi-calculator">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-6 text-white border-white hover:bg-white hover:text-primary">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-6 text-white border-white hover:bg-white hover:text-primary bg-white/10 backdrop-blur-sm">
                   <Calculator className="h-5 w-5 mr-2" />
                   EMI Calculator
                 </Button>

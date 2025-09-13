@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import HeroSection from '@/components/HeroSection';
 import PropertyCard from '@/components/PropertyCard';
-import { mockProperties } from '@/data/mockProperties';
+import { mockProperties, filterProperties } from '@/data/mockProperties';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { ArrowRight, TrendingUp, Users, Shield, Award, Home, MapPin, Clock, Star
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 
 const Index = () => {
+  const [filteredProperties, setFilteredProperties] = useState(mockProperties);
   const featuredProperties = mockProperties.slice(0, 3);
   
   // Animated counters
@@ -16,10 +18,53 @@ const Index = () => {
   const areasCount = useAnimatedCounter({ end: 50 });
   const experienceCount = useAnimatedCounter({ end: 5 });
 
+  const handleFiltersChange = (filters: any) => {
+    const filtered = filterProperties(filters);
+    setFilteredProperties(filtered);
+  };
+
   return (
     <div className="min-h-screen page-transition">
       {/* Hero Section */}
-      <HeroSection />
+      <HeroSection onFiltersChange={handleFiltersChange} />
+
+      {/* Search Results - Only show if filters are applied */}
+      {filteredProperties.length !== mockProperties.length && (
+        <section className="py-16 bg-muted/50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-8 reveal-up revealed">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Search Results
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Found {filteredProperties.length} properties matching your criteria
+              </p>
+            </div>
+
+            {filteredProperties.length === 0 ? (
+              <div className="text-center py-12 fade-in-scale">
+                <h3 className="text-xl font-semibold mb-2">No properties found</h3>
+                <p className="text-muted-foreground">Try adjusting your search criteria</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 stagger-children">
+                {filteredProperties.map((property) => (
+                  <PropertyCard key={property.id} property={property} />
+                ))}
+              </div>
+            )}
+
+            <div className="text-center fade-in-scale">
+              <Link to="/properties">
+                <Button size="lg" className="btn-hero ripple group">
+                  View All Properties
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Featured Properties */}
       <section className="py-16 bg-muted/30">
@@ -162,7 +207,7 @@ const Index = () => {
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-6 min-w-[200px] text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-6 min-w-[200px] text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary bg-primary-foreground/10 backdrop-blur-sm">
                   <Star className="h-5 w-5 mr-2" />
                   Get Expert Help
                 </Button>
