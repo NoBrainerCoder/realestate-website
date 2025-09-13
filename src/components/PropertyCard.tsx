@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Bed, Bath, Maximize, MapPin, Phone, Eye, Heart } from 'lucide-react';
-import { useState } from 'react';
+import { Bed, Bath, Maximize, MapPin, Phone, Eye } from 'lucide-react';
 
 interface PropertyCardProps {
   property: {
@@ -21,7 +20,6 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property }: PropertyCardProps) => {
-  const [isFavorited, setIsFavorited] = useState(false);
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
@@ -48,16 +46,6 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             New
           </Badge>
         )}
-        <Button
-          variant="ghost"
-          size="icon"
-          className={`absolute top-3 right-3 h-8 w-8 rounded-full hover-scale transition-all duration-300 ${
-            isFavorited ? 'bg-red-500 text-white animate-pulse' : 'bg-white/80 text-red-500 hover:bg-white'
-          }`}
-          onClick={() => setIsFavorited(!isFavorited)}
-        >
-          <Heart className={`h-4 w-4 transition-all duration-300 ${isFavorited ? 'fill-current scale-110' : 'hover:scale-110'}`} />
-        </Button>
       </div>
 
       {/* Content */}

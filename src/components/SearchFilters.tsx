@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -24,7 +24,7 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
     'Gachibowli', 'Hitech City', 'Kondapur', 'Miyapur', 'Nizampet'
   ];
 
-  const handleSearch = () => {
+  const applyFilters = () => {
     const filters = {
       searchTerm,
       area,
@@ -35,6 +35,11 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
     };
     onFiltersChange(filters);
   };
+
+  // Apply filters immediately when any value changes
+  useEffect(() => {
+    applyFilters();
+  }, [searchTerm, area, budget, bhk, furnishing, propertyType]);
 
   const clearFilters = () => {
     setSearchTerm('');
@@ -59,7 +64,7 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
               className="h-12 text-base form-input focus:scale-105 transition-all duration-300"
             />
           </div>
-          <Button onClick={handleSearch} className="btn-hero h-12 px-8 hover-lift ripple group">
+          <Button onClick={applyFilters} className="btn-hero h-12 px-8 hover-lift ripple group">
             <Search className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
             Search
           </Button>
