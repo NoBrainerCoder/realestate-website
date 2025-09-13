@@ -148,21 +148,25 @@ const Contact = () => {
                       <Label htmlFor="name">Full Name *</Label>
                       <Input
                         id="name"
+                        name="name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder="Your full name"
                         required
+                        className="relative z-10"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email Address *</Label>
                       <Input
                         id="email"
+                        name="email"
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="your.email@example.com"
                         required
+                        className="relative z-10"
                       />
                     </div>
                   </div>
@@ -172,21 +176,25 @@ const Contact = () => {
                       <Label htmlFor="phone">Phone Number *</Label>
                       <Input
                         id="phone"
+                        name="phone"
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         placeholder="10-digit phone number"
                         required
+                        className="relative z-10"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="subject">Subject *</Label>
                       <Input
                         id="subject"
+                        name="subject"
                         value={formData.subject}
                         onChange={(e) => handleInputChange('subject', e.target.value)}
                         placeholder="What is this about?"
                         required
+                        className="relative z-10"
                       />
                     </div>
                   </div>
@@ -195,15 +203,17 @@ const Contact = () => {
                     <Label htmlFor="message">Message *</Label>
                     <Textarea
                       id="message"
+                      name="message"
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
                       placeholder="Tell us how we can help you..."
                       rows={6}
                       required
+                      className="relative z-10 resize-none"
                     />
                   </div>
 
-                  <Button type="submit" size="lg" className="w-full btn-hero">
+                  <Button type="submit" size="lg" className="w-full btn-hero relative z-10">
                     <Send className="h-5 w-5 mr-2" />
                     Send Message
                   </Button>
