@@ -375,14 +375,15 @@ const PostProperty = () => {
                   <div className="text-center">
                     <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground/50" />
                     <div className="mt-4">
-                      <Label htmlFor="image-upload" className="cursor-pointer">
-                        <div className="mx-auto">
-                          <Button type="button" variant="outline" disabled={uploading}>
-                            <Upload className="h-4 w-4 mr-2" />
-                            {uploading ? 'Uploading...' : 'Choose Images'}
-                          </Button>
-                        </div>
-                      </Label>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        disabled={uploading}
+                        onClick={() => document.getElementById('image-upload')?.click()}
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        {uploading ? 'Uploading...' : 'Choose Images'}
+                      </Button>
                       <input
                         id="image-upload"
                         type="file"

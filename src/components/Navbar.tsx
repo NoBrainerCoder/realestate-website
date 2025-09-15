@@ -66,10 +66,6 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>
-                    <Settings className="h-4 w-4 mr-2" />
-                    My Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
                     <Building2 className="h-4 w-4 mr-2" />
                     My Properties
                   </DropdownMenuItem>
