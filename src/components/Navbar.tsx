@@ -1,11 +1,20 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Building2, User, Menu, X } from 'lucide-react';
+import { Building2, User, Menu, X, LogOut, Settings } from 'lucide-react';
 import { useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -47,17 +56,45 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-2">
-            <Link to="/sign-in">
-              <Button variant="outline" size="sm" className="hover-lift ripple">
-                <User className="h-4 w-4 mr-2" />
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/sign-up">
-              <Button size="sm" className="btn-hero ripple">
-                Sign Up
-              </Button>
-            </Link>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="hover-lift ripple">
+                    <User className="h-4 w-4 mr-2" />
+                    {user.email?.split('@')[0] || 'Account'}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
+                    <Settings className="h-4 w-4 mr-2" />
+                    My Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Building2 className="h-4 w-4 mr-2" />
+                    My Properties
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Link to="/sign-in">
+                  <Button variant="outline" size="sm" className="hover-lift ripple">
+                    <User className="h-4 w-4 mr-2" />
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/sign-up">
+                  <Button size="sm" className="btn-hero ripple">
+                    Sign Up
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -90,17 +127,31 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="flex flex-col space-y-2 pt-2 border-t border-border">
-                <Link to="/sign-in" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" size="sm" className="w-full ripple">
-                    <User className="h-4 w-4 mr-2" />
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/sign-up" onClick={() => setIsMenuOpen(false)}>
-                  <Button size="sm" className="w-full btn-hero ripple">
-                    Sign Up
-                  </Button>
-                </Link>
+                {user ? (
+                  <>
+                    <div className="px-3 py-2 text-sm font-medium text-foreground">
+                      {user.email}
+                    </div>
+                    <Button variant="outline" size="sm" className="w-full ripple" onClick={() => { setIsMenuOpen(false); signOut(); }}>
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/sign-in" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="outline" size="sm" className="w-full ripple">
+                        <User className="h-4 w-4 mr-2" />
+                        Sign In
+                      </Button>
+                    </Link>
+                    <Link to="/sign-up" onClick={() => setIsMenuOpen(false)}>
+                      <Button size="sm" className="w-full btn-hero ripple">
+                        Sign Up
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>

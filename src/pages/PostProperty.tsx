@@ -6,12 +6,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Upload, X, Building2, Clock } from 'lucide-react';
+import { Upload, X, Building2, Clock, ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { useImageUpload } from '@/hooks/useImageUpload';
+import { displayPrice, parsePriceShorthand } from '@/utils/priceFormatter';
+import { supabase } from '@/integrations/supabase/client';
 
 const PostProperty = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { images, uploading, addImages, removeImage, clearImages, uploadAllImages } = useImageUpload();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [priceDisplay, setPriceDisplay] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -28,7 +37,7 @@ const PostProperty = () => {
     posterPhone: '',
     posterEmail: '',
   });
-  const [images, setImages] = useState<string[]>([]);
+  
 
   const amenitiesList = [
     'Gym', 'Swimming Pool', 'Parking', 'Security', '24/7 Power Backup',
@@ -37,10 +46,19 @@ const PostProperty = () => {
   ];
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    if (field === 'price') {
+      const numericValue = parsePriceShorthand(value);
+      setPriceDisplay(displayPrice(numericValue));
+      setFormData(prev => ({
+        ...prev,
+        [field]: numericValue.toString()
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value
+      }));
+    }
   };
 
   const toggleAmenity = (amenity: string) => {
@@ -52,22 +70,95 @@ const PostProperty = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      addImages(e.target.files);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate form submission
-    toast({
-      title: "Property Submitted!",
-      description: "Your property has been submitted for approval. We'll contact you soon.",
-    });
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to post a property.",
+        variant: "destructive",
+      });
+      navigate('/sign-in');
+      return;
+    }
 
-    // Reset form
-    setFormData({
-      title: '', description: '', location: '', area: '', price: '',
-      bedrooms: '', bathrooms: '', furnishing: '', propertyType: '',
-      amenities: [], age: '', posterName: '', posterPhone: '', posterEmail: '',
-    });
-    setImages([]);
+    setIsSubmitting(true);
+    
+    try {
+      // Upload images first
+      const imageUrls = await uploadAllImages();
+      
+      // Insert property
+      const { data: propertyData, error: propertyError } = await supabase
+        .from('properties')
+        .insert({
+          user_id: user.id,
+          title: formData.title,
+          description: formData.description,
+          location: formData.location,
+          area: parseInt(formData.area),
+          price: parseFloat(formData.price),
+          bedrooms: formData.bedrooms,
+          bathrooms: formData.bathrooms,
+          furnishing: formData.furnishing,
+          property_type: formData.propertyType,
+          amenities: formData.amenities,
+          age: formData.age,
+          poster_name: formData.posterName,
+          poster_phone: formData.posterPhone,
+          poster_email: formData.posterEmail,
+          status: 'pending'
+        })
+        .select()
+        .single();
+
+      if (propertyError) throw propertyError;
+
+      // Insert property images
+      if (imageUrls.length > 0) {
+        const imageInserts = imageUrls.map((url, index) => ({
+          property_id: propertyData.id,
+          image_url: url,
+          display_order: index
+        }));
+
+        const { error: imageError } = await supabase
+          .from('property_images')
+          .insert(imageInserts);
+
+        if (imageError) throw imageError;
+      }
+
+      toast({
+        title: "Property Submitted!",
+        description: "Your property has been submitted for approval. We'll contact you soon.",
+      });
+
+      // Reset form
+      setFormData({
+        title: '', description: '', location: '', area: '', price: '',
+        bedrooms: '', bathrooms: '', furnishing: '', propertyType: '',
+        amenities: [], age: '', posterName: '', posterPhone: '', posterEmail: '',
+      });
+      setPriceDisplay('');
+      clearImages();
+      
+    } catch (error: any) {
+      toast({
+        title: "Submission Failed",
+        description: error.message || "Failed to submit property. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -83,22 +174,24 @@ const PostProperty = () => {
         </div>
 
         {/* Auth Notice */}
-        <Card className="mb-8 bg-primary/5 border-primary/20">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <Building2 className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-medium">Sign in to post properties</p>
-                <p className="text-sm text-muted-foreground">
-                  You need to be signed in to post a property. 
-                  <Link to="/sign-in" className="text-primary hover:underline ml-1">
-                    Sign in now
-                  </Link>
-                </p>
+        {!user && (
+          <Card className="mb-8 bg-primary/5 border-primary/20">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <Building2 className="h-5 w-5 text-primary" />
+                <div>
+                  <p className="font-medium">Sign in to post properties</p>
+                  <p className="text-sm text-muted-foreground">
+                    You need to be signed in to post a property. 
+                    <Link to="/sign-in" className="text-primary hover:underline ml-1">
+                      Sign in now
+                    </Link>
+                  </p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Information */}
@@ -150,12 +243,16 @@ const PostProperty = () => {
                   <Label htmlFor="price">Price (₹) *</Label>
                   <Input
                     id="price"
-                    type="number"
-                    value={formData.price}
+                    type="text"
                     onChange={(e) => handleInputChange('price', e.target.value)}
-                    placeholder="e.g., 12500000"
+                    placeholder="e.g., 1.25 cr, 50 lakh, 2.5L"
                     required
                   />
+                  {priceDisplay && (
+                    <p className="text-sm text-muted-foreground">
+                      Formatted: {priceDisplay}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="area">Area (sq ft) *</Label>
@@ -270,6 +367,58 @@ const PostProperty = () => {
                   ))}
                 </div>
               </div>
+              
+              {/* Image Upload */}
+              <div className="space-y-2">
+                <Label>Property Images</Label>
+                <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6">
+                  <div className="text-center">
+                    <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground/50" />
+                    <div className="mt-4">
+                      <Label htmlFor="image-upload" className="cursor-pointer">
+                        <div className="mx-auto">
+                          <Button type="button" variant="outline" disabled={uploading}>
+                            <Upload className="h-4 w-4 mr-2" />
+                            {uploading ? 'Uploading...' : 'Choose Images'}
+                          </Button>
+                        </div>
+                      </Label>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Upload multiple images (JPEG, PNG, WebP)
+                    </p>
+                  </div>
+                </div>
+                
+                {images.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                    {images.map((image) => (
+                      <div key={image.id} className="relative group">
+                        <img
+                          src={image.url}
+                          alt="Property preview"
+                          className="w-full h-24 object-cover rounded-md"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(image.id)}
+                          className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
 
@@ -334,8 +483,13 @@ const PostProperty = () => {
             </CardContent>
           </Card>
 
-          <Button type="submit" size="lg" className="w-full btn-hero">
-            Submit Property for Approval
+          <Button 
+            type="submit" 
+            size="lg" 
+            className="w-full btn-hero"
+            disabled={!user || isSubmitting || uploading}
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit Property for Approval'}
           </Button>
         </form>
       </div>
