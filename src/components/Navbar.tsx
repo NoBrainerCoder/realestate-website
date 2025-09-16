@@ -1,152 +1,213 @@
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Building2, User, Menu, X, LogOut, Settings } from 'lucide-react';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Menu, X, Home, Building2, Calculator, Info, Mail, LogIn, UserPlus, LogOut, Shield } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
 
-  const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Properties', path: '/properties' },
-    { name: 'Post Property', path: '/post-property' },
-    { name: 'EMI Calculator', path: '/emi-calculator' },
-    { name: 'About Us', path: '/about' },
-    { name: 'Contact', path: '/contact' },
+  const closeMenu = () => setIsOpen(false);
+
+  const navLinks = [
+    { to: '/', icon: Home, label: 'Home' },
+    { to: '/properties', icon: Building2, label: 'Properties' },
+    { to: '/emi-calculator', icon: Calculator, label: 'EMI Calculator' },
+    { to: '/about', icon: Info, label: 'About Us' },
+    { to: '/contact', icon: Mail, label: 'Contact' },
   ];
 
-  const isActive = (path: string) => location.pathname === path;
-
   return (
-    <nav className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
+    <nav className="bg-card/80 backdrop-blur-md border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover-scale">
             <Building2 className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-primary">MyInfraHub</span>
+            <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              MyInfraHub
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  isActive(item.path)
-                    ? 'text-primary bg-accent active'
-                    : 'text-foreground hover:text-primary hover:bg-accent/50'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
+          <div className="hidden lg:flex items-center space-x-1">
+            <div className="flex items-center space-x-1 bg-muted/50 rounded-full p-1">
+              {navLinks.map(({ to, icon: Icon, label }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-full transition-colors ${
+                    location.pathname === to
+                      ? 'text-primary bg-background shadow-sm'
+                      : 'text-muted-foreground hover:text-primary hover:bg-background/50'
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="text-sm font-medium">{label}</span>
+                </Link>
+              ))}
+            </div>
 
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-2">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="hover-lift ripple">
-                    <User className="h-4 w-4 mr-2" />
-                    {user.email?.split('@')[0] || 'Account'}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    <Building2 className="h-4 w-4 mr-2" />
-                    My Properties
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut}>
+            {/* Auth Section */}
+            <div className="ml-6 flex items-center space-x-2">
+              {user ? (
+                <div className="flex items-center space-x-2">
+                  {user && (
+                    <Link
+                      to="/post-property"
+                      className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
+                        location.pathname === '/post-property'
+                          ? 'text-primary bg-primary/10'
+                          : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                      }`}
+                    >
+                      <Building2 className="h-4 w-4" />
+                      My Properties
+                    </Link>
+                  )}
+                  
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
+                        location.pathname.startsWith('/admin')
+                          ? 'text-primary bg-primary/10'
+                          : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                      }`}
+                    >
+                      <Shield className="h-4 w-4" />
+                      Admin Panel
+                    </Link>
+                  )}
+                  
+                  <Button 
+                    onClick={signOut}
+                    variant="outline" 
+                    size="sm" 
+                    className="hover-lift ripple"
+                  >
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <>
-                <Link to="/sign-in">
-                  <Button variant="outline" size="sm" className="hover-lift ripple">
-                    <User className="h-4 w-4 mr-2" />
-                    Sign In
                   </Button>
-                </Link>
-                <Link to="/sign-up">
-                  <Button size="sm" className="btn-hero ripple">
-                    Sign Up
-                  </Button>
-                </Link>
-              </>
-            )}
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Link to="/sign-in">
+                    <Button variant="outline" size="sm" className="hover-lift ripple">
+                      <LogIn className="h-4 w-4 mr-2" />
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/sign-up">
+                    <Button size="sm" className="btn-hero ripple">
+                      <UserPlus className="h-4 w-4 mr-2" />
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
             size="sm"
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden"
+            onClick={() => setIsOpen(!isOpen)}
           >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
 
         {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm slide-in-down">
-            <div className="px-2 pt-2 pb-3 space-y-1 stagger-children">
-              {navItems.map((item) => (
+        {isOpen && (
+          <div className="lg:hidden py-4 space-y-2 border-t border-border slide-in-down">
+            <div className="space-y-1 stagger-children">
+              {navLinks.map(({ to, icon: Icon, label }) => (
                 <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                    isActive(item.path)
-                      ? 'text-primary bg-accent active'
-                      : 'text-foreground hover:text-primary hover:bg-accent/50'
+                  key={to}
+                  to={to}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
+                    location.pathname === to
+                      ? 'text-primary bg-primary/10'
+                      : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
                   }`}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={closeMenu}
                 >
-                  {item.name}
+                  <Icon className="h-4 w-4" />
+                  {label}
                 </Link>
               ))}
-              <div className="flex flex-col space-y-2 pt-2 border-t border-border">
+
+              {/* Mobile Auth Links */}
+              <div className="border-t border-border pt-2 mt-2">
                 {user ? (
                   <>
-                    <div className="px-3 py-2 text-sm font-medium text-foreground">
-                      {user.email}
+                    <div className="px-3 py-2 text-sm text-muted-foreground">
+                      Signed in as: {user.email}
                     </div>
-                    <Button variant="outline" size="sm" className="w-full ripple" onClick={() => { setIsMenuOpen(false); signOut(); }}>
+                    
+                    {user && (
+                      <Link
+                        to="/post-property"
+                        className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
+                          location.pathname === '/post-property'
+                            ? 'text-primary bg-primary/10'
+                            : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                        }`}
+                        onClick={closeMenu}
+                      >
+                        <Building2 className="h-4 w-4" />
+                        My Properties
+                      </Link>
+                    )}
+                    
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
+                          location.pathname.startsWith('/admin')
+                            ? 'text-primary bg-primary/10'
+                            : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                        }`}
+                        onClick={closeMenu}
+                      >
+                        <Shield className="h-4 w-4" />
+                        Admin Panel
+                      </Link>
+                    )}
+                    
+                    <Button
+                      onClick={() => {
+                        signOut();
+                        closeMenu();
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="w-full justify-start mt-2 ripple"
+                    >
                       <LogOut className="h-4 w-4 mr-2" />
                       Sign Out
                     </Button>
                   </>
                 ) : (
-                  <>
-                    <Link to="/sign-in" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="outline" size="sm" className="w-full ripple">
-                        <User className="h-4 w-4 mr-2" />
+                  <div className="space-y-2">
+                    <Link to="/sign-in" onClick={closeMenu}>
+                      <Button variant="outline" size="sm" className="w-full justify-start ripple">
+                        <LogIn className="h-4 w-4 mr-2" />
                         Sign In
                       </Button>
                     </Link>
-                    <Link to="/sign-up" onClick={() => setIsMenuOpen(false)}>
+                    <Link to="/sign-up" onClick={closeMenu}>
                       <Button size="sm" className="w-full btn-hero ripple">
+                        <UserPlus className="h-4 w-4 mr-2" />
                         Sign Up
                       </Button>
                     </Link>
-                  </>
+                  </div>
                 )}
               </div>
             </div>

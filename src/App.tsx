@@ -18,6 +18,10 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
+import AdminRoute from "./components/AdminRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProperties from "./pages/admin/AdminProperties";
+import AdminContacts from "./pages/admin/AdminContacts";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +46,12 @@ const App = () => (
               <Route path="/sign-in" element={<PageTransition><SignIn /></PageTransition>} />
               <Route path="/sign-up" element={<PageTransition><SignUp /></PageTransition>} />
               <Route path="/privacy-policy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminRoute><PageTransition><AdminDashboard /></PageTransition></AdminRoute>} />
+              <Route path="/admin/properties" element={<AdminRoute><PageTransition><AdminProperties /></PageTransition></AdminRoute>} />
+              <Route path="/admin/contacts" element={<AdminRoute><PageTransition><AdminContacts /></PageTransition></AdminRoute>} />
+              
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
             </Routes>

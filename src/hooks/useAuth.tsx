@@ -7,6 +7,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  isAdmin: boolean;
   signUp: (email: string, password: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,
   loading: true,
+  isAdmin: false,
   signUp: async () => ({ error: null }),
   signIn: async () => ({ error: null }),
   signInWithGoogle: async () => ({ error: null }),
@@ -39,7 +41,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
+
+  const ADMIN_EMAIL = 'myinfrapub.com@gmail.com';
 
   useEffect(() => {
     // Set up auth state listener
@@ -47,6 +52,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        setIsAdmin(session?.user?.email === ADMIN_EMAIL);
         setLoading(false);
       }
     );
@@ -55,6 +61,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setIsAdmin(session?.user?.email === ADMIN_EMAIL);
       setLoading(false);
     });
 
@@ -190,6 +197,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     user,
     session,
     loading,
+    isAdmin,
     signUp,
     signIn,
     signInWithGoogle,
