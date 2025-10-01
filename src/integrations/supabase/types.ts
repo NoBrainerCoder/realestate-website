@@ -199,9 +199,7 @@ export type Database = {
           furnishing: string | null
           id: string | null
           location: string | null
-          poster_email: string | null
           poster_name: string | null
-          poster_phone: string | null
           price: number | null
           property_type: string | null
           status: string | null
@@ -220,9 +218,7 @@ export type Database = {
           furnishing?: string | null
           id?: string | null
           location?: string | null
-          poster_email?: never
           poster_name?: string | null
-          poster_phone?: never
           price?: number | null
           property_type?: string | null
           status?: string | null
@@ -241,9 +237,7 @@ export type Database = {
           furnishing?: string | null
           id?: string | null
           location?: string | null
-          poster_email?: never
           poster_name?: string | null
-          poster_phone?: never
           price?: number | null
           property_type?: string | null
           status?: string | null
