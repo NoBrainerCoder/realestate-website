@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
 
-  const ADMIN_EMAIL = 'myinfrapub.com@gmail.com';
+  const ADMIN_EMAIL = 'myinfrahub.com@gmail.com';
 
   useEffect(() => {
     // Set up auth state listener
