@@ -176,14 +176,89 @@ export type Database = {
             referencedRelation: "properties"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "property_images_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
     Views: {
-      [_ in never]: never
+      properties_public: {
+        Row: {
+          age: string | null
+          amenities: string[] | null
+          area: number | null
+          bathrooms: string | null
+          bedrooms: string | null
+          created_at: string | null
+          description: string | null
+          furnishing: string | null
+          id: string | null
+          location: string | null
+          poster_email: string | null
+          poster_name: string | null
+          poster_phone: string | null
+          price: number | null
+          property_type: string | null
+          status: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          age?: string | null
+          amenities?: string[] | null
+          area?: number | null
+          bathrooms?: string | null
+          bedrooms?: string | null
+          created_at?: string | null
+          description?: string | null
+          furnishing?: string | null
+          id?: string | null
+          location?: string | null
+          poster_email?: never
+          poster_name?: string | null
+          poster_phone?: never
+          price?: number | null
+          property_type?: string | null
+          status?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          age?: string | null
+          amenities?: string[] | null
+          area?: number | null
+          bathrooms?: string | null
+          bedrooms?: string | null
+          created_at?: string | null
+          description?: string | null
+          furnishing?: string | null
+          id?: string | null
+          location?: string | null
+          poster_email?: never
+          poster_name?: string | null
+          poster_phone?: never
+          price?: number | null
+          property_type?: string | null
+          status?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      can_view_property_contact: {
+        Args: { property_user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
