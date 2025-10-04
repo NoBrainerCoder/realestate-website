@@ -97,6 +97,7 @@ export type Database = {
           poster_phone: string
           price: number
           property_type: string
+          rejection_reason: string | null
           status: string
           title: string
           updated_at: string
@@ -118,6 +119,7 @@ export type Database = {
           poster_phone: string
           price: number
           property_type: string
+          rejection_reason?: string | null
           status?: string
           title: string
           updated_at?: string
@@ -139,6 +141,7 @@ export type Database = {
           poster_phone?: string
           price?: number
           property_type?: string
+          rejection_reason?: string | null
           status?: string
           title?: string
           updated_at?: string

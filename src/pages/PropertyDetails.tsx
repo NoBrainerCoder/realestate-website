@@ -1,12 +1,43 @@
 import { useParams, Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { getPropertyById } from '@/data/mockProperties';
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield } from 'lucide-react';
 
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const property = id ? getPropertyById(id) : null;
+  
+  const { data: property, isLoading } = useQuery({
+    queryKey: ['property', id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('properties')
+        .select(`
+          *,
+          property_images (
+            id,
+            image_url,
+            display_order
+          )
+        `)
+        .eq('id', id)
+        .eq('status', 'approved')
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!id
+  });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (!property) {
     return (
@@ -45,14 +76,33 @@ const PropertyDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Image */}
-            <div className="rounded-2xl overflow-hidden">
-              <img 
-                src={property.image} 
-                alt={property.title}
-                className="w-full h-64 md:h-96 object-cover"
-              />
-            </div>
+            {/* Property Images */}
+            {property.property_images && property.property_images.length > 0 ? (
+              <div className="rounded-2xl overflow-hidden">
+                {property.property_images.length === 1 ? (
+                  <img 
+                    src={property.property_images[0].image_url} 
+                    alt={property.title}
+                    className="w-full h-64 md:h-96 object-cover"
+                  />
+                ) : (
+                  <div className="grid grid-cols-2 gap-2">
+                    {property.property_images.slice(0, 4).map((image: any, index: number) => (
+                      <img 
+                        key={image.id}
+                        src={image.image_url} 
+                        alt={`${property.title} - Image ${index + 1}`}
+                        className={`w-full object-cover ${index === 0 ? 'col-span-2 h-64 md:h-96' : 'h-48'}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="rounded-2xl overflow-hidden bg-muted flex items-center justify-center h-64 md:h-96">
+                <p className="text-muted-foreground">No images available</p>
+              </div>
+            )}
 
             {/* Property Info */}
             <div className="bg-background rounded-2xl p-6 shadow-card">
@@ -97,12 +147,9 @@ const PropertyDetails = () => {
               <div className="flex flex-wrap gap-2 mb-6">
                 <Badge variant="outline">
                   <Home className="h-3 w-3 mr-1" />
-                  {property.type}
+                  {property.property_type}
                 </Badge>
                 <Badge variant="outline">{property.furnishing}</Badge>
-                {property.isNew && (
-                  <Badge className="bg-green-500 hover:bg-green-600">New</Badge>
-                )}
               </div>
 
               {/* Description */}
@@ -137,14 +184,14 @@ const PropertyDetails = () => {
                   <Phone className="h-5 w-5 text-primary" />
                   <div>
                     <div className="font-medium">Phone</div>
-                    <div className="text-muted-foreground">9866123350</div>
+                    <div className="text-muted-foreground">{property.poster_phone}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="h-5 w-5 text-primary" />
                   <div>
                     <div className="font-medium">Email</div>
-                    <div className="text-muted-foreground">myinfrahub.com@gmail.com</div>
+                    <div className="text-muted-foreground">{property.poster_email}</div>
                   </div>
                 </div>
               </div>

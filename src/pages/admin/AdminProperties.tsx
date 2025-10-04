@@ -44,6 +44,8 @@ const AdminProperties = () => {
   const [selectedProperty, setSelectedProperty] = useState<any>(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState('');
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -75,26 +77,65 @@ const AdminProperties = () => {
 
   // Update property status
   const updateStatusMutation = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+    mutationFn: async ({ id, status, rejection_reason }: { id: string; status: string; rejection_reason?: string }) => {
+      const updateData: any = { status };
+      if (rejection_reason) {
+        updateData.rejection_reason = rejection_reason;
+      }
+
       const { error } = await supabase
         .from('properties')
-        .update({ status })
+        .update(updateData)
         .eq('id', id);
       
       if (error) throw error;
+
+      // Send email notification if rejecting
+      if (status === 'rejected' && rejection_reason) {
+        const property = await supabase
+          .from('properties')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (property.data) {
+          try {
+            await supabase.functions.invoke('send-email', {
+              body: {
+                to: property.data.poster_email,
+                subject: 'Property Submission Rejected - MyInfraHub',
+                html: `
+                  <h2>Property Submission Update</h2>
+                  <p>Dear ${property.data.poster_name},</p>
+                  <p>We regret to inform you that your property submission "${property.data.title}" has been rejected.</p>
+                  <p><strong>Reason:</strong> ${rejection_reason}</p>
+                  <p>If you have any questions or would like to resubmit with corrections, please contact us.</p>
+                  <br>
+                  <p>Best regards,<br>MyInfraHub Team</p>
+                `
+              }
+            });
+            console.log('Rejection email sent successfully');
+          } catch (emailError) {
+            console.error('Failed to send rejection email:', emailError);
+          }
+        }
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-properties'] });
       queryClient.invalidateQueries({ queryKey: ['admin-properties-stats'] });
+      setIsRejectDialogOpen(false);
+      setRejectionReason('');
       toast({
         title: 'Success',
         description: 'Property status updated successfully'
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast({
         title: 'Error',
-        description: 'Failed to update property status',
+        description: error.message || 'Failed to update property status',
         variant: 'destructive'
       });
     }
@@ -137,8 +178,25 @@ const AdminProperties = () => {
     }
   });
 
-  const handleStatusUpdate = (id: string, status: string) => {
-    updateStatusMutation.mutate({ id, status });
+  const handleStatusUpdate = (id: string, status: string, rejection_reason?: string) => {
+    updateStatusMutation.mutate({ id, status, rejection_reason });
+  };
+
+  const handleRejectClick = (property: any) => {
+    setSelectedProperty(property);
+    setIsRejectDialogOpen(true);
+  };
+
+  const handleRejectSubmit = () => {
+    if (!rejectionReason.trim()) {
+      toast({
+        title: 'Error',
+        description: 'Please provide a rejection reason',
+        variant: 'destructive'
+      });
+      return;
+    }
+    handleStatusUpdate(selectedProperty.id, 'rejected', rejectionReason);
   };
 
   const handleEditSubmit = (formData: FormData) => {
@@ -309,7 +367,57 @@ const AdminProperties = () => {
                             </div>
                           </div>
                         )}
+                        {selectedProperty?.property_images && selectedProperty.property_images.length > 0 && (
+                          <div>
+                            <h4 className="font-semibold mb-2">Property Images</h4>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                              {selectedProperty.property_images.map((image: any) => (
+                                <img 
+                                  key={image.id} 
+                                  src={image.image_url} 
+                                  alt="Property" 
+                                  className="w-full h-32 object-cover rounded-lg"
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
+                    </DialogContent>
+                  </Dialog>
+
+                  {/* Rejection Dialog */}
+                  <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Reject Property</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <p className="text-sm text-muted-foreground">
+                          Please provide a reason for rejecting this property. An email will be sent to the property owner.
+                        </p>
+                        <Textarea
+                          placeholder="Enter rejection reason..."
+                          value={rejectionReason}
+                          onChange={(e) => setRejectionReason(e.target.value)}
+                          rows={4}
+                        />
+                      </div>
+                      <DialogFooter>
+                        <Button variant="outline" onClick={() => {
+                          setIsRejectDialogOpen(false);
+                          setRejectionReason('');
+                        }}>
+                          Cancel
+                        </Button>
+                        <Button 
+                          variant="destructive" 
+                          onClick={handleRejectSubmit}
+                          disabled={updateStatusMutation.isPending}
+                        >
+                          {updateStatusMutation.isPending ? 'Rejecting...' : 'Reject Property'}
+                        </Button>
+                      </DialogFooter>
                     </DialogContent>
                   </Dialog>
 
@@ -396,7 +504,7 @@ const AdminProperties = () => {
                       <Button 
                         size="sm" 
                         variant="destructive"
-                        onClick={() => handleStatusUpdate(property.id, 'rejected')}
+                        onClick={() => handleRejectClick(property)}
                         disabled={updateStatusMutation.isPending}
                       >
                         <XCircle className="h-4 w-4 mr-2" />
@@ -409,7 +517,7 @@ const AdminProperties = () => {
                     <Button 
                       size="sm" 
                       variant="destructive"
-                      onClick={() => handleStatusUpdate(property.id, 'rejected')}
+                      onClick={() => handleRejectClick(property)}
                       disabled={updateStatusMutation.isPending}
                     >
                       <XCircle className="h-4 w-4 mr-2" />

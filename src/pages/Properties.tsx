@@ -1,19 +1,88 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import PropertyCard from '@/components/PropertyCard';
 import SearchFilters from '@/components/SearchFilters';
-import { mockProperties, filterProperties } from '@/data/mockProperties';
 import { Button } from '@/components/ui/button';
 import { Grid, List, SlidersHorizontal } from 'lucide-react';
 
 const Properties = () => {
-  const [filteredProperties, setFilteredProperties] = useState(mockProperties);
+  const [filteredProperties, setFilteredProperties] = useState<any[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(true);
 
+  // Fetch approved properties from Supabase
+  const { data: approvedProperties = [], isLoading } = useQuery({
+    queryKey: ['approved-properties'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('properties')
+        .select(`
+          *,
+          property_images (
+            id,
+            image_url,
+            display_order
+          )
+        `)
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      // Transform data to match PropertyCard interface
+      return (data || []).map(property => ({
+        ...property,
+        type: property.property_type,
+        bedrooms: parseInt(property.bedrooms),
+        bathrooms: parseInt(property.bathrooms),
+        image: property.property_images?.[0]?.image_url || '/placeholder.svg',
+        isNew: new Date(property.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Properties less than 7 days old
+      }));
+    }
+  });
+
+  useEffect(() => {
+    if (approvedProperties.length > 0) {
+      setFilteredProperties(approvedProperties);
+    }
+  }, [approvedProperties]);
+
   const handleFiltersChange = (filters: any) => {
-    const filtered = filterProperties(filters);
+    let filtered = [...approvedProperties];
+
+    // Apply price filter
+    if (filters.minPrice || filters.maxPrice) {
+      filtered = filtered.filter(property => {
+        const price = property.price;
+        const minPrice = filters.minPrice || 0;
+        const maxPrice = filters.maxPrice || Infinity;
+        return price >= minPrice && price <= maxPrice;
+      });
+    }
+
+    // Apply location filter
+    if (filters.location) {
+      filtered = filtered.filter(property => 
+        property.location.toLowerCase().includes(filters.location.toLowerCase())
+      );
+    }
+
+    // Apply BHK filter
+    if (filters.bedrooms) {
+      filtered = filtered.filter(property => property.bedrooms === filters.bedrooms);
+    }
+
     setFilteredProperties(filtered);
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-muted/30 page-transition">
