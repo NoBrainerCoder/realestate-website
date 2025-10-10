@@ -59,26 +59,54 @@ const Index = () => {
   const handleFiltersChange = (filters: any) => {
     let filtered = [...approvedProperties];
 
-    // Apply price filter
-    if (filters.minPrice || filters.maxPrice) {
+    // Apply search term filter
+    if (filters.searchTerm) {
+      filtered = filtered.filter(property => 
+        property.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        property.location.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        property.description?.toLowerCase().includes(filters.searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply area/location filter
+    if (filters.area) {
+      filtered = filtered.filter(property => 
+        property.location.toLowerCase().includes(filters.area.toLowerCase())
+      );
+    }
+
+    // Apply budget filter
+    if (filters.budget && filters.budget.length === 2) {
+      const [minPrice, maxPrice] = filters.budget;
       filtered = filtered.filter(property => {
-        const price = property.price;
-        const minPrice = filters.minPrice || 0;
-        const maxPrice = filters.maxPrice || Infinity;
+        const price = Number(property.price);
         return price >= minPrice && price <= maxPrice;
       });
     }
 
-    // Apply location filter
-    if (filters.location) {
+    // Apply BHK filter
+    if (filters.bhk) {
+      const bhkValue = filters.bhk.replace('+', '');
+      filtered = filtered.filter(property => {
+        if (filters.bhk.includes('+')) {
+          return property.bedrooms >= parseInt(bhkValue);
+        }
+        return property.bedrooms === parseInt(bhkValue);
+      });
+    }
+
+    // Apply property type filter
+    if (filters.propertyType) {
       filtered = filtered.filter(property => 
-        property.location.toLowerCase().includes(filters.location.toLowerCase())
+        property.property_type === filters.propertyType
       );
     }
 
-    // Apply BHK filter
-    if (filters.bedrooms) {
-      filtered = filtered.filter(property => property.bedrooms === filters.bedrooms);
+    // Apply furnishing filter
+    if (filters.furnishing) {
+      filtered = filtered.filter(property => 
+        property.furnishing === filters.furnishing
+      );
     }
 
     setFilteredProperties(filtered);
