@@ -99,10 +99,12 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
                 View Details
               </Button>
             </Link>
-            <Button className="flex-1 btn-hero ripple group">
-              <Phone className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-              Contact
-            </Button>
+            <Link to="/contact" className="flex-1">
+              <Button className="w-full btn-hero ripple group">
+                <Phone className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                Contact
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
