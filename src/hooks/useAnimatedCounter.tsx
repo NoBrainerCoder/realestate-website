@@ -15,16 +15,18 @@ export const useAnimatedCounter = ({
 }: UseAnimatedCounterProps) => {
   const [count, setCount] = useState(start);
   const [isInView, setIsInView] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
   const elementRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !isInView) {
+        if (entry.isIntersecting && !hasAnimated) {
           setIsInView(true);
+          setHasAnimated(true);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.1, rootMargin: '50px' }
     );
 
     const currentElement = elementRef.current;
@@ -37,7 +39,7 @@ export const useAnimatedCounter = ({
         observer.unobserve(currentElement);
       }
     };
-  }, [isInView]);
+  }, [hasAnimated]);
 
   useEffect(() => {
     if (!isInView) return;
