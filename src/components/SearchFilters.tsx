@@ -13,7 +13,8 @@ interface SearchFiltersProps {
 const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [area, setArea] = useState('');
-  const [budget, setBudget] = useState<[number, number]>([0, 10000000]);
+  const [budget, setBudget] = useState<[number, number]>([0, 100000000]);
+  const [budgetChanged, setBudgetChanged] = useState(false);
   const [bhk, setBhk] = useState('');
   const [furnishing, setFurnishing] = useState('');
   const [propertyType, setPropertyType] = useState('');
@@ -25,30 +26,33 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   ];
 
   const applyFilters = () => {
-    const filters = {
+    const filters: any = {
       searchTerm,
       area,
-      budget,
       bhk,
       furnishing,
       propertyType,
     };
+    // Only include budget if user has changed it
+    if (budgetChanged) {
+      filters.budget = budget;
+    }
     onFiltersChange(filters);
   };
 
   // Apply filters immediately when any value changes
   useEffect(() => {
     applyFilters();
-  }, [searchTerm, area, budget, bhk, furnishing, propertyType]);
+  }, [searchTerm, area, budget, bhk, furnishing, propertyType, budgetChanged]);
 
   const clearFilters = () => {
     setSearchTerm('');
     setArea('');
-    setBudget([0, 10000000]);
+    setBudget([0, 100000000]);
+    setBudgetChanged(false);
     setBhk('');
     setFurnishing('');
     setPropertyType('');
-    onFiltersChange({});
   };
 
   return (
@@ -128,7 +132,10 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
               <div className="form-group">
                 <SliderWithInput
                   value={budget}
-                  onValueChange={setBudget}
+                  onValueChange={(value) => {
+                    setBudget(value);
+                    setBudgetChanged(true);
+                  }}
                   min={0}
                   max={100000000}
                   step={100000}

@@ -23,7 +23,7 @@ const PropertyDetails = () => {
         `)
         .eq('id', id)
         .eq('status', 'approved')
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
       return data;
