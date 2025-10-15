@@ -18,27 +18,41 @@ export const useAnimatedCounter = ({
   const [hasAnimated, setHasAnimated] = useState(false);
   const elementRef = useRef<HTMLElement>(null);
 
+  // Wait for DOM to be fully loaded before observing
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setIsInView(true);
-          setHasAnimated(true);
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    const currentElement = elementRef.current;
-    if (currentElement) {
-      observer.observe(currentElement);
+    // Ensure DOM is ready
+    if (document.readyState === 'loading') {
+      const handleLoad = () => {
+        setupObserver();
+      };
+      document.addEventListener('DOMContentLoaded', handleLoad);
+      return () => document.removeEventListener('DOMContentLoaded', handleLoad);
+    } else {
+      setupObserver();
     }
 
-    return () => {
+    function setupObserver() {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting && !hasAnimated) {
+            setIsInView(true);
+            setHasAnimated(true);
+          }
+        },
+        { threshold: 0.1, rootMargin: '100px' }
+      );
+
+      const currentElement = elementRef.current;
       if (currentElement) {
-        observer.unobserve(currentElement);
+        observer.observe(currentElement);
       }
-    };
+
+      return () => {
+        if (currentElement) {
+          observer.unobserve(currentElement);
+        }
+      };
+    }
   }, [hasAnimated]);
 
   useEffect(() => {

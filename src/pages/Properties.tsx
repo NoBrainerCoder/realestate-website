@@ -11,10 +11,12 @@ const Properties = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(true);
 
-  // Fetch approved properties from Supabase
+  // Fetch approved properties from Supabase (excluding sold out properties older than 3 days)
   const { data: approvedProperties = [], isLoading } = useQuery({
     queryKey: ['approved-properties'],
     queryFn: async () => {
+      const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
+      
       const { data, error } = await supabase
         .from('properties')
         .select(`
@@ -25,7 +27,7 @@ const Properties = () => {
             display_order
           )
         `)
-        .eq('status', 'approved')
+        .or(`status.eq.approved,and(status.eq.sold_out,sold_out_date.gte.${threeDaysAgo})`)
         .order('created_at', { ascending: false });
       
       if (error) throw error;

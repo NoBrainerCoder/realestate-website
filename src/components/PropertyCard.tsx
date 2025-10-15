@@ -16,6 +16,7 @@ interface PropertyCardProps {
     furnishing: string;
     image: string;
     isNew?: boolean;
+    status?: string;
   };
 }
 
@@ -41,7 +42,14 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        {property.isNew && (
+        {property.status === 'sold_out' && (
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+            <Badge className="bg-red-600 hover:bg-red-700 text-white text-lg px-6 py-2 animate-pulse">
+              SOLD OUT
+            </Badge>
+          </div>
+        )}
+        {property.isNew && property.status !== 'sold_out' && (
           <Badge className="absolute top-3 left-3 bg-green-500 hover:bg-green-600 animate-bounce-in">
             New
           </Badge>

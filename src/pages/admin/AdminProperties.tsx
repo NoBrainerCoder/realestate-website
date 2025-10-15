@@ -35,7 +35,8 @@ import {
   Phone,
   Mail,
   User,
-  Building2
+  Building2,
+  ShoppingCart
 } from 'lucide-react';
 import { displayPrice } from '@/utils/priceFormatter';
 
@@ -182,6 +183,32 @@ const AdminProperties = () => {
     updateStatusMutation.mutate({ id, status, rejection_reason });
   };
 
+  const handleSoldOut = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('properties')
+        .update({ 
+          status: 'sold_out',
+          sold_out_date: new Date().toISOString()
+        })
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      queryClient.invalidateQueries({ queryKey: ['admin-properties'] });
+      toast({
+        title: 'Success',
+        description: 'Property marked as sold out. It will be automatically removed after 3 days.'
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to mark property as sold out',
+        variant: 'destructive'
+      });
+    }
+  };
+
   const handleRejectClick = (property: any) => {
     setSelectedProperty(property);
     setIsRejectDialogOpen(true);
@@ -221,6 +248,8 @@ const AdminProperties = () => {
         return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Approved</Badge>;
       case 'rejected':
         return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Rejected</Badge>;
+      case 'sold_out':
+        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Sold Out</Badge>;
       default:
         return <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100">Pending</Badge>;
     }
@@ -252,6 +281,7 @@ const AdminProperties = () => {
               <SelectItem value="pending">Pending</SelectItem>
               <SelectItem value="approved">Approved</SelectItem>
               <SelectItem value="rejected">Rejected</SelectItem>
+              <SelectItem value="sold_out">Sold Out</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -514,15 +544,25 @@ const AdminProperties = () => {
                   )}
 
                   {property.status === 'approved' && (
-                    <Button 
-                      size="sm" 
-                      variant="destructive"
-                      onClick={() => handleRejectClick(property)}
-                      disabled={updateStatusMutation.isPending}
-                    >
-                      <XCircle className="h-4 w-4 mr-2" />
-                      Reject
-                    </Button>
+                    <>
+                      <Button 
+                        size="sm" 
+                        className="bg-blue-600 hover:bg-blue-700"
+                        onClick={() => handleSoldOut(property.id)}
+                      >
+                        <ShoppingCart className="h-4 w-4 mr-2" />
+                        Mark as Sold Out
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="destructive"
+                        onClick={() => handleRejectClick(property)}
+                        disabled={updateStatusMutation.isPending}
+                      >
+                        <XCircle className="h-4 w-4 mr-2" />
+                        Reject
+                      </Button>
+                    </>
                   )}
 
                   {property.status === 'rejected' && (
