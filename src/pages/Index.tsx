@@ -6,7 +6,6 @@ import PropertyCard from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight, TrendingUp, Users, Shield, Award, Home, Star } from 'lucide-react';
-import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 
 const Index = () => {
   const [filteredProperties, setFilteredProperties] = useState<any[]>([]);
@@ -45,12 +44,6 @@ const Index = () => {
   });
 
   const featuredProperties = approvedProperties.slice(0, 3);
-  
-  // Animated counters
-  const propertiesCount = useAnimatedCounter({ end: 500 });
-  const customersCount = useAnimatedCounter({ end: 1000 });
-  const areasCount = useAnimatedCounter({ end: 50 });
-  const experienceCount = useAnimatedCounter({ end: 5 });
 
   useEffect(() => {
     if (approvedProperties.length > 0) {
@@ -190,50 +183,6 @@ const Index = () => {
                 <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Button>
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Statistics Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12 reveal-up revealed">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Trusted by Thousands
-            </h2>
-            <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto">
-              Our numbers speak for themselves - join the community of satisfied customers
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 stagger-children">
-            <div className="text-center p-6 hover-scale group">
-              <div className="text-4xl md:text-5xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300">
-                <span ref={propertiesCount.elementRef}>{propertiesCount.count}</span>+
-              </div>
-              <div className="text-primary-foreground/80 text-sm md:text-base">Properties Listed</div>
-            </div>
-
-            <div className="text-center p-6 hover-scale group">
-              <div className="text-4xl md:text-5xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300">
-                <span ref={customersCount.elementRef}>{customersCount.count}</span>+
-              </div>
-              <div className="text-primary-foreground/80 text-sm md:text-base">Happy Customers</div>
-            </div>
-
-            <div className="text-center p-6 hover-scale group">
-              <div className="text-4xl md:text-5xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300">
-                <span ref={areasCount.elementRef}>{areasCount.count}</span>+
-              </div>
-              <div className="text-primary-foreground/80 text-sm md:text-base">Areas Covered</div>
-            </div>
-
-            <div className="text-center p-6 hover-scale group">
-              <div className="text-4xl md:text-5xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300">
-                <span ref={experienceCount.elementRef}>{experienceCount.count}</span>+
-              </div>
-              <div className="text-primary-foreground/80 text-sm md:text-base">Years Experience</div>
-            </div>
           </div>
         </div>
       </section>
