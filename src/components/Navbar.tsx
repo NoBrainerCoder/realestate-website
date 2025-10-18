@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Home, Building2, Calculator, Info, Mail, LogIn, UserPlus, LogOut, Shield } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import logo from '@/assets/logo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,11 +25,8 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 hover-scale">
-            <Building2 className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              MyInfraHub
-            </span>
+          <Link to="/" className="flex items-center hover-scale">
+            <img src={logo} alt="MyInfraHub" className="h-12 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}

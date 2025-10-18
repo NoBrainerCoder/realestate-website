@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Building2, Phone, Mail, MapPin } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 const Footer = () => {
   return (
@@ -8,9 +9,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 stagger-children">
           {/* Company Info */}
           <div className="space-y-4 reveal-left revealed">
-            <div className="flex items-center space-x-2 hover-scale">
-              <Building2 className="h-8 w-8 animate-float" />
-              <span className="text-xl font-bold">MyInfraHub</span>
+            <div className="flex items-center hover-scale">
+              <img src={logo} alt="MyInfraHub" className="h-12 w-auto" />
             </div>
             <p className="text-primary-foreground/80">
               Your trusted partner in finding the perfect property. We connect buyers and sellers across Hyderabad.
