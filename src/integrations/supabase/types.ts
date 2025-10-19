@@ -158,6 +158,7 @@ export type Database = {
           display_order: number | null
           id: string
           image_url: string
+          media_type: string
           property_id: string
         }
         Insert: {
@@ -165,6 +166,7 @@ export type Database = {
           display_order?: number | null
           id?: string
           image_url: string
+          media_type?: string
           property_id: string
         }
         Update: {
@@ -172,6 +174,7 @@ export type Database = {
           display_order?: number | null
           id?: string
           image_url?: string
+          media_type?: string
           property_id?: string
         }
         Relationships: [

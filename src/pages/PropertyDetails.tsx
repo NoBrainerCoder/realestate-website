@@ -18,6 +18,7 @@ const PropertyDetails = () => {
           property_images (
             id,
             image_url,
+            media_type,
             display_order
           )
         `)
@@ -76,31 +77,54 @@ const PropertyDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Property Images */}
+            {/* Property Media Gallery */}
             {property.property_images && property.property_images.length > 0 ? (
               <div className="rounded-2xl overflow-hidden">
                 {property.property_images.length === 1 ? (
-                  <img 
-                    src={property.property_images[0].image_url} 
-                    alt={property.title}
-                    className="w-full h-64 md:h-96 object-cover"
-                  />
+                  property.property_images[0].media_type === 'video' ? (
+                    <video 
+                      src={property.property_images[0].image_url}
+                      controls
+                      className="w-full h-64 md:h-96 object-cover"
+                      onMouseEnter={(e) => e.currentTarget.play()}
+                      onMouseLeave={(e) => e.currentTarget.pause()}
+                      muted
+                    />
+                  ) : (
+                    <img 
+                      src={property.property_images[0].image_url} 
+                      alt={property.title}
+                      className="w-full h-64 md:h-96 object-cover"
+                    />
+                  )
                 ) : (
                   <div className="grid grid-cols-2 gap-2">
-                    {property.property_images.slice(0, 4).map((image: any, index: number) => (
-                      <img 
-                        key={image.id}
-                        src={image.image_url} 
-                        alt={`${property.title} - Image ${index + 1}`}
-                        className={`w-full object-cover ${index === 0 ? 'col-span-2 h-64 md:h-96' : 'h-48'}`}
-                      />
+                    {property.property_images.slice(0, 4).map((media: any, index: number) => (
+                      media.media_type === 'video' ? (
+                        <video 
+                          key={media.id}
+                          src={media.image_url}
+                          controls
+                          className={`w-full object-cover ${index === 0 ? 'col-span-2 h-64 md:h-96' : 'h-48'}`}
+                          onMouseEnter={(e) => e.currentTarget.play()}
+                          onMouseLeave={(e) => e.currentTarget.pause()}
+                          muted
+                        />
+                      ) : (
+                        <img 
+                          key={media.id}
+                          src={media.image_url} 
+                          alt={`${property.title} - ${index + 1}`}
+                          className={`w-full object-cover ${index === 0 ? 'col-span-2 h-64 md:h-96' : 'h-48'}`}
+                        />
+                      )
                     ))}
                   </div>
                 )}
               </div>
             ) : (
               <div className="rounded-2xl overflow-hidden bg-muted flex items-center justify-center h-64 md:h-96">
-                <p className="text-muted-foreground">No images available</p>
+                <p className="text-muted-foreground">No media available</p>
               </div>
             )}
 

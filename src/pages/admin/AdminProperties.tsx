@@ -47,7 +47,8 @@ import {
   Mail,
   User,
   Building2,
-  ShoppingCart
+  ShoppingCart,
+  Trash2
 } from 'lucide-react';
 import { displayPrice } from '@/utils/priceFormatter';
 
@@ -72,6 +73,7 @@ const AdminProperties = () => {
           property_images (
             id,
             image_url,
+            media_type,
             display_order
           )
         `)
@@ -215,6 +217,29 @@ const AdminProperties = () => {
       toast({
         title: 'Error',
         description: error.message || 'Failed to mark property as sold out',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleDeleteMedia = async (mediaId: string) => {
+    try {
+      const { error } = await supabase
+        .from('property_images')
+        .delete()
+        .eq('id', mediaId);
+
+      if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ['admin-properties'] });
+      toast({
+        title: 'Success',
+        description: 'Media file deleted successfully'
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to delete media',
         variant: 'destructive'
       });
     }
@@ -443,15 +468,48 @@ const AdminProperties = () => {
                         )}
                         {selectedProperty?.property_images && selectedProperty.property_images.length > 0 && (
                           <div>
-                            <h4 className="font-semibold mb-2">Property Images</h4>
+                            <h4 className="font-semibold mb-2">Property Media</h4>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                              {selectedProperty.property_images.map((image: any) => (
-                                <img 
-                                  key={image.id} 
-                                  src={image.image_url} 
-                                  alt="Property" 
-                                  className="w-full h-32 object-cover rounded-lg"
-                                />
+                              {selectedProperty.property_images.map((media: any) => (
+                                <div key={media.id} className="relative group">
+                                  {media.media_type === 'video' ? (
+                                    <video 
+                                      src={media.image_url} 
+                                      controls
+                                      className="w-full h-32 object-cover rounded-lg"
+                                      onMouseEnter={(e) => e.currentTarget.play()}
+                                      onMouseLeave={(e) => e.currentTarget.pause()}
+                                      muted
+                                    />
+                                  ) : (
+                                    <img 
+                                      src={media.image_url} 
+                                      alt="Property" 
+                                      className="w-full h-32 object-cover rounded-lg"
+                                    />
+                                  )}
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <button className="absolute top-2 right-2 bg-destructive text-destructive-foreground p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <Trash2 className="h-4 w-4" />
+                                      </button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>Delete Media</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          Are you sure you want to delete this {media.media_type}? This action cannot be undone.
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={() => handleDeleteMedia(media.id)}>
+                                          Delete
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                </div>
                               ))}
                             </div>
                           </div>

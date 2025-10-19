@@ -10,7 +10,7 @@ import { Upload, X, Building2, Clock, ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { useImageUpload } from '@/hooks/useImageUpload';
+import { useMediaUpload } from '@/hooks/useMediaUpload';
 import { displayPrice, parsePriceShorthand } from '@/utils/priceFormatter';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -18,7 +18,7 @@ const PostProperty = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { images, uploading, addImages, removeImage, clearImages, uploadAllImages } = useImageUpload();
+  const { media, uploading, addMedia, removeMedia, clearMedia, uploadAllMedia } = useMediaUpload();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [priceDisplay, setPriceDisplay] = useState('');
   const [formData, setFormData] = useState({
@@ -70,9 +70,9 @@ const PostProperty = () => {
     }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      addImages(e.target.files);
+      addMedia(e.target.files);
     }
   };
 
@@ -92,8 +92,8 @@ const PostProperty = () => {
     setIsSubmitting(true);
     
     try {
-      // Upload images first
-      const imageUrls = await uploadAllImages();
+      // Upload media files first
+      const uploadedMedia = await uploadAllMedia();
       
       // Insert property
       const { data: propertyData, error: propertyError } = await supabase
@@ -121,19 +121,20 @@ const PostProperty = () => {
 
       if (propertyError) throw propertyError;
 
-      // Insert property images
-      if (imageUrls.length > 0) {
-        const imageInserts = imageUrls.map((url, index) => ({
+      // Insert property media (images and videos)
+      if (uploadedMedia.length > 0) {
+        const mediaInserts = uploadedMedia.map((item, index) => ({
           property_id: propertyData.id,
-          image_url: url,
+          image_url: item.url,
+          media_type: item.type,
           display_order: index
         }));
 
-        const { error: imageError } = await supabase
+        const { error: mediaError } = await supabase
           .from('property_images')
-          .insert(imageInserts);
+          .insert(mediaInserts);
 
-        if (imageError) throw imageError;
+        if (mediaError) throw mediaError;
       }
 
       toast({
@@ -148,7 +149,7 @@ const PostProperty = () => {
         amenities: [], age: '', posterName: '', posterPhone: '', posterEmail: '',
       });
       setPriceDisplay('');
-      clearImages();
+      clearMedia();
       
     } catch (error: any) {
       toast({
@@ -368,53 +369,64 @@ const PostProperty = () => {
                 </div>
               </div>
               
-              {/* Image Upload */}
+              {/* Media Upload */}
               <div className="space-y-2">
-                <Label>Property Images</Label>
+                <Label>Property Images & Videos</Label>
                 <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6">
                   <div className="text-center">
                     <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground/50" />
-                    <div className="mt-4">
+                    <div className="mt-4 flex gap-2 justify-center">
                       <Button 
                         type="button" 
                         variant="outline" 
                         disabled={uploading}
-                        onClick={() => document.getElementById('image-upload')?.click()}
+                        onClick={() => document.getElementById('media-upload')?.click()}
                       >
                         <Upload className="h-4 w-4 mr-2" />
-                        {uploading ? 'Uploading...' : 'Choose Images'}
+                        {uploading ? 'Uploading...' : 'Choose Files'}
                       </Button>
                       <input
-                        id="image-upload"
+                        id="media-upload"
                         type="file"
                         multiple
-                        accept="image/*"
-                        onChange={handleImageUpload}
+                        accept="image/*,video/mp4,video/webm,video/mov"
+                        onChange={handleMediaUpload}
                         className="hidden"
                       />
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
-                      Upload multiple images (JPEG, PNG, WebP)
+                      Upload images (JPEG, PNG, WebP) and videos (MP4, MOV, WebM)
                     </p>
                   </div>
                 </div>
                 
-                {images.length > 0 && (
+                {media.length > 0 && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                    {images.map((image) => (
-                      <div key={image.id} className="relative group">
-                        <img
-                          src={image.url}
-                          alt="Property preview"
-                          className="w-full h-24 object-cover rounded-md"
-                        />
+                    {media.map((item) => (
+                      <div key={item.id} className="relative group">
+                        {item.type === 'image' ? (
+                          <img
+                            src={item.url}
+                            alt="Property preview"
+                            className="w-full h-24 object-cover rounded-md"
+                          />
+                        ) : (
+                          <video
+                            src={item.url}
+                            className="w-full h-24 object-cover rounded-md"
+                            muted
+                          />
+                        )}
                         <button
                           type="button"
-                          onClick={() => removeImage(image.id)}
+                          onClick={() => removeMedia(item.id)}
                           className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <X className="h-3 w-3" />
                         </button>
+                        <div className="absolute bottom-1 right-1 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded">
+                          {item.type === 'video' ? '🎥' : '📷'}
+                        </div>
                       </div>
                     ))}
                   </div>
