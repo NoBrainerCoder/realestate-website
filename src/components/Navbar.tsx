@@ -86,7 +86,7 @@ const Navbar = () => {
                     onClick={signOut}
                     variant="outline" 
                     size="sm" 
-                    className="hover-lift ripple border-white/20 text-white hover:bg-white/10 hover:text-white"
+                    className="hover-lift ripple bg-transparent border-white text-white hover:bg-white/10 hover:text-white hover:border-white"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign Out
@@ -187,7 +187,7 @@ const Navbar = () => {
                       }}
                       variant="outline"
                       size="sm"
-                      className="w-full justify-start mt-2 ripple border-white/20 text-white hover:bg-white/10 hover:text-white"
+                      className="w-full justify-start mt-2 ripple bg-transparent border-white text-white hover:bg-white/10 hover:text-white hover:border-white"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
                       Sign Out
