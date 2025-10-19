@@ -95,7 +95,7 @@ const Navbar = () => {
               ) : (
                 <div className="flex items-center space-x-2">
                   <Link to="/sign-in">
-                    <Button variant="outline" size="sm" className="hover-lift ripple border-white/20 text-white hover:bg-white/10 hover:text-white">
+                    <Button variant="outline" size="sm" className="hover-lift ripple bg-transparent border-white text-white hover:bg-white/10 hover:text-white hover:border-white">
                       <LogIn className="h-4 w-4 mr-2" />
                       Sign In
                     </Button>
@@ -196,7 +196,7 @@ const Navbar = () => {
                 ) : (
                   <div className="space-y-2">
                     <Link to="/sign-in" onClick={closeMenu}>
-                      <Button variant="outline" size="sm" className="w-full justify-start ripple border-white/20 text-white hover:bg-white/10 hover:text-white">
+                      <Button variant="outline" size="sm" className="w-full justify-start ripple bg-transparent border-white text-white hover:bg-white/10 hover:text-white hover:border-white">
                         <LogIn className="h-4 w-4 mr-2" />
                         Sign In
                       </Button>
