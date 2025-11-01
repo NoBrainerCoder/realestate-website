@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield } from 'lucide-react';
+import AppointmentDialog from '@/components/AppointmentDialog';
 
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -221,6 +222,10 @@ const PropertyDetails = () => {
               </div>
 
               <div className="space-y-3 mt-6">
+                <AppointmentDialog 
+                  propertyId={property.id} 
+                  propertyTitle={property.title}
+                />
                 <Button className="w-full btn-hero">
                   <Phone className="h-4 w-4 mr-2" />
                   Call Now

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AIChatBubble from "@/components/AIChatBubble";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Properties from "./pages/Properties";
@@ -57,6 +58,7 @@ const App = () => (
             </Routes>
           </main>
           <Footer />
+          <AIChatBubble />
         </div>
         </BrowserRouter>
       </AuthProvider>

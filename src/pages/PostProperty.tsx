@@ -228,7 +228,47 @@ const PostProperty = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Description *</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="description">Description *</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={async () => {
+                      if (!formData.location || !formData.propertyType || !formData.bedrooms) {
+                        toast({
+                          title: "Fill Required Fields",
+                          description: "Please fill in location, property type, and bedrooms first.",
+                          variant: "destructive",
+                        });
+                        return;
+                      }
+                      
+                      try {
+                        const { data, error } = await supabase.functions.invoke('generate-description', {
+                          body: { propertyData: formData }
+                        });
+                        
+                        if (error) throw error;
+                        
+                        handleInputChange('description', data.description);
+                        toast({
+                          title: "Description Generated",
+                          description: "AI has generated a property description for you!",
+                        });
+                      } catch (error: any) {
+                        toast({
+                          title: "Generation Failed",
+                          description: error.message || "Failed to generate description",
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    className="text-xs"
+                  >
+                    ✨ Generate with AI
+                  </Button>
+                </div>
                 <Textarea
                   id="description"
                   value={formData.description}

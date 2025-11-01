@@ -14,6 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      appointment_requests: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          preferred_date: string
+          preferred_time: string
+          property_id: string
+          status: string
+          updated_at: string
+          visitor_email: string
+          visitor_name: string
+          visitor_phone: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          preferred_date: string
+          preferred_time: string
+          property_id: string
+          status?: string
+          updated_at?: string
+          visitor_email: string
+          visitor_name: string
+          visitor_phone: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          preferred_date?: string
+          preferred_time?: string
+          property_id?: string
+          status?: string
+          updated_at?: string
+          visitor_email?: string
+          visitor_name?: string
+          visitor_phone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointment_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointment_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_submissions: {
         Row: {
           created_at: string
