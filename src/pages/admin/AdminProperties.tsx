@@ -755,6 +755,45 @@ const AdminProperties = () => {
                       </AlertDialog>
                     </>
                   )}
+
+                  {property.status === 'sold_out' && (
+                    <>
+                      {(() => {
+                        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+                        const soldOutDate = property.sold_out_date ? new Date(property.sold_out_date) : null;
+                        const isWithinSevenDays = soldOutDate && soldOutDate >= sevenDaysAgo;
+                        
+                        return isWithinSevenDays ? (
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete Property
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure you want to delete this property?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will permanently delete the property
+                                  from both the admin panel and the live website.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(property.id)}>
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        ) : null;
+                      })()}
+                    </>
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Bed, Bath, Maximize, MapPin, Phone, Eye } from 'lucide-react';
@@ -21,6 +21,11 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property }: PropertyCardProps) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/property/${property.id}`);
+  };
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
@@ -33,7 +38,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
 
   return (
-    <div className="card-elegant rounded-2xl overflow-hidden hover-lift hover-glow">
+    <div onClick={handleCardClick} className="card-elegant rounded-2xl overflow-hidden hover-lift hover-glow cursor-pointer">
       {/* Image */}
       <div className="relative group">
         <img 
@@ -43,11 +48,9 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         {property.status === 'sold_out' && (
-          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-            <Badge className="bg-red-600 hover:bg-red-700 text-white text-lg px-6 py-2 animate-pulse">
-              SOLD OUT
-            </Badge>
-          </div>
+          <Badge className="absolute top-3 right-3 bg-destructive hover:bg-destructive text-destructive-foreground text-lg px-6 py-2 shadow-elegant animate-pulse z-10">
+            SOLD OUT
+          </Badge>
         )}
         {property.isNew && property.status !== 'sold_out' && (
           <Badge className="absolute top-3 left-3 bg-green-500 hover:bg-green-600 animate-bounce-in">
@@ -101,13 +104,13 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
 
           {/* Actions */}
           <div className="flex gap-2 pt-2 stagger-children">
-            <Link to={`/property/${property.id}`} className="flex-1">
+            <Link to={`/property/${property.id}`} className="flex-1" onClick={(e) => e.stopPropagation()}>
               <Button variant="outline" className="w-full hover-lift ripple group">
                 <Eye className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
                 View Details
               </Button>
             </Link>
-            <Link to="/contact" className="flex-1">
+            <Link to="/contact" className="flex-1" onClick={(e) => e.stopPropagation()}>
               <Button className="w-full btn-hero ripple group">
                 <Phone className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
                 Contact
