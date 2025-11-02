@@ -6,10 +6,67 @@ const corsHeaders = {
 };
 
 interface EmailRequest {
+  type?: 'appointment_confirmation' | 'appointment_notification' | 'contact_notification';
   to: string;
-  subject: string;
-  html: string;
+  subject?: string;
+  html?: string;
+  data?: any;
 }
+
+const getEmailTemplate = (type: string, data: any): { subject: string; html: string } => {
+  switch (type) {
+    case 'appointment_confirmation':
+      return {
+        subject: "Appointment Request Confirmation",
+        html: `
+          <h2>Thank you for your appointment request!</h2>
+          <p>Dear ${data.visitor_name},</p>
+          <p>We have received your request to visit the property: <strong>${data.property_title}</strong></p>
+          <p><strong>Preferred Date:</strong> ${data.preferred_date}</p>
+          <p><strong>Preferred Time:</strong> ${data.preferred_time}</p>
+          <p>The property owner will contact you shortly at ${data.visitor_phone} or ${data.visitor_email}.</p>
+          ${data.message ? `<p><strong>Your message:</strong> ${data.message}</p>` : ''}
+          <p>Thank you for using MyInfraHub!</p>
+        `
+      };
+    
+    case 'appointment_notification':
+      return {
+        subject: `New Appointment Request for ${data.property_title}`,
+        html: `
+          <h2>New Appointment Request</h2>
+          <p>You have received a new appointment request for your property: <strong>${data.property_title}</strong></p>
+          <hr>
+          <p><strong>Visitor Name:</strong> ${data.visitor_name}</p>
+          <p><strong>Phone:</strong> ${data.visitor_phone}</p>
+          <p><strong>Email:</strong> ${data.visitor_email}</p>
+          <p><strong>Preferred Date:</strong> ${data.preferred_date}</p>
+          <p><strong>Preferred Time:</strong> ${data.preferred_time}</p>
+          ${data.message ? `<p><strong>Message:</strong> ${data.message}</p>` : ''}
+          <hr>
+          <p>Please contact the visitor to confirm the appointment.</p>
+        `
+      };
+    
+    case 'contact_notification':
+      return {
+        subject: `New Contact Form Submission from ${data.name}`,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${data.name}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Phone:</strong> ${data.phone}</p>
+          <p><strong>Subject:</strong> ${data.subject}</p>
+          <hr>
+          <p><strong>Message:</strong></p>
+          <p>${data.message}</p>
+        `
+      };
+    
+    default:
+      throw new Error(`Unknown email type: ${type}`);
+  }
+};
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
@@ -18,7 +75,21 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { to, subject, html }: EmailRequest = await req.json();
+    const { type, to, subject: providedSubject, html: providedHtml, data }: EmailRequest = await req.json();
+
+    let subject = providedSubject;
+    let html = providedHtml;
+
+    // If type is provided, generate email from template
+    if (type && data) {
+      const template = getEmailTemplate(type, data);
+      subject = template.subject;
+      html = template.html;
+    }
+
+    if (!subject || !html) {
+      throw new Error('Email subject and html content are required');
+    }
 
     console.log('Sending email to:', to);
     console.log('Subject:', subject);

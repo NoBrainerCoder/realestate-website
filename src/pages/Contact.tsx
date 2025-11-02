@@ -43,6 +43,19 @@ const Contact = () => {
 
       if (error) throw error;
 
+      // Send notification email to admin
+      try {
+        await supabase.functions.invoke("send-email", {
+          body: {
+            type: "contact_notification",
+            to: "myinfrahub.com@gmail.com",
+            data: formData,
+          },
+        });
+      } catch (emailError) {
+        console.error("Failed to send notification email:", emailError);
+      }
+
       toast({
         title: "Message Sent!",
         description: "Thank you for contacting us. We'll get back to you within 24 hours.",

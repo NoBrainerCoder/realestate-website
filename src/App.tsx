@@ -22,6 +22,7 @@ import NotFound from "./pages/NotFound";
 import AdminRoute from "./components/AdminRoute";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProperties from "./pages/admin/AdminProperties";
+import AdminAppointments from "./pages/admin/AdminAppointments";
 import AdminContacts from "./pages/admin/AdminContacts";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ const App = () => (
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminRoute><PageTransition><AdminDashboard /></PageTransition></AdminRoute>} />
               <Route path="/admin/properties" element={<AdminRoute><PageTransition><AdminProperties /></PageTransition></AdminRoute>} />
+              <Route path="/admin/appointments" element={<AdminRoute><PageTransition><AdminAppointments /></PageTransition></AdminRoute>} />
               <Route path="/admin/contacts" element={<AdminRoute><PageTransition><AdminContacts /></PageTransition></AdminRoute>} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

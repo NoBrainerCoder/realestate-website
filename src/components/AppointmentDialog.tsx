@@ -42,6 +42,56 @@ const AppointmentDialog = ({ propertyId, propertyTitle }: AppointmentDialogProps
         .insert([data]);
 
       if (error) throw error;
+
+      // Send confirmation email to visitor
+      try {
+        await supabase.functions.invoke("send-email", {
+          body: {
+            type: "appointment_confirmation",
+            to: data.visitor_email,
+            data: {
+              visitor_name: data.visitor_name,
+              visitor_phone: data.visitor_phone,
+              visitor_email: data.visitor_email,
+              property_title: propertyTitle,
+              preferred_date: data.preferred_date,
+              preferred_time: data.preferred_time,
+              message: data.message,
+            },
+          },
+        });
+      } catch (emailError) {
+        console.error("Failed to send confirmation email:", emailError);
+      }
+
+      // Send notification to property owner
+      try {
+        const { data: property } = await supabase
+          .from("properties")
+          .select("poster_email")
+          .eq("id", propertyId)
+          .single();
+
+        if (property?.poster_email) {
+          await supabase.functions.invoke("send-email", {
+            body: {
+              type: "appointment_notification",
+              to: property.poster_email,
+              data: {
+                visitor_name: data.visitor_name,
+                visitor_phone: data.visitor_phone,
+                visitor_email: data.visitor_email,
+                property_title: propertyTitle,
+                preferred_date: data.preferred_date,
+                preferred_time: data.preferred_time,
+                message: data.message,
+              },
+            },
+          });
+        }
+      } catch (emailError) {
+        console.error("Failed to send notification email:", emailError);
+      }
     },
     onSuccess: () => {
       toast({

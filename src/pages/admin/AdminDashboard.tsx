@@ -50,6 +50,22 @@ const AdminDashboard = () => {
     }
   });
 
+  // Fetch appointments count
+  const { data: appointmentStats } = useQuery({
+    queryKey: ['admin-appointment-stats'],
+    queryFn: async () => {
+      const [pending, total] = await Promise.all([
+        supabase.from('appointment_requests').select('id', { count: 'exact' }).eq('status', 'pending'),
+        supabase.from('appointment_requests').select('id', { count: 'exact' })
+      ]);
+      
+      return {
+        pending: pending.count || 0,
+        total: total.count || 0
+      };
+    }
+  });
+
   return (
     <div className="min-h-screen bg-muted/30 page-transition">
       <div className="container mx-auto px-4 py-8">
@@ -103,18 +119,20 @@ const AdminDashboard = () => {
 
           <Card className="card-elegant hover-glow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending Review</CardTitle>
+              <CardTitle className="text-sm font-medium">Appointments</CardTitle>
               <Clock className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">{propertiesStats?.pending || 0}</div>
-              <p className="text-xs text-muted-foreground">Properties awaiting approval</p>
+              <div className="text-2xl font-bold text-orange-600">{appointmentStats?.pending || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                {appointmentStats?.pending || 0} pending of {appointmentStats?.total || 0} total
+              </p>
             </CardContent>
           </Card>
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="card-elegant">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -124,9 +142,9 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">
-                Review, approve, or reject property submissions. Manage property images and details.
+                Review, approve, or reject property submissions.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col gap-3">
                 <Link to="/admin/properties" className="flex-1">
                   <Button className="w-full" variant="default">
                     <Eye className="h-4 w-4 mr-2" />
@@ -146,15 +164,43 @@ const AdminDashboard = () => {
           <Card className="card-elegant">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
+                <Clock className="h-5 w-5" />
+                Appointments
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground">
+                Manage property viewing appointments and requests.
+              </p>
+              <div className="flex flex-col gap-3">
+                <Link to="/admin/appointments" className="flex-1">
+                  <Button className="w-full" variant="default">
+                    <Eye className="h-4 w-4 mr-2" />
+                    View All Appointments
+                  </Button>
+                </Link>
+                <Link to="/admin/appointments?status=pending" className="flex-1">
+                  <Button className="w-full" variant="outline">
+                    <Clock className="h-4 w-4 mr-2" />
+                    Pending ({appointmentStats?.pending || 0})
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="card-elegant">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
                 <MessageSquare className="h-5 w-5" />
                 Contact Management
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">
-                View and respond to customer inquiries and contact form submissions.
+                View and respond to customer inquiries.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col gap-3">
                 <Link to="/admin/contacts" className="flex-1">
                   <Button className="w-full" variant="default">
                     <Eye className="h-4 w-4 mr-2" />
