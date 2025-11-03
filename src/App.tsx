@@ -19,6 +19,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
+import Appointments from "./pages/Appointments";
 import AdminRoute from "./components/AdminRoute";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProperties from "./pages/admin/AdminProperties";
@@ -47,6 +48,7 @@ const App = () => (
               <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
               <Route path="/sign-in" element={<PageTransition><SignIn /></PageTransition>} />
               <Route path="/sign-up" element={<PageTransition><SignUp /></PageTransition>} />
+              <Route path="/appointments" element={<PageTransition><Appointments /></PageTransition>} />
               <Route path="/privacy-policy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
               
               {/* Admin Routes */}

@@ -10,6 +10,7 @@ import { Upload, X, Building2, Clock, ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useEffect } from 'react';
 import { useMediaUpload } from '@/hooks/useMediaUpload';
 import { displayPrice, parsePriceShorthand } from '@/utils/priceFormatter';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,7 +18,14 @@ import { supabase } from '@/integrations/supabase/client';
 const PostProperty = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
+
+  useEffect(() => {
+    if (!user) {
+      // Redirect to sign in if not authenticated
+      navigate('/sign-in', { state: { from: '/post-property' } });
+    }
+  }, [user, navigate]);
   const { media, uploading, addMedia, removeMedia, clearMedia, uploadAllMedia } = useMediaUpload();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [priceDisplay, setPriceDisplay] = useState('');

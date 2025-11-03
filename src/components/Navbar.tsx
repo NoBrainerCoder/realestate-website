@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Home, Building2, Calculator, Info, Mail, LogIn, UserPlus, LogOut, Shield } from 'lucide-react';
+import { Menu, X, Home, Building2, Calculator, Info, Mail, LogIn, UserPlus, LogOut, Shield, Calendar } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -13,10 +13,13 @@ const Navbar = () => {
 
   const navLinks = [
     { to: '/', icon: Home, label: 'Home' },
-    { to: '/properties', icon: Building2, label: 'Properties' },
+    { to: '/properties?type=buy', icon: Building2, label: 'Buy' },
+    { to: '/properties?type=rent', icon: Building2, label: 'Rent' },
+    { to: '/post-property', icon: Building2, label: 'Sell' },
     { to: '/emi-calculator', icon: Calculator, label: 'EMI Calculator' },
     { to: '/about', icon: Info, label: 'About Us' },
     { to: '/contact', icon: Mail, label: 'Contact' },
+    { to: '/appointments', icon: Calendar, label: 'Appointments' },
   ];
 
   return (
@@ -54,18 +57,6 @@ const Navbar = () => {
             <div className="ml-6 flex items-center space-x-2">
               {user ? (
                 <div className="flex items-center space-x-2">
-                  <Link
-                    to="/post-property"
-                    className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
-                      location.pathname === '/post-property'
-                        ? 'text-primary bg-white shadow-sm'
-                        : 'text-white/90 hover:text-white hover:bg-white/10'
-                    }`}
-                  >
-                    <Building2 className="h-4 w-4" />
-                    Post Property
-                  </Link>
-                  
                   {isAdmin && (
                     <Link
                       to="/admin"
@@ -147,19 +138,6 @@ const Navbar = () => {
                     <div className="px-3 py-2 text-sm text-white/70">
                       Signed in as: {user.email}
                     </div>
-                    
-                    <Link
-                      to="/post-property"
-                      className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
-                        location.pathname === '/post-property'
-                          ? 'text-primary bg-white shadow-sm'
-                          : 'text-white/90 hover:text-white hover:bg-white/10'
-                      }`}
-                      onClick={closeMenu}
-                    >
-                      <Building2 className="h-4 w-4" />
-                      Post Property
-                    </Link>
                     
                     {isAdmin && (
                       <Link
