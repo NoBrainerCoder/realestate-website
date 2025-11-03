@@ -119,9 +119,9 @@ const AppointmentDialog = ({ propertyId, propertyTitle }: AppointmentDialogProps
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full btn-hero">
-          <Calendar className="h-4 w-4 mr-2" />
-          Book a Visit
+        <Button className="w-full btn-hero hover-lift ripple group">
+          <Calendar className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
+          Schedule Visit
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">

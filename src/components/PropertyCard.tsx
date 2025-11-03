@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Bed, Bath, Maximize, MapPin, Phone, Eye } from 'lucide-react';
+import { Bed, Bath, Maximize, MapPin, Phone, Eye, Calendar } from 'lucide-react';
+import AppointmentDialog from './AppointmentDialog';
 
 interface PropertyCardProps {
   property: {
@@ -103,19 +104,27 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           </div>
 
           {/* Actions */}
-          <div className="flex gap-2 pt-2 stagger-children">
-            <Link to={`/property/${property.id}`} className="flex-1" onClick={(e) => e.stopPropagation()}>
-              <Button variant="outline" className="w-full hover-lift ripple group">
-                <Eye className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                View Details
-              </Button>
-            </Link>
-            <Link to="/contact" className="flex-1" onClick={(e) => e.stopPropagation()}>
-              <Button className="w-full btn-hero ripple group">
-                <Phone className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                Contact
-              </Button>
-            </Link>
+          <div className="space-y-2 pt-2">
+            <div className="flex gap-2 stagger-children">
+              <Link to={`/property/${property.id}`} className="flex-1" onClick={(e) => e.stopPropagation()}>
+                <Button variant="outline" className="w-full hover-lift ripple group">
+                  <Eye className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                  View Details
+                </Button>
+              </Link>
+              <Link to="/contact" className="flex-1" onClick={(e) => e.stopPropagation()}>
+                <Button className="w-full btn-hero ripple group">
+                  <Phone className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                  Contact
+                </Button>
+              </Link>
+            </div>
+            <div onClick={(e) => e.stopPropagation()}>
+              <AppointmentDialog 
+                propertyId={property.id} 
+                propertyTitle={property.title}
+              />
+            </div>
           </div>
         </div>
       </div>

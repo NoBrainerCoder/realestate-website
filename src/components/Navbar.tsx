@@ -54,19 +54,17 @@ const Navbar = () => {
             <div className="ml-6 flex items-center space-x-2">
               {user ? (
                 <div className="flex items-center space-x-2">
-                  {user && (
-                    <Link
-                      to="/post-property"
-                      className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
-                        location.pathname === '/post-property'
-                          ? 'text-primary bg-white shadow-sm'
-                          : 'text-white/90 hover:text-white hover:bg-white/10'
-                      }`}
-                    >
-                      <Building2 className="h-4 w-4" />
-                      My Properties
-                    </Link>
-                  )}
+                  <Link
+                    to="/post-property"
+                    className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
+                      location.pathname === '/post-property'
+                        ? 'text-primary bg-white shadow-sm'
+                        : 'text-white/90 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <Building2 className="h-4 w-4" />
+                    Post Property
+                  </Link>
                   
                   {isAdmin && (
                     <Link
@@ -150,20 +148,18 @@ const Navbar = () => {
                       Signed in as: {user.email}
                     </div>
                     
-                    {user && (
-                      <Link
-                        to="/post-property"
-                        className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
-                          location.pathname === '/post-property'
-                            ? 'text-primary bg-white shadow-sm'
-                            : 'text-white/90 hover:text-white hover:bg-white/10'
-                        }`}
-                        onClick={closeMenu}
-                      >
-                        <Building2 className="h-4 w-4" />
-                        My Properties
-                      </Link>
-                    )}
+                    <Link
+                      to="/post-property"
+                      className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
+                        location.pathname === '/post-property'
+                          ? 'text-primary bg-white shadow-sm'
+                          : 'text-white/90 hover:text-white hover:bg-white/10'
+                      }`}
+                      onClick={closeMenu}
+                    >
+                      <Building2 className="h-4 w-4" />
+                      Post Property
+                    </Link>
                     
                     {isAdmin && (
                       <Link

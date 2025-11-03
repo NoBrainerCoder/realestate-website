@@ -95,6 +95,10 @@ const PostProperty = () => {
       // Upload media files first
       const uploadedMedia = await uploadAllMedia();
       
+      // Auto-approve if admin, otherwise pending
+      const isAdmin = user.email === 'myinfrahub.com@gmail.com';
+      const propertyStatus = isAdmin ? 'approved' : 'pending';
+
       // Insert property
       const { data: propertyData, error: propertyError } = await supabase
         .from('properties')
@@ -114,7 +118,7 @@ const PostProperty = () => {
           poster_name: formData.posterName,
           poster_phone: formData.posterPhone,
           poster_email: formData.posterEmail,
-          status: 'pending'
+          status: propertyStatus
         })
         .select()
         .single();
@@ -138,8 +142,10 @@ const PostProperty = () => {
       }
 
       toast({
-        title: "Property Submitted!",
-        description: "Your property has been submitted for approval. We'll contact you soon.",
+        title: propertyStatus === 'approved' ? "Property Posted!" : "Property Submitted!",
+        description: propertyStatus === 'approved'
+          ? "Your property has been published successfully!"
+          : "Your property has been submitted for approval. We'll contact you soon.",
       });
 
       // Reset form

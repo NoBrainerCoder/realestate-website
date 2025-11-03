@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BuildingAnimation from './BuildingAnimation';
 import SearchFilters from './SearchFilters';
-import { ArrowRight, Calculator, Search } from 'lucide-react';
+import { ArrowRight, Calculator, Search, Home, Key, Building2 } from 'lucide-react';
 import heroBg from '@/assets/hero-bg.jpg';
+import { useAuth } from '@/hooks/useAuth';
 
 interface HeroSectionProps {
   onFiltersChange?: (filters: any) => void;
@@ -18,6 +19,8 @@ const backgroundImages = [
 const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showContent, setShowContent] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     // Start content animation after building animation
@@ -96,8 +99,48 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
             </div>
           </div>
 
+          {/* Buy / Rent / Sell Buttons */}
+          <div className={`max-w-6xl mx-auto mb-6 ${showContent ? 'text-fade-in' : 'opacity-0'}`} style={{ animationDelay: '0.5s' }}>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button 
+                size="lg" 
+                className="btn-hero text-lg px-8 py-4 hover-lift ripple group"
+                onClick={() => {
+                  handleFiltersChange({ propertyType: 'apartment' });
+                }}
+              >
+                <Home className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                Buy
+              </Button>
+              <Button 
+                size="lg" 
+                className="btn-hero text-lg px-8 py-4 hover-lift ripple group"
+                onClick={() => {
+                  handleFiltersChange({ propertyType: 'villa' });
+                }}
+              >
+                <Key className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                Rent
+              </Button>
+              <Button 
+                size="lg" 
+                className="btn-hero text-lg px-8 py-4 hover-lift ripple group"
+                onClick={() => {
+                  if (user) {
+                    navigate('/post-property');
+                  } else {
+                    navigate('/sign-in');
+                  }
+                }}
+              >
+                <Building2 className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                Sell
+              </Button>
+            </div>
+          </div>
+
           {/* Search Filters */}
-          <div className={`max-w-6xl mx-auto ${showContent ? 'text-fade-in' : 'opacity-0'}`} style={{ animationDelay: '0.6s' }}>
+          <div className={`max-w-6xl mx-auto ${showContent ? 'text-fade-in' : 'opacity-0'}`} style={{ animationDelay: '0.7s' }}>
             <SearchFilters onFiltersChange={handleFiltersChange} />
           </div>
         </div>
