@@ -15,6 +15,7 @@ const SignIn = () => {
   const from = (location.state as any)?.from || '/';
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -160,9 +161,11 @@ const SignIn = () => {
                     id="remember"
                     name="remember"
                     type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                     className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                   />
-                  <Label htmlFor="remember" className="text-sm">
+                  <Label htmlFor="remember" className="text-sm cursor-pointer">
                     Remember me
                   </Label>
                 </div>

@@ -354,7 +354,8 @@ const PostProperty = () => {
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="apartment">Apartment</SelectItem>
+                      <SelectItem value="flat">Flat</SelectItem>
+                      <SelectItem value="plot">Plot</SelectItem>
                       <SelectItem value="independent-house">Independent House</SelectItem>
                       <SelectItem value="villa">Villa</SelectItem>
                       <SelectItem value="commercial">Commercial</SelectItem>

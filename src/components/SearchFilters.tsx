@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { SliderWithInput } from '@/components/ui/slider-with-input';
+import { BudgetInput } from '@/components/BudgetInput';
 import { Badge } from '@/components/ui/badge';
 import { Search, Filter, X } from 'lucide-react';
 
@@ -107,7 +107,8 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
               <SelectValue placeholder="Property Type" />
             </SelectTrigger>
             <SelectContent className="animate-slide-in-down">
-              <SelectItem value="apartment" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Apartment</SelectItem>
+              <SelectItem value="flat" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Flat</SelectItem>
+              <SelectItem value="plot" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Plot</SelectItem>
               <SelectItem value="independent-house" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Independent House</SelectItem>
               <SelectItem value="villa" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Villa</SelectItem>
               <SelectItem value="commercial" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Commercial</SelectItem>
@@ -128,20 +129,15 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
         {showAdvanced && (
           <div className="space-y-4 border-t pt-4 slide-in-down">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 stagger-children">
-              {/* Budget Slider */}
+              {/* Budget Input */}
               <div className="form-group">
-                <SliderWithInput
+                <BudgetInput
                   value={budget}
                   onValueChange={(value) => {
                     setBudget(value);
                     setBudgetChanged(true);
                   }}
-                  min={0}
-                  max={100000000}
-                  step={100000}
                   label="Budget Range"
-                  formatValue={(value) => `₹${value.toLocaleString()}`}
-                  className="w-full"
                 />
               </div>
 

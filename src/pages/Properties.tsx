@@ -5,8 +5,11 @@ import PropertyCard from '@/components/PropertyCard';
 import SearchFilters from '@/components/SearchFilters';
 import { Button } from '@/components/ui/button';
 import { Grid, List, SlidersHorizontal } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 
 const Properties = () => {
+  const [searchParams] = useSearchParams();
+  const listingType = searchParams.get('type'); // 'buy' or 'rent'
   const [filteredProperties, setFilteredProperties] = useState<any[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(true);
@@ -46,9 +49,22 @@ const Properties = () => {
 
   useEffect(() => {
     if (approvedProperties.length > 0) {
-      setFilteredProperties(approvedProperties);
+      let filtered = [...approvedProperties];
+      
+      // Apply listing type filter if present
+      if (listingType === 'buy') {
+        // For now, show all properties for buy
+        // In the future, you can add a 'listing_type' column to distinguish buy vs rent
+        filtered = filtered;
+      } else if (listingType === 'rent') {
+        // For now, show all properties for rent
+        // In the future, you can add a 'listing_type' column to distinguish buy vs rent
+        filtered = filtered;
+      }
+      
+      setFilteredProperties(filtered);
     }
-  }, [approvedProperties]);
+  }, [approvedProperties, listingType]);
 
   const handleFiltersChange = (filters: any) => {
     let filtered = [...approvedProperties];
@@ -120,7 +136,7 @@ const Properties = () => {
         {/* Header */}
         <div className="mb-8 text-slide-up">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Properties in Hyderabad
+            {listingType === 'buy' ? 'Properties for Sale' : listingType === 'rent' ? 'Properties for Rent' : 'Properties in Hyderabad'}
           </h1>
           <p className="text-lg text-muted-foreground">
             Discover {filteredProperties.length} properties matching your criteria
