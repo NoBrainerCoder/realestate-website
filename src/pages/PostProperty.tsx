@@ -104,7 +104,6 @@ const PostProperty = () => {
       const uploadedMedia = await uploadAllMedia();
       
       // Auto-approve if admin, otherwise pending
-      const isAdmin = user.email === 'myinfrahub.com@gmail.com';
       const propertyStatus = isAdmin ? 'approved' : 'pending';
 
       // Insert property
@@ -150,10 +149,10 @@ const PostProperty = () => {
       }
 
       toast({
-        title: propertyStatus === 'approved' ? "Property Posted!" : "Property Submitted!",
+        title: propertyStatus === 'approved' ? "Property Posted!" : "Property Submitted for Review!",
         description: propertyStatus === 'approved'
-          ? "Your property has been published successfully!"
-          : "Your property has been submitted for approval. We'll contact you soon.",
+          ? "Your property has been published and is now visible to all users!"
+          : "✅ Your property has been submitted for review. It will appear once the admin approves it.",
       });
 
       // Reset form
