@@ -148,6 +148,28 @@ const PostProperty = () => {
         if (mediaError) throw mediaError;
       }
 
+      // Send email notification to admin for new property submissions (non-admin only)
+      if (!isAdmin) {
+        try {
+          await supabase.functions.invoke('send-email', {
+            body: {
+              type: 'new_property_admin',
+              to: 'myinfrahub.com@gmail.com',
+              data: {
+                property_title: formData.title,
+                location: formData.location,
+                price: formData.price,
+                poster_name: formData.posterName,
+                poster_email: formData.posterEmail,
+                poster_phone: formData.posterPhone
+              }
+            }
+          });
+        } catch (emailError) {
+          console.error('Failed to send admin notification:', emailError);
+        }
+      }
+
       toast({
         title: propertyStatus === 'approved' ? "Property Posted!" : "Property Submitted for Review!",
         description: propertyStatus === 'approved'

@@ -38,13 +38,34 @@ const AdminAppointments = () => {
   });
 
   const updateStatusMutation = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+    mutationFn: async ({ id, status, appointment }: { id: string; status: string; appointment: any }) => {
       const { error } = await supabase
         .from("appointment_requests")
         .update({ status })
         .eq("id", id);
 
       if (error) throw error;
+
+      // Send status update email to visitor
+      if (status === 'confirmed' || status === 'cancelled') {
+        try {
+          await supabase.functions.invoke('send-email', {
+            body: {
+              type: 'appointment_status_update',
+              to: appointment.visitor_email,
+              data: {
+                visitor_name: appointment.visitor_name,
+                property_title: appointment.properties?.title || 'Property',
+                preferred_date: appointment.preferred_date,
+                preferred_time: appointment.preferred_time,
+                status: status
+              }
+            }
+          });
+        } catch (emailError) {
+          console.error('Failed to send status update email:', emailError);
+        }
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-appointments"] });
@@ -169,6 +190,7 @@ const AdminAppointments = () => {
                                   updateStatusMutation.mutate({
                                     id: appointment.id,
                                     status: "confirmed",
+                                    appointment: appointment,
                                   })
                                 }
                               >
@@ -182,6 +204,7 @@ const AdminAppointments = () => {
                                   updateStatusMutation.mutate({
                                     id: appointment.id,
                                     status: "cancelled",
+                                    appointment: appointment,
                                   })
                                 }
                               >

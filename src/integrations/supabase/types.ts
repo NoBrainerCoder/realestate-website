@@ -104,6 +104,36 @@ export type Database = {
         }
         Relationships: []
       }
+      email_logs: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          message: string
+          status: string
+          subject: string
+          to_email: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          message: string
+          status?: string
+          subject: string
+          to_email: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          message?: string
+          status?: string
+          subject?: string
+          to_email?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
