@@ -1,4 +1,6 @@
-import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
+import { Resend } from "npm:resend@2.0.0";
+
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -6,7 +8,7 @@ const corsHeaders = {
 };
 
 interface EmailRequest {
-  type?: 'appointment_confirmation' | 'appointment_notification' | 'contact_notification';
+  type?: 'appointment_confirmation' | 'appointment_notification' | 'contact_notification' | 'property_rejection' | 'property_approval';
   to: string;
   subject?: string;
   html?: string;
@@ -63,6 +65,32 @@ const getEmailTemplate = (type: string, data: any): { subject: string; html: str
         `
       };
     
+    case 'property_rejection':
+      return {
+        subject: "Property Submission Rejected - MyInfraHub",
+        html: `
+          <h2>Property Submission Update</h2>
+          <p>Dear ${data.poster_name},</p>
+          <p>We regret to inform you that your property submission "<strong>${data.property_title}</strong>" has been rejected.</p>
+          <p><strong>Reason:</strong> ${data.rejection_reason}</p>
+          <p>You can update your property details and resubmit it for review.</p>
+          <p>If you have any questions, please contact us.</p>
+          <p>Thank you for using MyInfraHub!</p>
+        `
+      };
+    
+    case 'property_approval':
+      return {
+        subject: "Property Approved - MyInfraHub",
+        html: `
+          <h2>Property Submission Approved!</h2>
+          <p>Dear ${data.poster_name},</p>
+          <p>Congratulations! Your property "<strong>${data.property_title}</strong>" has been approved and is now live on MyInfraHub.</p>
+          <p>Your property is now visible to potential buyers/renters.</p>
+          <p>Thank you for using MyInfraHub!</p>
+        `
+      };
+    
     default:
       throw new Error(`Unknown email type: ${type}`);
   }
@@ -94,41 +122,15 @@ Deno.serve(async (req) => {
     console.log('Sending email to:', to);
     console.log('Subject:', subject);
 
-    // Get SMTP credentials from environment
-    const smtpHost = Deno.env.get('SMTP_HOST');
-    const smtpPort = parseInt(Deno.env.get('SMTP_PORT') || '587');
-    const smtpUser = Deno.env.get('SMTP_USER');
-    const smtpPassword = Deno.env.get('SMTP_PASSWORD');
-    const smtpFrom = Deno.env.get('SMTP_FROM_EMAIL');
-
-    if (!smtpHost || !smtpUser || !smtpPassword || !smtpFrom) {
-      throw new Error('SMTP configuration is incomplete. Please check your environment variables.');
-    }
-
-    // Create SMTP client
-    const client = new SMTPClient({
-      connection: {
-        hostname: smtpHost,
-        port: smtpPort,
-        tls: smtpPort === 465, // Use TLS for port 465 (SSL), otherwise STARTTLS
-        auth: {
-          username: smtpUser,
-          password: smtpPassword,
-        },
-      },
-    });
-
-    // Send email
-    await client.send({
-      from: smtpFrom,
-      to: to,
+    // Send email using Resend
+    const emailResponse = await resend.emails.send({
+      from: "MyInfraHub <onboarding@resend.dev>",
+      to: [to],
       subject: subject,
       html: html,
     });
 
-    console.log('Email sent successfully to:', to);
-
-    await client.close();
+    console.log('Email sent successfully:', emailResponse);
 
     return new Response(
       JSON.stringify({ success: true, message: 'Email sent successfully' }),
