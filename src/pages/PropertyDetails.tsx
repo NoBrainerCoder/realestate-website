@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield } from 'lucide-react';
 import AppointmentDialog from '@/components/AppointmentDialog';
+import QuantumLoader from '@/components/QuantumLoader';
+import PropertyImageCarousel from '@/components/PropertyImageCarousel';
 
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,7 +38,7 @@ const PropertyDetails = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <QuantumLoader size="65" />
       </div>
     );
   }
@@ -80,49 +82,14 @@ const PropertyDetails = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* Property Media Gallery */}
             {property.property_images && property.property_images.length > 0 ? (
-              <div className="rounded-2xl overflow-hidden">
-                {property.property_images.length === 1 ? (
-                  property.property_images[0].media_type === 'video' ? (
-                    <video 
-                      src={property.property_images[0].image_url}
-                      controls
-                      className="w-full h-64 md:h-96 object-cover"
-                      onMouseEnter={(e) => e.currentTarget.play()}
-                      onMouseLeave={(e) => e.currentTarget.pause()}
-                      muted
-                    />
-                  ) : (
-                    <img 
-                      src={property.property_images[0].image_url} 
-                      alt={property.title}
-                      className="w-full h-64 md:h-96 object-cover"
-                    />
-                  )
-                ) : (
-                  <div className="grid grid-cols-2 gap-2">
-                    {property.property_images.slice(0, 4).map((media: any, index: number) => (
-                      media.media_type === 'video' ? (
-                        <video 
-                          key={media.id}
-                          src={media.image_url}
-                          controls
-                          className={`w-full object-cover ${index === 0 ? 'col-span-2 h-64 md:h-96' : 'h-48'}`}
-                          onMouseEnter={(e) => e.currentTarget.play()}
-                          onMouseLeave={(e) => e.currentTarget.pause()}
-                          muted
-                        />
-                      ) : (
-                        <img 
-                          key={media.id}
-                          src={media.image_url} 
-                          alt={`${property.title} - ${index + 1}`}
-                          className={`w-full object-cover ${index === 0 ? 'col-span-2 h-64 md:h-96' : 'h-48'}`}
-                        />
-                      )
-                    ))}
-                  </div>
-                )}
-              </div>
+              <PropertyImageCarousel 
+                images={property.property_images.map(img => ({
+                  ...img,
+                  media_type: img.media_type as 'image' | 'video'
+                }))}
+                autoplay={true}
+                autoplayDelay={3000}
+              />
             ) : (
               <div className="rounded-2xl overflow-hidden bg-muted flex items-center justify-center h-64 md:h-96">
                 <p className="text-muted-foreground">No media available</p>

@@ -6,6 +6,7 @@ import PropertyCard from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight, TrendingUp, Users, Shield, Award, Home, Star } from 'lucide-react';
+import QuantumLoader from '@/components/QuantumLoader';
 
 const Index = () => {
   const [filteredProperties, setFilteredProperties] = useState<any[]>([]);
@@ -110,7 +111,7 @@ const Index = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <QuantumLoader size="65" />
       </div>
     );
   }

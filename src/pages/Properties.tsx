@@ -6,6 +6,7 @@ import SearchFilters from '@/components/SearchFilters';
 import { Button } from '@/components/ui/button';
 import { Grid, List, SlidersHorizontal } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import QuantumLoader from '@/components/QuantumLoader';
 
 const Properties = () => {
   const [searchParams] = useSearchParams();
@@ -125,7 +126,7 @@ const Properties = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <QuantumLoader size="65" />
       </div>
     );
   }

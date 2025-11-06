@@ -622,6 +622,38 @@
     75% { transform: translateX(5px); }
   }
 
+  /* Animated Border Effects */
+  @keyframes border-run {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animated-border {
+    position: relative;
+    background: linear-gradient(90deg, 
+      hsl(var(--primary)) 0%, 
+      hsl(var(--accent)) 25%, 
+      hsl(var(--primary)) 50%, 
+      hsl(var(--accent)) 75%, 
+      hsl(var(--primary)) 100%
+    );
+    background-size: 200% 200%;
+    animation: border-run 3s linear infinite;
+    padding: 2px;
+    border-radius: 1rem;
+  }
+
+  .animated-border-content {
+    background: hsl(var(--card));
+    border-radius: calc(1rem - 2px);
+    height: 100%;
+    width: 100%;
+  }
+
   /* Reveal animations for sections */
   .reveal-up {
     opacity: 0;

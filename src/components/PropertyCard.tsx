@@ -39,7 +39,8 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
 
   return (
-    <div onClick={handleCardClick} className="card-elegant rounded-2xl overflow-hidden hover-lift hover-glow cursor-pointer">
+    <div onClick={handleCardClick} className="animated-border cursor-pointer transition-all duration-500 hover:shadow-elegant group">
+      <div className="animated-border-content rounded-2xl overflow-hidden hover-lift hover-glow">
       {/* Image */}
       <div className="relative group">
         <img 
@@ -65,7 +66,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         <div className="space-y-4">
           {/* Title and Location */}
           <div className="text-slide-up">
-            <h3 className="text-lg font-semibold text-foreground mb-1 line-clamp-2 hover:text-primary transition-colors duration-300">
+            <h3 className="text-lg font-semibold text-foreground mb-1 line-clamp-2 transition-all duration-300 group-hover:-translate-y-1 hover:text-primary">
               {property.title}
             </h3>
             <div className="flex items-center text-muted-foreground hover:text-foreground transition-colors duration-300">
@@ -127,6 +128,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
