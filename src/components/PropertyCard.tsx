@@ -39,8 +39,8 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
 
   return (
-    <div className="animated-border cursor-pointer transition-all duration-300 hover:shadow-elegant group">
-      <div onClick={handleCardClick} className="animated-border-content bg-card rounded-[calc(1rem-2px)] overflow-hidden hover:scale-[1.02] transition-all duration-300">
+    <div onClick={handleCardClick} className="animated-border cursor-pointer transition-all duration-500 hover:shadow-elegant group">
+      <div className="animated-border-content rounded-2xl overflow-hidden hover-lift hover-glow">
       {/* Image */}
       <div className="relative group">
         <img 

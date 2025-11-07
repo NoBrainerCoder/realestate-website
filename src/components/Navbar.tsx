@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Home, Building2, Calculator, Info, Mail, LogIn, UserPlus, LogOut, Shield, Calendar, PlusCircle } from 'lucide-react';
+import { Menu, X, Home, Building2, Calculator, Info, Mail, LogIn, UserPlus, LogOut, Shield, Calendar } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import DarkModeToggle from '@/components/DarkModeToggle';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,21 +53,8 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* CTA Button */}
-            <Link to="/post-property" className="ml-4">
-              <Button 
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse-slow border-0"
-              >
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Post Free Property
-              </Button>
-            </Link>
-
-            {/* Dark Mode Toggle */}
-            <DarkModeToggle />
-
             {/* Auth Section */}
-            <div className="ml-2 flex items-center space-x-2">
+            <div className="ml-6 flex items-center space-x-2">
               {user ? (
                 <div className="flex items-center space-x-2">
                   {isAdmin && (
@@ -115,17 +101,14 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-2 lg:hidden">
-            <DarkModeToggle />
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/10 hover:text-white"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="lg:hidden text-white hover:bg-white/10 hover:text-white"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
 
         {/* Mobile Menu */}
@@ -147,16 +130,6 @@ const Navbar = () => {
                   {label}
                 </Link>
               ))}
-
-              {/* Post Free Property CTA - Mobile */}
-              <Link to="/post-property" onClick={closeMenu}>
-                <Button 
-                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg transition-all duration-300 border-0"
-                >
-                  <PlusCircle className="h-4 w-4 mr-2" />
-                  Post Free Property
-                </Button>
-              </Link>
 
               {/* Mobile Auth Links */}
               <div className="border-t border-white/10 pt-2 mt-2">

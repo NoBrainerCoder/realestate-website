@@ -3,7 +3,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -31,45 +30,43 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <AuthProvider>
-          <BrowserRouter>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-1 overflow-hidden">
-              <Routes>
-                <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-                <Route path="/properties" element={<PageTransition><Properties /></PageTransition>} />
-                <Route path="/property/:id" element={<PageTransition><PropertyDetails /></PageTransition>} />
-                <Route path="/post-property" element={<PageTransition><PostProperty /></PageTransition>} />
-                <Route path="/emi-calculator" element={<PageTransition><EMICalculator /></PageTransition>} />
-                <Route path="/about" element={<PageTransition><About /></PageTransition>} />
-                <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
-                <Route path="/sign-in" element={<PageTransition><SignIn /></PageTransition>} />
-                <Route path="/sign-up" element={<PageTransition><SignUp /></PageTransition>} />
-                <Route path="/appointments" element={<PageTransition><Appointments /></PageTransition>} />
-                <Route path="/privacy-policy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
-                
-                {/* Admin Routes */}
-                <Route path="/admin" element={<AdminRoute><PageTransition><AdminDashboard /></PageTransition></AdminRoute>} />
-                <Route path="/admin/properties" element={<AdminRoute><PageTransition><AdminProperties /></PageTransition></AdminRoute>} />
-                <Route path="/admin/appointments" element={<AdminRoute><PageTransition><AdminAppointments /></PageTransition></AdminRoute>} />
-                <Route path="/admin/contacts" element={<AdminRoute><PageTransition><AdminContacts /></PageTransition></AdminRoute>} />
-                
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
-              </Routes>
-            </main>
-            <Footer />
-            <AIChatBubble />
-          </div>
-          </BrowserRouter>
-        </AuthProvider>
-      </TooltipProvider>
-    </ThemeProvider>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <AuthProvider>
+        <BrowserRouter>
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-1 overflow-hidden">
+            <Routes>
+              <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+              <Route path="/properties" element={<PageTransition><Properties /></PageTransition>} />
+              <Route path="/property/:id" element={<PageTransition><PropertyDetails /></PageTransition>} />
+              <Route path="/post-property" element={<PageTransition><PostProperty /></PageTransition>} />
+              <Route path="/emi-calculator" element={<PageTransition><EMICalculator /></PageTransition>} />
+              <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+              <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+              <Route path="/sign-in" element={<PageTransition><SignIn /></PageTransition>} />
+              <Route path="/sign-up" element={<PageTransition><SignUp /></PageTransition>} />
+              <Route path="/appointments" element={<PageTransition><Appointments /></PageTransition>} />
+              <Route path="/privacy-policy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminRoute><PageTransition><AdminDashboard /></PageTransition></AdminRoute>} />
+              <Route path="/admin/properties" element={<AdminRoute><PageTransition><AdminProperties /></PageTransition></AdminRoute>} />
+              <Route path="/admin/appointments" element={<AdminRoute><PageTransition><AdminAppointments /></PageTransition></AdminRoute>} />
+              <Route path="/admin/contacts" element={<AdminRoute><PageTransition><AdminContacts /></PageTransition></AdminRoute>} />
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+            </Routes>
+          </main>
+          <Footer />
+          <AIChatBubble />
+        </div>
+        </BrowserRouter>
+      </AuthProvider>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 
