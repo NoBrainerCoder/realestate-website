@@ -40,7 +40,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
 
   return (
     <div className="animated-border cursor-pointer transition-all duration-300 hover:shadow-elegant group">
-      <div onClick={handleCardClick} className="animated-border-content bg-card rounded-[calc(1rem-2px)] overflow-hidden hover:scale-[1.03] transition-all duration-300">
+      <div onClick={handleCardClick} className="animated-border-content rounded-[calc(1rem-2px)] overflow-hidden hover:scale-[1.03] transition-all duration-300 shadow-card dark:shadow-elegant">
       {/* Image */}
       <div className="relative overflow-hidden group">
         <img 
