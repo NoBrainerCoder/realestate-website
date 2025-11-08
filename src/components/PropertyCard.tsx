@@ -39,10 +39,12 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
 
   return (
-    <div className="animated-border cursor-pointer transition-all duration-300 hover:shadow-elegant group">
-      <div onClick={handleCardClick} className="animated-border-content rounded-[calc(1rem-2px)] overflow-hidden hover:scale-[1.03] transition-all duration-300 shadow-card dark:shadow-elegant">
+    <div 
+      onClick={handleCardClick}
+      className="bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-elegant group"
+    >
       {/* Image */}
-      <div className="relative overflow-hidden group">
+      <div className="relative overflow-hidden">
         <img 
           src={property.image} 
           alt={property.title}
@@ -99,7 +101,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
 
           {/* Price */}
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-primary animate-glow">
+            <div className="text-2xl font-bold text-primary">
               {formatPrice(property.price)}
             </div>
           </div>
@@ -128,7 +130,6 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );
