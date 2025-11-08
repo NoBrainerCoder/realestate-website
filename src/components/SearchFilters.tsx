@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -19,6 +19,9 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   const [furnishing, setFurnishing] = useState('');
   const [propertyType, setPropertyType] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   const hyderabadAreas = [
     // Central Hyderabad
@@ -76,6 +79,37 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
     applyFilters();
   }, [searchTerm, area, budget, bhk, furnishing, propertyType, budgetChanged]);
 
+  // Handle search term changes and generate suggestions
+  useEffect(() => {
+    if (searchTerm.trim().length > 0) {
+      const filtered = hyderabadAreas.filter(areaName =>
+        areaName.toLowerCase().includes(searchTerm.toLowerCase())
+      ).slice(0, 8); // Limit to 8 suggestions
+      setSuggestions(filtered);
+      setShowSuggestions(filtered.length > 0);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  }, [searchTerm]);
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchTerm(suggestion);
+    setArea(suggestion);
+    setShowSuggestions(false);
+  };
+
   const clearFilters = () => {
     setSearchTerm('');
     setArea('');
@@ -89,15 +123,33 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   return (
     <div className="bg-background/95 backdrop-blur-sm rounded-2xl shadow-elegant p-6 border border-border hover-glow fade-in-scale">
       <div className="space-y-6">
-        {/* Search Bar */}
+        {/* Search Bar with Autocomplete */}
         <div className="flex gap-4 stagger-children">
-          <div className="flex-1">
+          <div className="flex-1 relative" ref={searchRef}>
             <Input
               placeholder="Search by location, builder, project name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => searchTerm.trim().length > 0 && suggestions.length > 0 && setShowSuggestions(true)}
               className="h-12 text-base form-input focus:scale-105 transition-all duration-300"
             />
+            {/* Autocomplete Suggestions Dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-popover border border-border rounded-lg shadow-elegant z-50 max-h-[300px] overflow-y-auto animate-slide-in-down">
+                {suggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="px-4 py-3 cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all duration-200 first:rounded-t-lg last:rounded-b-lg border-b border-border last:border-b-0"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Search className="h-4 w-4 opacity-50" />
+                      <span className="font-medium">{suggestion}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <Button onClick={applyFilters} className="btn-hero h-12 px-8 hover-lift ripple group">
             <Search className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
