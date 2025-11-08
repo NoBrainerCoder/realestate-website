@@ -57,7 +57,7 @@ const Navbar = () => {
             {/* CTA Button */}
             <Link to="/post-property" className="ml-4">
               <Button 
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 animate-glow border-0"
+                className="bg-gradient-to-r from-[#ff7b00] to-[#ff9f40] hover:from-[#ff6600] hover:to-[#ff8c2e] text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-0"
               >
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Post Free Property
@@ -151,7 +151,7 @@ const Navbar = () => {
               {/* Post Free Property CTA - Mobile */}
               <Link to="/post-property" onClick={closeMenu}>
                 <Button 
-                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg transition-all duration-300 animate-glow border-0"
+                  className="w-full bg-gradient-to-r from-[#ff7b00] to-[#ff9f40] hover:from-[#ff6600] hover:to-[#ff8c2e] text-white shadow-lg hover:scale-105 transition-all duration-300 border-0"
                 >
                   <PlusCircle className="h-4 w-4 mr-2" />
                   Post Free Property

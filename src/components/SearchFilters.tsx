@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BudgetInput } from '@/components/BudgetInput';
 import { Badge } from '@/components/ui/badge';
 import { Search, Filter, X } from 'lucide-react';
+import { formatPriceInput, displayPrice } from '@/utils/priceFormatter';
 
 interface SearchFiltersProps {
   onFiltersChange: (filters: any) => void;
@@ -15,6 +15,8 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   const [area, setArea] = useState('');
   const [budget, setBudget] = useState<[number, number]>([0, 100000000]);
   const [budgetChanged, setBudgetChanged] = useState(false);
+  const [minInput, setMinInput] = useState('');
+  const [maxInput, setMaxInput] = useState('');
   const [bhk, setBhk] = useState('');
   const [furnishing, setFurnishing] = useState('');
   const [propertyType, setPropertyType] = useState('');
@@ -110,11 +112,37 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
     setShowSuggestions(false);
   };
 
+  const handleMinChange = (input: string) => {
+    setMinInput(input);
+    const numericValue = parseFloat(formatPriceInput(input));
+    if (!isNaN(numericValue)) {
+      setBudget([numericValue, budget[1]]);
+      setBudgetChanged(true);
+    } else if (input === '') {
+      setBudget([0, budget[1]]);
+      setBudgetChanged(false);
+    }
+  };
+
+  const handleMaxChange = (input: string) => {
+    setMaxInput(input);
+    const numericValue = parseFloat(formatPriceInput(input));
+    if (!isNaN(numericValue)) {
+      setBudget([budget[0], numericValue]);
+      setBudgetChanged(true);
+    } else if (input === '') {
+      setBudget([budget[0], 100000000]);
+      setBudgetChanged(false);
+    }
+  };
+
   const clearFilters = () => {
     setSearchTerm('');
     setArea('');
     setBudget([0, 100000000]);
     setBudgetChanged(false);
+    setMinInput('');
+    setMaxInput('');
     setBhk('');
     setFurnishing('');
     setPropertyType('');
@@ -217,34 +245,18 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
             <div className="flex-1 min-w-[120px]">
               <Input
                 type="text"
-                placeholder="Min Budget"
-                value={budget[0] > 0 ? `₹${(budget[0] / 100000).toFixed(0)}L` : ''}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/[^\d]/g, '');
-                  if (value) {
-                    setBudget([parseInt(value) * 100000, budget[1]]);
-                    setBudgetChanged(true);
-                  } else {
-                    setBudget([0, budget[1]]);
-                  }
-                }}
+                placeholder="e.g., 10L, 1Cr"
+                value={minInput}
+                onChange={(e) => handleMinChange(e.target.value)}
                 className="h-10 form-input"
               />
             </div>
             <div className="flex-1 min-w-[120px]">
               <Input
                 type="text"
-                placeholder="Max Budget"
-                value={budget[1] < 100000000 ? `₹${(budget[1] / 100000).toFixed(0)}L` : ''}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/[^\d]/g, '');
-                  if (value) {
-                    setBudget([budget[0], parseInt(value) * 100000]);
-                    setBudgetChanged(true);
-                  } else {
-                    setBudget([budget[0], 100000000]);
-                  }
-                }}
+                placeholder="e.g., 50L, 2Cr"
+                value={maxInput}
+                onChange={(e) => handleMaxChange(e.target.value)}
                 className="h-10 form-input"
               />
             </div>
@@ -309,10 +321,12 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
             )}
             {budgetChanged && (
               <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
-                Budget: ₹{(budget[0] / 100000).toFixed(0)}L - ₹{(budget[1] / 100000).toFixed(0)}L
+                Budget: {displayPrice(budget[0])} - {displayPrice(budget[1])}
                 <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => {
                   setBudget([0, 100000000]);
                   setBudgetChanged(false);
+                  setMinInput('');
+                  setMaxInput('');
                 }} />
               </Badge>
             )}
