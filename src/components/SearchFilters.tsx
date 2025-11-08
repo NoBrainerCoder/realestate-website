@@ -157,118 +157,165 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
           </Button>
         </div>
 
-        {/* Quick Filters */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 stagger-children">
-          <Select value={area} onValueChange={setArea}>
-            <SelectTrigger className="form-input hover-lift">
-              <SelectValue placeholder="Select Area" />
-            </SelectTrigger>
-            <SelectContent className="animate-slide-in-down max-h-[300px] overflow-y-auto">
-              {hyderabadAreas.map((areaName) => (
-                <SelectItem key={areaName} value={areaName} className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">
-                  {areaName}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        {/* Compact Inline Filters */}
+        <div className="flex flex-wrap gap-3 items-end stagger-children">
+          {/* Area Select */}
+          <div className="w-full sm:w-[180px]">
+            <Select value={area} onValueChange={setArea}>
+              <SelectTrigger className="h-10 form-input hover-lift">
+                <SelectValue placeholder="Select Area" />
+              </SelectTrigger>
+              <SelectContent className="animate-slide-in-down max-h-[300px] overflow-y-auto bg-popover z-50">
+                {hyderabadAreas.map((areaName) => (
+                  <SelectItem key={areaName} value={areaName} className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">
+                    {areaName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-          <Select value={bhk} onValueChange={setBhk}>
-            <SelectTrigger className="form-input hover-lift">
-              <SelectValue placeholder="BHK" />
-            </SelectTrigger>
-            <SelectContent className="animate-slide-in-down">
-              <SelectItem value="1" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">1 BHK</SelectItem>
-              <SelectItem value="2" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">2 BHK</SelectItem>
-              <SelectItem value="3" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">3 BHK</SelectItem>
-              <SelectItem value="4" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">4 BHK</SelectItem>
-              <SelectItem value="4+" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">4 BHK+</SelectItem>
-            </SelectContent>
-          </Select>
+          {/* BHK Select */}
+          <div className="w-full sm:w-[120px]">
+            <Select value={bhk} onValueChange={setBhk}>
+              <SelectTrigger className="h-10 form-input hover-lift">
+                <SelectValue placeholder="BHK" />
+              </SelectTrigger>
+              <SelectContent className="animate-slide-in-down bg-popover z-50">
+                <SelectItem value="1" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">1 BHK</SelectItem>
+                <SelectItem value="2" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">2 BHK</SelectItem>
+                <SelectItem value="3" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">3 BHK</SelectItem>
+                <SelectItem value="4" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">4 BHK</SelectItem>
+                <SelectItem value="4+" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">4 BHK+</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-          <Select value={propertyType} onValueChange={setPropertyType}>
-            <SelectTrigger className="form-input hover-lift">
-              <SelectValue placeholder="Property Type" />
-            </SelectTrigger>
-            <SelectContent className="animate-slide-in-down max-h-[300px] overflow-y-auto">
-              <SelectItem value="flat" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Flat / Apartment</SelectItem>
-              <SelectItem value="plot" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Plot / Open Land</SelectItem>
-              <SelectItem value="villa" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Villa</SelectItem>
-              <SelectItem value="independent-house" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Independent House</SelectItem>
-              <SelectItem value="commercial-building" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Commercial Building</SelectItem>
-              <SelectItem value="shop" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Shop / Showroom</SelectItem>
-              <SelectItem value="warehouse" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Warehouse</SelectItem>
-              <SelectItem value="office" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Office Space</SelectItem>
-              <SelectItem value="farmhouse" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Farmhouse</SelectItem>
-              <SelectItem value="agriculture" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Agriculture Land</SelectItem>
-            </SelectContent>
-          </Select>
+          {/* Property Type Select */}
+          <div className="w-full sm:w-[180px]">
+            <Select value={propertyType} onValueChange={setPropertyType}>
+              <SelectTrigger className="h-10 form-input hover-lift">
+                <SelectValue placeholder="Property Type" />
+              </SelectTrigger>
+              <SelectContent className="animate-slide-in-down max-h-[300px] overflow-y-auto bg-popover z-50">
+                <SelectItem value="flat" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Flat / Apartment</SelectItem>
+                <SelectItem value="plot" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Plot / Open Land</SelectItem>
+                <SelectItem value="villa" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Villa</SelectItem>
+                <SelectItem value="independent-house" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Independent House</SelectItem>
+                <SelectItem value="commercial-building" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Commercial Building</SelectItem>
+                <SelectItem value="shop" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Shop / Showroom</SelectItem>
+                <SelectItem value="warehouse" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Warehouse</SelectItem>
+                <SelectItem value="office" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Office Space</SelectItem>
+                <SelectItem value="farmhouse" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Farmhouse</SelectItem>
+                <SelectItem value="agriculture" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Agriculture Land</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
+          {/* Inline Budget Range */}
+          <div className="flex gap-2 w-full sm:w-auto sm:flex-1">
+            <div className="flex-1 min-w-[120px]">
+              <Input
+                type="text"
+                placeholder="Min Budget"
+                value={budget[0] > 0 ? `₹${(budget[0] / 100000).toFixed(0)}L` : ''}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/[^\d]/g, '');
+                  if (value) {
+                    setBudget([parseInt(value) * 100000, budget[1]]);
+                    setBudgetChanged(true);
+                  } else {
+                    setBudget([0, budget[1]]);
+                  }
+                }}
+                className="h-10 form-input"
+              />
+            </div>
+            <div className="flex-1 min-w-[120px]">
+              <Input
+                type="text"
+                placeholder="Max Budget"
+                value={budget[1] < 100000000 ? `₹${(budget[1] / 100000).toFixed(0)}L` : ''}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/[^\d]/g, '');
+                  if (value) {
+                    setBudget([budget[0], parseInt(value) * 100000]);
+                    setBudgetChanged(true);
+                  } else {
+                    setBudget([budget[0], 100000000]);
+                  }
+                }}
+                className="h-10 form-input"
+              />
+            </div>
+          </div>
+
+          {/* More Filters Button */}
           <Button
             variant="outline"
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className="h-10 hover-lift ripple group"
+            className="h-10 px-4 hover-lift ripple group whitespace-nowrap"
           >
             <Filter className={`h-4 w-4 mr-2 transition-transform duration-300 ${showAdvanced ? 'rotate-180' : ''} group-hover:scale-110`} />
-            {showAdvanced ? 'Less Filters' : 'More Filters'}
+            {showAdvanced ? 'Less' : 'More'}
           </Button>
         </div>
 
-        {/* Advanced Filters */}
+        {/* Advanced Filters - Furnishing Only */}
         {showAdvanced && (
           <div className="space-y-4 border-t pt-4 slide-in-down">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 stagger-children">
-              {/* Budget Input */}
-              <div className="form-group">
-                <BudgetInput
-                  value={budget}
-                  onValueChange={(value) => {
-                    setBudget(value);
-                    setBudgetChanged(true);
-                  }}
-                  label="Budget Range"
-                />
-              </div>
-
-              {/* Furnishing */}
+            <div className="w-full sm:w-[200px]">
+              <label className="text-sm font-medium text-foreground mb-2 block">Furnishing Status</label>
               <Select value={furnishing} onValueChange={setFurnishing}>
-                <SelectTrigger className="form-input hover-lift">
-                  <SelectValue placeholder="Furnishing Status" />
+                <SelectTrigger className="h-10 form-input hover-lift">
+                  <SelectValue placeholder="Select Furnishing" />
                 </SelectTrigger>
-                <SelectContent className="animate-slide-in-down">
+                <SelectContent className="animate-slide-in-down bg-popover z-50">
                   <SelectItem value="furnished" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Furnished</SelectItem>
                   <SelectItem value="semi-furnished" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Semi-Furnished</SelectItem>
                   <SelectItem value="unfurnished" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Unfurnished</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+          </div>
+        )}
 
-            {/* Active Filters */}
-            <div className="flex flex-wrap gap-2 items-center stagger-children">
-              {area && (
-                <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
-                  Area: {area}
-                  <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => setArea('')} />
-                </Badge>
-              )}
-              {bhk && (
-                <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
-                  {bhk} BHK
-                  <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => setBhk('')} />
-                </Badge>
-              )}
-              {propertyType && (
-                <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
-                  {propertyType}
-                  <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => setPropertyType('')} />
-                </Badge>
-              )}
-              {furnishing && (
-                <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
-                  {furnishing}
-                  <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => setFurnishing('')} />
-                </Badge>
-              )}
-            </div>
+        {/* Active Filters */}
+        {(area || bhk || propertyType || furnishing || budgetChanged) && (
+          <div className="flex flex-wrap gap-2 items-center stagger-children pt-2">
+            {area && (
+              <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
+                Area: {area}
+                <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => setArea('')} />
+              </Badge>
+            )}
+            {bhk && (
+              <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
+                {bhk} BHK
+                <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => setBhk('')} />
+              </Badge>
+            )}
+            {propertyType && (
+              <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
+                {propertyType}
+                <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => setPropertyType('')} />
+              </Badge>
+            )}
+            {furnishing && (
+              <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
+                {furnishing}
+                <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => setFurnishing('')} />
+              </Badge>
+            )}
+            {budgetChanged && (
+              <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
+                Budget: ₹{(budget[0] / 100000).toFixed(0)}L - ₹{(budget[1] / 100000).toFixed(0)}L
+                <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => {
+                  setBudget([0, 100000000]);
+                  setBudgetChanged(false);
+                }} />
+              </Badge>
+            )}
           </div>
         )}
 
