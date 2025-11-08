@@ -21,9 +21,40 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const hyderabadAreas = [
-    'Kukatpally', 'Ameerpet', 'Erragadda', 'Sanathnagar', 'Madhapur', 
-    'Gachibowli', 'Hitech City', 'Kondapur', 'Miyapur', 'Nizampet'
-  ];
+    // Central Hyderabad
+    'Abids', 'Afzal Gunj', 'Ameerpet', 'Asif Nagar', 'Attapur', 'Azampur', 'Banjara Hills', 'Bahadurpura',
+    'Begum Bazar', 'Bholakpur', 'Chandrayangutta', 'Charminar', 'Chaderghat', 'Dabeerpura', 'Dilsukhnagar',
+    'Erragadda', 'Feelkhana', 'Golconda Fort', 'Goshamahal', 'Gudimalkapur', 'Himayatnagar', 'Hyderguda',
+    'Jubilee Hills', 'Karwan', 'Khairatabad', 'King Koti', 'Koti', 'Lakdikapool', 'Malakpet', 'Masab Tank',
+    'Mehdipatnam', 'Musheerabad', 'Narayanguda', 'Nampally', 'Old City', 'Panjagutta', 'Purani Haveli',
+    'Rajendranagar', 'Red Hills', 'Sanathnagar', 'Sanjeeva Reddy Nagar', 'Santosh Nagar', 'Secunderabad',
+    'Shahalibanda', 'Shalibanda', 'Somajiguda', 'Tappachabutra', 'Tolichowki', 'Yakutpura',
+    
+    // North Hyderabad
+    'Alwal', 'Bollaram', 'Bowenpally', 'Balanagar', 'Chintal', 'Compally', 'Dundigal', 'Gajularamaram',
+    'Hafeezpet', 'IDA Jeedimetla', 'Jeedimetla', 'Kukatpally', 'Malkajgiri', 'Medchal', 'Miyapur',
+    'Moosapet', 'Quthbullapur', 'Yapral',
+    
+    // West Hyderabad
+    'Chandanagar', 'Gachibowli', 'Gopanpally', 'Hitech City', 'Hydernagar', 'Kondapur', 'Lingampally',
+    'Madhapur', 'Madinaguda', 'Nizampet', 'Patancheru', 'Serilingampally', 'BHEL', 'Ramchandrapuram',
+    
+    // East Hyderabad
+    'Abdullapurmet', 'Amberpet', 'AS Rao Nagar', 'BN Reddy Nagar', 'Boduppal', 'Chaitanyapuri', 
+    'Chengicherla', 'Dammaiguda', 'ECIL', 'Falaknuma', 'Gaddiannaram', 'Ghatkesar', 'Hayathnagar',
+    'Habsiguda', 'KPHB Colony', 'Kapra', 'Keesara', 'L B Nagar', 'Mansoorabad', 'Moulali', 'Nagole',
+    'Nacharam', 'Peerzadiguda', 'Ramanthapur', 'RK Puram', 'Sainikpuri', 'Saroornagar', 'Tarnaka',
+    'Uppal', 'Vanasthalipuram', 'Vidyanagar', 'Moula Ali',
+    
+    // South Hyderabad
+    'Adibatla', 'Aramghar', 'Badangpet', 'Bandlaguda', 'Balapur', 'Chintalkunta', 'Kothapet', 
+    'Kothur', 'Mailardevpally', 'Mamidipalli', 'Mangalhat', 'Meerpet', 'Nadergul', 'Narsingi',
+    'Pahadi Shareef', 'Saidabad', 'Shamshabad', 'Shivarampally', 'Tukkuguda',
+    
+    // Emerging & Outer Areas
+    'Financial District', 'Kokapet', 'Kollur', 'Mokila', 'Nanakramguda', 'Osman Nagar', 'Puppalaguda',
+    'Raidurg', 'Shankarpalli', 'Tellapur', 'Vattinagulapally', 'Mokila', 'Khajaguda'
+  ].sort();
 
   const applyFilters = () => {
     const filters: any = {
@@ -80,7 +111,7 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
             <SelectTrigger className="form-input hover-lift">
               <SelectValue placeholder="Select Area" />
             </SelectTrigger>
-            <SelectContent className="animate-slide-in-down">
+            <SelectContent className="animate-slide-in-down max-h-[300px] overflow-y-auto">
               {hyderabadAreas.map((areaName) => (
                 <SelectItem key={areaName} value={areaName} className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">
                   {areaName}
@@ -106,12 +137,17 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
             <SelectTrigger className="form-input hover-lift">
               <SelectValue placeholder="Property Type" />
             </SelectTrigger>
-            <SelectContent className="animate-slide-in-down">
-              <SelectItem value="flat" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Flat</SelectItem>
-              <SelectItem value="plot" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Plot</SelectItem>
-              <SelectItem value="independent-house" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Independent House</SelectItem>
+            <SelectContent className="animate-slide-in-down max-h-[300px] overflow-y-auto">
+              <SelectItem value="flat" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Flat / Apartment</SelectItem>
+              <SelectItem value="plot" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Plot / Open Land</SelectItem>
               <SelectItem value="villa" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Villa</SelectItem>
-              <SelectItem value="commercial" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Commercial</SelectItem>
+              <SelectItem value="independent-house" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Independent House</SelectItem>
+              <SelectItem value="commercial-building" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Commercial Building</SelectItem>
+              <SelectItem value="shop" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Shop / Showroom</SelectItem>
+              <SelectItem value="warehouse" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Warehouse</SelectItem>
+              <SelectItem value="office" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Office Space</SelectItem>
+              <SelectItem value="farmhouse" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Farmhouse</SelectItem>
+              <SelectItem value="agriculture" className="hover:bg-primary hover:text-primary-foreground transition-colors duration-200">Agriculture Land</SelectItem>
             </SelectContent>
           </Select>
 
@@ -155,7 +191,7 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
             </div>
 
             {/* Active Filters */}
-            <div className="flex flex-wrap gap-2 stagger-children">
+            <div className="flex flex-wrap gap-2 items-center stagger-children">
               {area && (
                 <Badge variant="secondary" className="flex items-center gap-1 hover-scale animate-bounce-in">
                   Area: {area}
@@ -180,11 +216,21 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
                   <X className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors duration-200 hover:scale-125" onClick={() => setFurnishing('')} />
                 </Badge>
               )}
-              
-              <Button variant="ghost" size="sm" onClick={clearFilters} className="hover-shake ripple">
-                Clear All
-              </Button>
             </div>
+          </div>
+        )}
+
+        {/* Clear All Filters Button at Bottom */}
+        {(area || bhk || propertyType || furnishing || searchTerm) && (
+          <div className="pt-4 border-t">
+            <Button 
+              variant="outline" 
+              onClick={clearFilters} 
+              className="w-full hover-shake ripple"
+            >
+              <X className="h-4 w-4 mr-2" />
+              Clear All Filters
+            </Button>
           </div>
         )}
       </div>

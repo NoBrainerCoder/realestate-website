@@ -667,6 +667,46 @@
     z-index: 1;
   }
 
+  /* Soft Glow Animation for CTA buttons */
+  .animate-glow {
+    animation: softGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes softGlow {
+    0%, 100% {
+      box-shadow: 0 0 10px hsl(var(--accent) / 0.3), 0 0 20px hsl(var(--accent) / 0.2);
+    }
+    50% {
+      box-shadow: 0 0 20px hsl(var(--accent) / 0.5), 0 0 30px hsl(var(--accent) / 0.3), 0 0 40px hsl(var(--accent) / 0.2);
+    }
+  }
+
+  .animate-float {
+    animation: gentleFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes gentleFloat {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulseSlow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulseSlow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
+
   /* Reveal animations for sections */
   .reveal-up {
     opacity: 0;
