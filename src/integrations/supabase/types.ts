@@ -180,6 +180,7 @@ export type Database = {
           poster_name: string
           poster_phone: string
           price: number
+          property_for: string
           property_type: string
           rejection_reason: string | null
           sold_out_date: string | null
@@ -203,6 +204,7 @@ export type Database = {
           poster_name: string
           poster_phone: string
           price: number
+          property_for?: string
           property_type: string
           rejection_reason?: string | null
           sold_out_date?: string | null
@@ -226,6 +228,7 @@ export type Database = {
           poster_name?: string
           poster_phone?: string
           price?: number
+          property_for?: string
           property_type?: string
           rejection_reason?: string | null
           sold_out_date?: string | null

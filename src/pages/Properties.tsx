@@ -52,15 +52,11 @@ const Properties = () => {
     if (approvedProperties.length > 0) {
       let filtered = [...approvedProperties];
       
-      // Apply listing type filter if present
+      // Apply listing type filter based on property_for column
       if (listingType === 'buy') {
-        // For now, show all properties for buy
-        // In the future, you can add a 'listing_type' column to distinguish buy vs rent
-        filtered = filtered;
+        filtered = filtered.filter(property => property.property_for === 'sell');
       } else if (listingType === 'rent') {
-        // For now, show all properties for rent
-        // In the future, you can add a 'listing_type' column to distinguish buy vs rent
-        filtered = filtered;
+        filtered = filtered.filter(property => property.property_for === 'rent');
       }
       
       setFilteredProperties(filtered);
