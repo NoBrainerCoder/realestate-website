@@ -145,12 +145,12 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   };
 
   return (
-    <div className="bg-card backdrop-blur-sm rounded-xl shadow-card p-2.5 border border-border max-w-6xl mx-auto">
-      <div className="space-y-2">
-        {/* Search Bar with Multi-Location Tags - 60% width, centered */}
-        <div className="flex justify-center">
-          <div className="w-full md:w-[60%] flex gap-2">
-            <div className="flex-1 relative" ref={searchRef}>
+    <div className="flex justify-center">
+      <div className="bg-card backdrop-blur-sm rounded-xl shadow-card p-3 border border-border w-fit mx-auto">
+        <div className="space-y-2.5">
+          {/* Search Bar with Multi-Location Tags - Centered */}
+          <div className="flex gap-2 justify-center">
+            <div className="w-full md:w-[500px] relative" ref={searchRef}>
               <div className="flex items-center flex-wrap gap-1.5 min-h-[32px] rounded-md border border-input bg-background px-2 py-1 text-xs ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 shadow-md">
               {/* Selected Area Tags - More compact */}
               {selectedAreas.map((area) => (
@@ -200,13 +200,11 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
               Search
             </Button>
           </div>
-        </div>
 
-        {/* Compact Filters Row */}
-        <div className="flex flex-wrap gap-1.5 items-center">
-
-          {/* BHK Select - More compact */}
-          <div className="w-full sm:w-[85px]">
+          {/* Compact Filters Row - Centered */}
+          <div className="flex flex-wrap gap-1.5 items-center justify-center">
+            {/* BHK Select - More compact */}
+            <div className="w-full sm:w-[85px]">
             <Select value={bhk} onValueChange={setBhk}>
               <SelectTrigger className="h-7 text-[11px] px-2">
                 <SelectValue placeholder="BHK" />
@@ -266,51 +264,52 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
               onChange={(e) => handleMaxChange(e.target.value)}
               className="flex h-7 w-full rounded-md border border-input bg-background px-2 py-1 text-[11px] ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-foreground"
             />
+            </div>
           </div>
-        </div>
 
-        {/* Active Filters */}
-        {(selectedAreas.length > 0 || bhk || propertyType || furnishing || budgetChanged) && (
-          <div className="flex flex-wrap gap-1.5 items-center">
-            {bhk && (
-              <Badge variant="secondary" className="flex items-center gap-1 px-2 py-0.5 text-[10px]">
-                {bhk} BHK
-                <X className="h-2.5 w-2.5 cursor-pointer hover:text-destructive" onClick={() => setBhk('')} />
-              </Badge>
-            )}
-            {propertyType && (
-              <Badge variant="secondary" className="flex items-center gap-1 px-2 py-0.5 text-[10px]">
-                {propertyType}
-                <X className="h-2.5 w-2.5 cursor-pointer hover:text-destructive" onClick={() => setPropertyType('')} />
-              </Badge>
-            )}
-            {furnishing && (
-              <Badge variant="secondary" className="flex items-center gap-1 px-2 py-0.5 text-[10px]">
-                {furnishing}
-                <X className="h-2.5 w-2.5 cursor-pointer hover:text-destructive" onClick={() => setFurnishing('')} />
-              </Badge>
-            )}
-            {budgetChanged && (
-              <Badge variant="secondary" className="flex items-center gap-1 px-2 py-0.5 text-[10px]">
-                Max: {displayPrice(budget[1])}
-                <X className="h-2.5 w-2.5 cursor-pointer hover:text-destructive" onClick={() => {
-                  setBudget([0, 100000000]);
-                  setBudgetChanged(false);
-                  setMaxInput('');
-                }} />
-              </Badge>
-            )}
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={clearFilters} 
-              className="h-6 px-2 text-[10px]"
-            >
-              <X className="h-2.5 w-2.5 mr-0.5" />
-              Clear All
-            </Button>
-          </div>
-        )}
+          {/* Active Filters - Centered */}
+          {(selectedAreas.length > 0 || bhk || propertyType || furnishing || budgetChanged) && (
+            <div className="flex flex-wrap gap-1.5 items-center justify-center">
+              {bhk && (
+                <Badge variant="secondary" className="flex items-center gap-1 px-2 py-0.5 text-[10px]">
+                  {bhk} BHK
+                  <X className="h-2.5 w-2.5 cursor-pointer hover:text-destructive" onClick={() => setBhk('')} />
+                </Badge>
+              )}
+              {propertyType && (
+                <Badge variant="secondary" className="flex items-center gap-1 px-2 py-0.5 text-[10px]">
+                  {propertyType}
+                  <X className="h-2.5 w-2.5 cursor-pointer hover:text-destructive" onClick={() => setPropertyType('')} />
+                </Badge>
+              )}
+              {furnishing && (
+                <Badge variant="secondary" className="flex items-center gap-1 px-2 py-0.5 text-[10px]">
+                  {furnishing}
+                  <X className="h-2.5 w-2.5 cursor-pointer hover:text-destructive" onClick={() => setFurnishing('')} />
+                </Badge>
+              )}
+              {budgetChanged && (
+                <Badge variant="secondary" className="flex items-center gap-1 px-2 py-0.5 text-[10px]">
+                  Max: {displayPrice(budget[1])}
+                  <X className="h-2.5 w-2.5 cursor-pointer hover:text-destructive" onClick={() => {
+                    setBudget([0, 100000000]);
+                    setBudgetChanged(false);
+                    setMaxInput('');
+                  }} />
+                </Badge>
+              )}
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={clearFilters} 
+                className="h-6 px-2 text-[10px]"
+              >
+                <X className="h-2.5 w-2.5 mr-0.5" />
+                Clear All
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
