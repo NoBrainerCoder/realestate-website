@@ -13,12 +13,14 @@ interface Message {
 const AIChatBubble = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'Hi! I\'m your AI assistant. Ask me anything about properties in Hyderabad!' }
+    { role: 'assistant', content: 'Hi! I\'m your AI assistant. Ask me anything about properties in Hyderabad!\n\nNeed immediate help? Contact us on WhatsApp: +91 9866123350' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const whatsappNumber = '+919866123350';
+  const whatsappLink = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -128,7 +130,18 @@ const AIChatBubble = () => {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-border">
+          <div className="p-4 border-t border-border space-y-3">
+            {/* WhatsApp Button */}
+            <a 
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-[#25D366] hover:bg-[#20BA5A] text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Chat on WhatsApp: {whatsappNumber}
+            </a>
+            
             <div className="flex gap-2">
               <Input
                 value={input}

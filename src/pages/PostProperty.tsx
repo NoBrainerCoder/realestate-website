@@ -171,10 +171,10 @@ const PostProperty = () => {
       }
 
       toast({
-        title: propertyStatus === 'approved' ? "Property Posted!" : "Property Submitted for Review!",
+        title: propertyStatus === 'approved' ? "Property Posted!" : "Property Submitted for Admin Review",
         description: propertyStatus === 'approved'
           ? "Your property has been published and is now visible to all users!"
-          : "✅ Your property has been submitted for review. It will appear once the admin approves it.",
+          : "Your property has been submitted for admin review. It will be published once approved.",
       });
 
       // Reset form

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Home, Building2, Calculator, Info, Mail, LogIn, UserPlus, LogOut, Shield, Calendar, PlusCircle } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import DarkModeToggle from '@/components/DarkModeToggle';
+// DarkModeToggle removed - dark mode is now permanent
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,8 +64,7 @@ const Navbar = () => {
               </Button>
             </Link>
 
-            {/* Dark Mode Toggle */}
-            <DarkModeToggle />
+            {/* Dark mode is now permanent - no toggle needed */}
 
             {/* Auth Section */}
             <div className="ml-2 flex items-center space-x-2">
@@ -116,7 +115,6 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-2 lg:hidden">
-            <DarkModeToggle />
             <Button
               variant="ghost"
               size="sm"
