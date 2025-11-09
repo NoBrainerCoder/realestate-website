@@ -99,8 +99,8 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
             </div>
           </div>
 
-          {/* Search Filters */}
-          <div className={`max-w-6xl mx-auto ${showContent ? 'text-fade-in' : 'opacity-0'}`} style={{ animationDelay: '0.7s' }}>
+          {/* Search Filters - Centered and compact */}
+          <div className={`max-w-5xl mx-auto ${showContent ? 'text-fade-in' : 'opacity-0'}`} style={{ animationDelay: '0.7s' }}>
             <SearchFilters onFiltersChange={handleFiltersChange} />
           </div>
         </div>

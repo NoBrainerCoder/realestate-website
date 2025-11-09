@@ -145,22 +145,22 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   };
 
   return (
-    <div className="bg-card backdrop-blur-sm rounded-xl shadow-card p-3 border border-border">
-      <div className="space-y-3">
-        {/* Search Bar with Multi-Location Tags */}
+    <div className="bg-card backdrop-blur-sm rounded-xl shadow-card p-2.5 border border-border max-w-6xl mx-auto">
+      <div className="space-y-2">
+        {/* Search Bar with Multi-Location Tags - More compact */}
         <div className="flex gap-2">
           <div className="flex-1 relative" ref={searchRef}>
-            <div className="flex items-center flex-wrap gap-1.5 min-h-[36px] rounded-md border border-input bg-background px-2 py-1.5 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-              {/* Selected Area Tags */}
+            <div className="flex items-center flex-wrap gap-1.5 min-h-[32px] rounded-md border border-input bg-background px-2 py-1 text-xs ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+              {/* Selected Area Tags - More compact */}
               {selectedAreas.map((area) => (
                 <Badge 
                   key={area} 
                   variant="secondary" 
-                  className="flex items-center gap-1 px-2 py-0.5 text-xs rounded-full"
+                  className="flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] h-5 rounded-full"
                 >
                   {area}
                   <X 
-                    className="h-3 w-3 cursor-pointer hover:text-destructive" 
+                    className="h-2.5 w-2.5 cursor-pointer hover:text-destructive" 
                     onClick={() => removeArea(area)} 
                   />
                 </Badge>
@@ -169,11 +169,11 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
               <input
                 ref={inputRef}
                 type="text"
-                placeholder={selectedAreas.length === 0 ? "Search by location, builder, project..." : "Add more areas..."}
+                placeholder={selectedAreas.length === 0 ? "Search locations (e.g., Gachibowli)" : "Add more..."}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={() => searchTerm.trim().length > 0 && suggestions.length > 0 && setShowSuggestions(true)}
-                className="flex-1 min-w-[200px] bg-transparent outline-none placeholder:text-muted-foreground text-foreground"
+                className="flex-1 min-w-[150px] bg-transparent outline-none placeholder:text-muted-foreground text-foreground text-xs"
               />
             </div>
             {/* Autocomplete Suggestions Dropdown */}
@@ -194,75 +194,75 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
               </div>
             )}
           </div>
-          <Button onClick={applyFilters} className="h-9 px-5 text-sm">
-            <Search className="h-3.5 w-3.5 mr-1.5" />
+          <Button onClick={applyFilters} className="h-8 px-4 text-xs">
+            <Search className="h-3 w-3 mr-1" />
             Search
           </Button>
         </div>
 
         {/* Compact Filters Row */}
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap gap-1.5 items-center">
 
-          {/* BHK Select */}
-          <div className="w-full sm:w-[95px]">
+          {/* BHK Select - More compact */}
+          <div className="w-full sm:w-[85px]">
             <Select value={bhk} onValueChange={setBhk}>
-              <SelectTrigger className="h-8 text-xs">
+              <SelectTrigger className="h-7 text-[11px] px-2">
                 <SelectValue placeholder="BHK" />
               </SelectTrigger>
               <SelectContent className="bg-popover z-50">
-                <SelectItem value="1" className="text-xs">1 BHK</SelectItem>
-                <SelectItem value="2" className="text-xs">2 BHK</SelectItem>
-                <SelectItem value="3" className="text-xs">3 BHK</SelectItem>
-                <SelectItem value="4" className="text-xs">4 BHK</SelectItem>
-                <SelectItem value="4+" className="text-xs">4 BHK+</SelectItem>
+                <SelectItem value="1" className="text-[11px]">1 BHK</SelectItem>
+                <SelectItem value="2" className="text-[11px]">2 BHK</SelectItem>
+                <SelectItem value="3" className="text-[11px]">3 BHK</SelectItem>
+                <SelectItem value="4" className="text-[11px]">4 BHK</SelectItem>
+                <SelectItem value="4+" className="text-[11px]">4 BHK+</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          {/* Property Type Select */}
-          <div className="w-full sm:w-[140px]">
+          {/* Property Type Select - More compact */}
+          <div className="w-full sm:w-[120px]">
             <Select value={propertyType} onValueChange={setPropertyType}>
-              <SelectTrigger className="h-8 text-xs">
+              <SelectTrigger className="h-7 text-[11px] px-2">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent className="max-h-[300px] overflow-y-auto bg-popover z-50">
-                <SelectItem value="flat" className="text-xs">Flat / Apartment</SelectItem>
-                <SelectItem value="plot" className="text-xs">Plot / Open Land</SelectItem>
-                <SelectItem value="villa" className="text-xs">Villa</SelectItem>
-                <SelectItem value="independent-house" className="text-xs">Independent House</SelectItem>
-                <SelectItem value="commercial-building" className="text-xs">Commercial Building</SelectItem>
-                <SelectItem value="shop" className="text-xs">Shop / Showroom</SelectItem>
-                <SelectItem value="warehouse" className="text-xs">Warehouse</SelectItem>
-                <SelectItem value="office" className="text-xs">Office Space</SelectItem>
-                <SelectItem value="farmhouse" className="text-xs">Farmhouse</SelectItem>
-                <SelectItem value="agriculture" className="text-xs">Agriculture Land</SelectItem>
+                <SelectItem value="flat" className="text-[11px]">Flat / Apartment</SelectItem>
+                <SelectItem value="plot" className="text-[11px]">Plot / Open Land</SelectItem>
+                <SelectItem value="villa" className="text-[11px]">Villa</SelectItem>
+                <SelectItem value="independent-house" className="text-[11px]">Independent House</SelectItem>
+                <SelectItem value="commercial-building" className="text-[11px]">Commercial Building</SelectItem>
+                <SelectItem value="shop" className="text-[11px]">Shop / Showroom</SelectItem>
+                <SelectItem value="warehouse" className="text-[11px]">Warehouse</SelectItem>
+                <SelectItem value="office" className="text-[11px]">Office Space</SelectItem>
+                <SelectItem value="farmhouse" className="text-[11px]">Farmhouse</SelectItem>
+                <SelectItem value="agriculture" className="text-[11px]">Agriculture Land</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          {/* Furnishing Status */}
-          <div className="w-full sm:w-[140px]">
+          {/* Furnishing Status - More compact */}
+          <div className="w-full sm:w-[130px]">
             <Select value={furnishing} onValueChange={setFurnishing}>
-              <SelectTrigger className="h-8 text-xs">
+              <SelectTrigger className="h-7 text-[11px] px-2">
                 <SelectValue placeholder="Furnishing" />
               </SelectTrigger>
               <SelectContent className="bg-popover z-50">
-                <SelectItem value="furnished" className="text-xs">Furnished</SelectItem>
-                <SelectItem value="semi-furnished" className="text-xs">Semi-Furnished</SelectItem>
-                <SelectItem value="unfurnished" className="text-xs">Unfurnished</SelectItem>
-                <SelectItem value="under-construction" className="text-xs">Under Construction</SelectItem>
+                <SelectItem value="furnished" className="text-[11px]">Furnished</SelectItem>
+                <SelectItem value="semi-furnished" className="text-[11px]">Semi-Furnished</SelectItem>
+                <SelectItem value="unfurnished" className="text-[11px]">Unfurnished</SelectItem>
+                <SelectItem value="under-construction" className="text-[11px]">Under Construction</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          {/* Max Budget Only */}
-          <div className="w-full sm:w-[130px]">
+          {/* Max Budget Only - More compact */}
+          <div className="w-full sm:w-[115px]">
             <input
               type="text"
               placeholder="Max Budget"
               value={maxInput}
               onChange={(e) => handleMaxChange(e.target.value)}
-              className="flex h-8 w-full rounded-md border border-input bg-background px-2 py-1 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-foreground"
+              className="flex h-7 w-full rounded-md border border-input bg-background px-2 py-1 text-[11px] ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-foreground"
             />
           </div>
         </div>

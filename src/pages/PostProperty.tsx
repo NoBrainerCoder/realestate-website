@@ -6,7 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Upload, X, Building2, Clock, ImageIcon } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Upload, X, Building2, Clock, ImageIcon, Home, Key } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -29,6 +30,8 @@ const PostProperty = () => {
   const { media, uploading, addMedia, removeMedia, clearMedia, uploadAllMedia } = useMediaUpload();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [priceDisplay, setPriceDisplay] = useState('');
+  const [showPropertyTypeModal, setShowPropertyTypeModal] = useState(true);
+  const [propertyFor, setPropertyFor] = useState<'rent' | 'sell' | ''>('');
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -106,7 +109,7 @@ const PostProperty = () => {
       // Auto-approve if admin, otherwise pending
       const propertyStatus = isAdmin ? 'approved' : 'pending';
 
-      // Insert property
+      // Insert property with property_for field
       const { data: propertyData, error: propertyError } = await supabase
         .from('properties')
         .insert({
@@ -120,6 +123,7 @@ const PostProperty = () => {
           bathrooms: formData.bathrooms,
           furnishing: formData.furnishing,
           property_type: formData.propertyType,
+          property_for: propertyFor, // Add this field
           amenities: formData.amenities,
           age: formData.age,
           poster_name: formData.posterName,
@@ -198,16 +202,53 @@ const PostProperty = () => {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30 py-8">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Post Your Property
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            List your property with us and reach thousands of potential buyers
-          </p>
-        </div>
+    <>
+      {/* Property Type Selection Modal */}
+      <Dialog open={showPropertyTypeModal && !propertyFor} onOpenChange={setShowPropertyTypeModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-center">Choose Property Listing Type</DialogTitle>
+            <DialogDescription className="text-center">
+              Select whether you want to rent out or sell your property
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-4 py-4">
+            <Button
+              onClick={() => {
+                setPropertyFor('rent');
+                setShowPropertyTypeModal(false);
+              }}
+              className="h-32 flex flex-col gap-3 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+              size="lg"
+            >
+              <Home className="h-12 w-12" />
+              <span className="text-lg font-semibold">Rent</span>
+            </Button>
+            <Button
+              onClick={() => {
+                setPropertyFor('sell');
+                setShowPropertyTypeModal(false);
+              }}
+              className="h-32 flex flex-col gap-3 bg-gradient-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
+              size="lg"
+            >
+              <Key className="h-12 w-12" />
+              <span className="text-lg font-semibold">Sell</span>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <div className="min-h-screen bg-muted/30 py-8">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Post Your Property {propertyFor && <span className="text-primary">({propertyFor === 'rent' ? 'For Rent' : 'For Sale'})</span>}
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              List your property with us and reach thousands of potential {propertyFor === 'rent' ? 'tenants' : 'buyers'}
+            </p>
+          </div>
 
         {/* Auth Notice */}
         {!user && (
@@ -581,8 +622,9 @@ const PostProperty = () => {
             {isSubmitting ? 'Submitting...' : 'Submit Property for Approval'}
           </Button>
         </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

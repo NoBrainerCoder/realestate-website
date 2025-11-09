@@ -6,34 +6,42 @@
 
 @layer base {
   :root {
-    /* Navy Blue Dark Theme - Only Theme */
-    --background: 220 30% 12%;
-    --foreground: 210 40% 98%;
-
-    --card: 220 25% 16%;
+    /* Base Colors - Lighter Navy Blue Theme for Better Contrast */
+    --background: 220 30% 18%; /* Lighter navy blue for better readability */
+    --foreground: 210 40% 98%; /* Near white for text */
+    
+    /* Card and Surface Colors */
+    --card: 220 25% 22%; /* Lighter navy for cards - better visibility */
     --card-foreground: 210 40% 98%;
-
-    --popover: 220 28% 14%;
+    
+    /* Popover/Dropdown Colors */
+    --popover: 220 25% 22%;
     --popover-foreground: 210 40% 98%;
-
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    
+    /* Primary Brand Color */
+    --primary: 220 70% 35%; /* Deep blue */
+    --primary-foreground: 210 40% 98%;
     --primary-glow: 217 91% 75%;
-
-    --secondary: 220 20% 22%;
+    
+    /* Secondary UI Color */
+    --secondary: 220 25% 28%; /* Lighter muted blue-gray */
     --secondary-foreground: 210 40% 98%;
-
-    --muted: 220 15% 25%;
-    --muted-foreground: 215 16% 65%;
-
+    
+    /* Muted/Subtle Elements */
+    --muted: 220 25% 26%;
+    --muted-foreground: 215 20% 70%;
+    
+    /* Accent Color */
     --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
+    
+    /* Destructive/Error States */
+    --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 220 20% 28%;
-    --input: 220 20% 28%;
+    
+    /* Borders and Inputs */
+    --border: 220 25% 28%;
+    --input: 220 25% 28%;
     --ring: 217 91% 60%;
 
     /* Premium gradients - Navy & Blue */
@@ -64,27 +72,27 @@
     --sidebar-ring: 217 91% 60%;
   }
 
-  /* Dark mode class kept for compatibility but uses same navy theme */
+  /* Dark mode class kept for compatibility - now uses lighter navy theme */
   .dark {
-    --background: 220 30% 12%;
+    --background: 220 30% 18%;
     --foreground: 210 40% 98%;
-    --card: 220 25% 16%;
+    --card: 220 25% 22%;
     --card-foreground: 210 40% 98%;
-    --popover: 220 28% 14%;
+    --popover: 220 25% 22%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 220 70% 35%;
+    --primary-foreground: 210 40% 98%;
     --primary-glow: 217 91% 75%;
-    --secondary: 220 20% 22%;
+    --secondary: 220 25% 28%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 220 15% 25%;
-    --muted-foreground: 215 16% 65%;
+    --muted: 220 25% 26%;
+    --muted-foreground: 215 20% 70%;
     --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 20% 28%;
-    --input: 220 20% 28%;
+    --border: 220 25% 28%;
+    --input: 220 25% 28%;
     --ring: 217 91% 60%;
     --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 75%));
     --gradient-hero: linear-gradient(135deg, hsl(220 30% 12%) 0%, hsl(220 40% 18%) 100%);
