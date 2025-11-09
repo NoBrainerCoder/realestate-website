@@ -606,7 +606,7 @@ const PostProperty = () => {
                 <div>
                   <p className="font-medium text-amber-800">Pending Approval</p>
                   <p className="text-sm text-amber-700">
-                    Your property will be reviewed by our admin team before being published. This usually takes 24-48 hours.
+                    Your property has been submitted and will be reviewed by our admin team.
                   </p>
                 </div>
               </div>

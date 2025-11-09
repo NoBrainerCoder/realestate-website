@@ -102,8 +102,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Phone</h3>
-                    <p className="text-muted-foreground mb-1">Call us for immediate assistance</p>
-                    <a href="tel:9866123350" className="text-primary font-medium hover:underline">
+                    <p className="text-foreground/80 mb-1">Call us for immediate assistance</p>
+                    <a href="tel:9866123350" className="text-foreground font-medium hover:underline hover:text-primary">
                       9866123350
                     </a>
                   </div>
@@ -119,8 +119,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Email</h3>
-                    <p className="text-muted-foreground mb-1">Send us your queries</p>
-                    <a href="mailto:myinfrahub.com@gmail.com" className="text-primary font-medium hover:underline">
+                    <p className="text-foreground/80 mb-1">Send us your queries</p>
+                    <a href="mailto:myinfrahub.com@gmail.com" className="text-foreground font-medium hover:underline hover:text-primary">
                       myinfrahub.com@gmail.com
                     </a>
                   </div>
@@ -136,8 +136,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Location</h3>
-                    <p className="text-muted-foreground mb-1">Our service area</p>
-                    <p className="text-primary font-medium">
+                    <p className="text-foreground/80 mb-1">Our service area</p>
+                    <p className="text-foreground font-medium">
                       Hyderabad, Telangana
                     </p>
                   </div>
@@ -155,12 +155,12 @@ const Contact = () => {
                     <h3 className="text-lg font-semibold mb-2">Business Hours</h3>
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Monday - Saturday:</span>
-                        <span className="font-medium">9:00 AM - 7:00 PM</span>
+                        <span className="text-foreground/80">Monday - Saturday:</span>
+                        <span className="text-foreground font-medium">9:00 AM - 7:00 PM</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Sunday:</span>
-                        <span className="font-medium">10:00 AM - 6:00 PM</span>
+                        <span className="text-foreground/80">Sunday:</span>
+                        <span className="text-foreground font-medium">10:00 AM - 6:00 PM</span>
                       </div>
                     </div>
                   </div>
