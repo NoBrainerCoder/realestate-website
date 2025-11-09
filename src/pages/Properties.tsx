@@ -79,10 +79,12 @@ const Properties = () => {
       );
     }
 
-    // Apply area/location filter
-    if (filters.area) {
+    // Apply areas filter (multiple selected areas)
+    if (filters.areas && filters.areas.length > 0) {
       filtered = filtered.filter(property => 
-        property.location.toLowerCase().includes(filters.area.toLowerCase())
+        filters.areas.some((area: string) =>
+          property.location.toLowerCase().includes(area.toLowerCase())
+        )
       );
     }
 

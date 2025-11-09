@@ -147,10 +147,11 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   return (
     <div className="bg-card backdrop-blur-sm rounded-xl shadow-card p-2.5 border border-border max-w-6xl mx-auto">
       <div className="space-y-2">
-        {/* Search Bar with Multi-Location Tags - More compact */}
-        <div className="flex gap-2">
-          <div className="flex-1 relative" ref={searchRef}>
-            <div className="flex items-center flex-wrap gap-1.5 min-h-[32px] rounded-md border border-input bg-background px-2 py-1 text-xs ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+        {/* Search Bar with Multi-Location Tags - 60% width, centered */}
+        <div className="flex justify-center">
+          <div className="w-full md:w-[60%] flex gap-2">
+            <div className="flex-1 relative" ref={searchRef}>
+              <div className="flex items-center flex-wrap gap-1.5 min-h-[32px] rounded-md border border-input bg-background px-2 py-1 text-xs ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 shadow-md">
               {/* Selected Area Tags - More compact */}
               {selectedAreas.map((area) => (
                 <Badge 
@@ -175,29 +176,30 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
                 onFocus={() => searchTerm.trim().length > 0 && suggestions.length > 0 && setShowSuggestions(true)}
                 className="flex-1 min-w-[150px] bg-transparent outline-none placeholder:text-muted-foreground text-foreground text-xs"
               />
-            </div>
-            {/* Autocomplete Suggestions Dropdown */}
-            {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-lg shadow-elegant z-50 max-h-[240px] overflow-y-auto animate-fade-in">
-                {suggestions.map((suggestion, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="px-3 py-1.5 cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all duration-200 first:rounded-t-lg last:rounded-b-lg border-b border-border last:border-b-0"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Search className="h-3 w-3 opacity-50" />
-                      <span className="text-sm font-medium">{suggestion}</span>
-                    </div>
-                  </div>
-                ))}
               </div>
-            )}
+              {/* Autocomplete Suggestions Dropdown */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-lg shadow-elegant z-50 max-h-[240px] overflow-y-auto animate-fade-in">
+                  {suggestions.map((suggestion, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="px-3 py-1.5 cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all duration-200 first:rounded-t-lg last:rounded-b-lg border-b border-border last:border-b-0"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Search className="h-3 w-3 opacity-50" />
+                        <span className="text-sm font-medium">{suggestion}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <Button onClick={applyFilters} className="h-8 px-4 text-xs shadow-md">
+              <Search className="h-3 w-3 mr-1" />
+              Search
+            </Button>
           </div>
-          <Button onClick={applyFilters} className="h-8 px-4 text-xs">
-            <Search className="h-3 w-3 mr-1" />
-            Search
-          </Button>
         </div>
 
         {/* Compact Filters Row */}
