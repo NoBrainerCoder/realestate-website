@@ -106,8 +106,8 @@ const PostProperty = () => {
       // Upload media files first
       const uploadedMedia = await uploadAllMedia();
       
-      // Auto-approve if admin, otherwise pending
-      const propertyStatus = isAdmin ? 'approved' : 'pending';
+      // All properties require admin approval
+      const propertyStatus = 'pending';
 
       // Insert property with property_for field
       const { data: propertyData, error: propertyError } = await supabase
@@ -175,10 +175,8 @@ const PostProperty = () => {
       }
 
       toast({
-        title: propertyStatus === 'approved' ? "Property Posted!" : "Property Submitted Successfully",
-        description: propertyStatus === 'approved'
-          ? "Your property has been published and is now visible to all users!"
-          : "Property submitted successfully for admin approval.",
+        title: "Property Submitted Successfully",
+        description: "Your property has been submitted and is under review by our admin team for approval before publishing.",
       });
 
       // Reset form
