@@ -102,9 +102,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Phone</h3>
-                    <p className="text-foreground/80 mb-1">Call us for immediate assistance</p>
-                    <a href="tel:9866123350" className="text-foreground font-medium hover:underline hover:text-primary">
-                      9866123350
+                    <p className="text-muted-foreground mb-1">Call us for immediate assistance</p>
+                    <a href="tel:9866123350" className="font-medium hover:underline hover:text-primary" style={{ color: '#FFD580' }}>
+                      +91 9866123350
                     </a>
                   </div>
                 </div>
@@ -119,8 +119,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Email</h3>
-                    <p className="text-foreground/80 mb-1">Send us your queries</p>
-                    <a href="mailto:myinfrahub.com@gmail.com" className="text-foreground font-medium hover:underline hover:text-primary">
+                    <p className="text-muted-foreground mb-1">Send us your queries</p>
+                    <a href="mailto:myinfrahub.com@gmail.com" className="font-medium hover:underline hover:text-primary" style={{ color: '#FFD580' }}>
                       myinfrahub.com@gmail.com
                     </a>
                   </div>
@@ -136,8 +136,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Location</h3>
-                    <p className="text-foreground/80 mb-1">Our service area</p>
-                    <p className="text-foreground font-medium">
+                    <p className="text-muted-foreground mb-1">Our service area</p>
+                    <p className="font-medium" style={{ color: '#FFD580' }}>
                       Hyderabad, Telangana
                     </p>
                   </div>

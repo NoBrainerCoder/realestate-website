@@ -50,8 +50,8 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
 
   return (
     <section className="relative min-h-screen flex flex-col">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Animated Background - Lighter Navy */}
+      <div className="absolute inset-0 overflow-hidden" style={{ backgroundColor: '#142C5A' }}>
         {backgroundImages.map((img, index) => (
           <div
             key={index}

@@ -146,8 +146,8 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
 
   return (
     <div className="flex justify-center">
-      <div className="bg-card backdrop-blur-sm rounded-xl shadow-card p-3 border border-border w-fit mx-auto">
-        <div className="space-y-2.5">
+      <div className="bg-card backdrop-blur-sm rounded-xl shadow-card p-2.5 border border-border w-fit mx-auto" style={{ maxHeight: '85%' }}>
+        <div className="space-y-2">
           {/* Search Bar with Multi-Location Tags - Centered */}
           <div className="flex gap-2 justify-center">
             <div className="w-full md:w-[500px] relative" ref={searchRef}>

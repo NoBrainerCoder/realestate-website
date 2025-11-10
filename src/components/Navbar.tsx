@@ -59,30 +59,43 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation - More compact */}
+          {/* Desktop Navigation - More compact with hover animations */}
           <div className="hidden lg:flex items-center space-x-1">
             <div className="flex items-center space-x-0.5 bg-white/10 rounded-full p-0.5">
-              {navLinks.map(({ to, icon: Icon, label }) => (
+              {navLinks.slice(0, 6).map(({ to, icon: Icon, label }) => (
                 <Link
                   key={to}
                   to={to}
-                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-colors ${
+                  className={`nav-link-hover flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-200 ${
                     location.pathname === to
                       ? 'text-primary bg-white shadow-sm'
-                      : 'text-white/90 hover:text-white hover:bg-white/20'
+                      : 'text-white/90 hover:text-[#FFA500] hover:bg-white/20'
                   }`}
                 >
                   <Icon className="h-3.5 w-3.5" />
                   <span className="text-xs font-medium">{label}</span>
                 </Link>
               ))}
+              {/* Add spacing before Appointments */}
+              <div className="w-2" />
+              <Link
+                to="/appointments"
+                className={`nav-link-hover flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-200 ${
+                  location.pathname === '/appointments'
+                    ? 'text-primary bg-white shadow-sm'
+                    : 'text-white/90 hover:text-[#FFA500] hover:bg-white/20'
+                }`}
+              >
+                <Calendar className="h-3.5 w-3.5" />
+                <span className="text-xs font-medium">Appointments</span>
+              </Link>
             </div>
 
-            {/* CTA Button - More compact */}
-            <Link to="/post-property" className="ml-2">
+            {/* CTA Button with glow animation */}
+            <Link to="/post-property" className="ml-3">
               <Button 
                 size="sm"
-                className="bg-gradient-to-r from-[#ff7b00] to-[#ff9f40] hover:from-[#ff6600] hover:to-[#ff8c2e] text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-0 text-xs px-3 py-1.5 h-8"
+                className="btn-post-property bg-gradient-to-r from-[#FF8C00] to-[#FFB84D] hover:from-[#ff6600] hover:to-[#ff8c2e] text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-0 text-xs px-3 py-1.5 h-8"
               >
                 <PlusCircle className="h-3.5 w-3.5 mr-1.5" />
                 Post Property

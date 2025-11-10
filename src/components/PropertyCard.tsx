@@ -42,7 +42,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   return (
     <div 
       onClick={handleCardClick}
-      className="bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ease-smooth hover:scale-[1.03] hover:shadow-[0_8px_30px_rgba(59,130,246,0.2)] hover:border-primary/30 group"
+      className="property-card-animate bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ease-smooth hover:scale-[1.02] hover:shadow-[0_4px_20px_rgba(255,165,0,0.25)] hover:border-[#FFA500]/30 group"
     >
       {/* Image */}
       <div className="relative overflow-hidden">
@@ -100,55 +100,58 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             <Badge variant="outline" className="hover-scale cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all duration-300">{property.furnishing}</Badge>
           </div>
 
-          {/* Price */}
+          {/* Price with better visibility */}
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-primary transition-all duration-300 ease-smooth group-hover:-translate-y-1">
+            <div className="text-2xl font-bold text-primary transition-all duration-300 ease-smooth group-hover:-translate-y-1" style={{ textShadow: '0 2px 8px rgba(59, 130, 246, 0.3)' }}>
               {formatPrice(property.price)}
             </div>
           </div>
 
-          {/* Actions */}
+          {/* Actions - 2x2 Grid Layout */}
           <div className="space-y-2 pt-2">
-            <div className="flex gap-2 stagger-children">
-              <Link to={`/property/${property.id}`} className="flex-1" onClick={(e) => e.stopPropagation()}>
+            {/* Top Row: View Details + Contact */}
+            <div className="grid grid-cols-2 gap-2 stagger-children">
+              <Link to={`/property/${property.id}`} onClick={(e) => e.stopPropagation()}>
                 <Button variant="outline" className="w-full hover-lift ripple group">
-                  <Eye className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                  View Details
+                  <Eye className="h-4 w-4 mr-1.5 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="text-xs">View Details</span>
                 </Button>
               </Link>
-              <div className="flex-1" onClick={(e) => e.stopPropagation()}>
+              <div onClick={(e) => e.stopPropagation()}>
                 <ContactInfoDialog 
                   trigger={
                     <Button className="w-full btn-hero ripple group">
-                      <Phone className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                      Contact
+                      <Phone className="h-4 w-4 mr-1.5 group-hover:rotate-12 transition-transform duration-300" />
+                      <span className="text-xs">Contact</span>
                     </Button>
                   }
                 />
               </div>
             </div>
-            <div className="flex gap-2 stagger-children">
+            
+            {/* Bottom Row: Call Now + Send Email */}
+            <div className="grid grid-cols-2 gap-2 stagger-children">
               <a 
                 href="tel:+919866123350"
-                className="flex-1"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Button variant="outline" className="w-full hover-lift ripple group">
-                  <Phone className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                  Call Now
+                  <Phone className="h-4 w-4 mr-1.5 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="text-xs">Call Now</span>
                 </Button>
               </a>
               <a 
                 href="mailto:myinfrahub.com@gmail.com"
-                className="flex-1"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Button variant="outline" className="w-full hover-lift ripple group">
-                  <Mail className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                  Send Email
+                  <Mail className="h-4 w-4 mr-1.5 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="text-xs">Send Email</span>
                 </Button>
               </a>
             </div>
+            
+            {/* Schedule Visit - Full Width Below */}
             <div onClick={(e) => e.stopPropagation()}>
               <AppointmentDialog 
                 propertyId={property.id} 
