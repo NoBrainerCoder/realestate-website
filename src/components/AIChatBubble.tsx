@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
+import { MessageCircle, X, Send, Loader2, Phone, Mail } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -13,14 +13,18 @@ interface Message {
 const AIChatBubble = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'Hi! I\'m your AI assistant. Ask me anything about properties in Hyderabad!\n\nNeed immediate help? Contact us on WhatsApp: +91 9866123350' }
+    { 
+      role: 'assistant', 
+      content: 'Hi! I\'m your AI assistant. Ask me anything about properties in Hyderabad!\n\nNeed immediate help?\n📞 Call: +91 9866123350\n📧 Email: myinfrahub.com@gmail.com\n💬 WhatsApp: Click button below' 
+    }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const whatsappNumber = '+919866123350';
-  const whatsappLink = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`;
+  const phoneNumber = '+919866123350';
+  const email = 'myinfrahub.com@gmail.com';
+  const whatsappLink = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -130,17 +134,33 @@ const AIChatBubble = () => {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-border space-y-3">
-            {/* WhatsApp Button */}
-            <a 
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-[#25D366] hover:bg-[#20BA5A] text-white rounded-lg transition-colors duration-200 text-sm font-medium"
-            >
-              <MessageCircle className="h-4 w-4" />
-              Chat on WhatsApp: {whatsappNumber}
-            </a>
+          <div className="p-4 border-t border-border space-y-2">
+            {/* Quick Action Buttons */}
+            <div className="grid grid-cols-3 gap-2">
+              <a 
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center gap-1 py-2 px-2 bg-[#25D366] hover:bg-[#20BA5A] text-white rounded-lg transition-colors duration-200 text-xs font-medium"
+              >
+                <MessageCircle className="h-4 w-4" />
+                <span>WhatsApp</span>
+              </a>
+              <a 
+                href={`tel:${phoneNumber}`}
+                className="flex flex-col items-center justify-center gap-1 py-2 px-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors duration-200 text-xs font-medium"
+              >
+                <Phone className="h-4 w-4" />
+                <span>Call Now</span>
+              </a>
+              <a 
+                href={`mailto:${email}`}
+                className="flex flex-col items-center justify-center gap-1 py-2 px-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors duration-200 text-xs font-medium"
+              >
+                <Mail className="h-4 w-4" />
+                <span>Email</span>
+              </a>
+            </div>
             
             <div className="flex gap-2">
               <Input

@@ -1,8 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Bed, Bath, Maximize, MapPin, Phone, Eye, Calendar } from 'lucide-react';
+import { Bed, Bath, Maximize, MapPin, Phone, Eye, Calendar, Mail } from 'lucide-react';
 import AppointmentDialog from './AppointmentDialog';
+import ContactInfoDialog from './ContactInfoDialog';
 
 interface PropertyCardProps {
   property: {
@@ -115,12 +116,38 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
                   View Details
                 </Button>
               </Link>
-              <Link to="/contact" className="flex-1" onClick={(e) => e.stopPropagation()}>
-                <Button className="w-full btn-hero ripple group">
-                  <Phone className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                  Contact
+              <div className="flex-1" onClick={(e) => e.stopPropagation()}>
+                <ContactInfoDialog 
+                  trigger={
+                    <Button className="w-full btn-hero ripple group">
+                      <Phone className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                      Contact
+                    </Button>
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex gap-2 stagger-children">
+              <a 
+                href="tel:+919866123350"
+                className="flex-1"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Button variant="outline" className="w-full hover-lift ripple group">
+                  <Phone className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                  Call Now
                 </Button>
-              </Link>
+              </a>
+              <a 
+                href="mailto:myinfrahub.com@gmail.com"
+                className="flex-1"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Button variant="outline" className="w-full hover-lift ripple group">
+                  <Mail className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                  Send Email
+                </Button>
+              </a>
             </div>
             <div onClick={(e) => e.stopPropagation()}>
               <AppointmentDialog 

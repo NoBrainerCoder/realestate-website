@@ -193,14 +193,18 @@ const PropertyDetails = () => {
                   propertyId={property.id} 
                   propertyTitle={property.title}
                 />
-                <Button className="w-full btn-hero">
-                  <Phone className="h-4 w-4 mr-2" />
-                  Call Now
-                </Button>
-                <Button variant="outline" className="w-full">
-                  <Mail className="h-4 w-4 mr-2" />
-                  Send Email
-                </Button>
+                <a href={`tel:${property.poster_phone}`} className="block">
+                  <Button className="w-full btn-hero">
+                    <Phone className="h-4 w-4 mr-2" />
+                    Call Now
+                  </Button>
+                </a>
+                <a href={`mailto:${property.poster_email}`} className="block">
+                  <Button variant="outline" className="w-full">
+                    <Mail className="h-4 w-4 mr-2" />
+                    Send Email
+                  </Button>
+                </a>
               </div>
             </div>
           </div>

@@ -489,7 +489,23 @@ const PostProperty = () => {
               {/* Media Upload */}
               <div className="space-y-2">
                 <Label>Property Images & Videos</Label>
-                <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6">
+                <div 
+                  className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 transition-colors hover:border-primary/50"
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.classList.add('border-primary', 'bg-primary/5');
+                  }}
+                  onDragLeave={(e) => {
+                    e.currentTarget.classList.remove('border-primary', 'bg-primary/5');
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.classList.remove('border-primary', 'bg-primary/5');
+                    if (e.dataTransfer.files) {
+                      addMedia(e.dataTransfer.files);
+                    }
+                  }}
+                >
                   <div className="text-center">
                     <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground/50" />
                     <div className="mt-4 flex gap-2 justify-center">
@@ -512,7 +528,10 @@ const PostProperty = () => {
                       />
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
-                      Upload images (JPEG, PNG, WebP) and videos (MP4, MOV, WebM)
+                      Drag & drop files here, or click to browse
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Supported: Images (JPEG, PNG, WebP) and Videos (MP4, MOV, WebM)
                     </p>
                   </div>
                 </div>
@@ -599,14 +618,14 @@ const PostProperty = () => {
           </Card>
 
           {/* Approval Notice */}
-          <Card className="bg-amber-50 border-amber-200">
+          <Card className="bg-amber-50 border-amber-200 dark:bg-amber-950/20 dark:border-amber-900/30">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <Clock className="h-5 w-5 text-amber-600" />
+                <Clock className="h-5 w-5 text-amber-600 dark:text-amber-500" />
                 <div>
-                  <p className="font-medium text-amber-800">Pending Approval</p>
-                  <p className="text-sm text-amber-700">
-                    Your property has been submitted and will be reviewed by our admin team.
+                  <p className="font-medium text-amber-800 dark:text-amber-300">Pending Approval</p>
+                  <p className="text-sm text-amber-700 dark:text-amber-400">
+                    Your property has been submitted and is under review by our admin team for approval before publishing.
                   </p>
                 </div>
               </div>

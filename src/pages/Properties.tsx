@@ -187,8 +187,8 @@ const Properties = () => {
         {/* Properties Grid/List */}
         {filteredProperties.length === 0 ? (
           <div className="text-center py-12 fade-in-scale">
-            <h3 className="text-xl font-semibold mb-2">No properties found</h3>
-            <p className="text-muted-foreground">Try adjusting your search criteria</p>
+            <h3 className="text-xl font-semibold mb-2">No matching properties found</h3>
+            <p className="text-muted-foreground">Please try adjusting your filters or search terms.</p>
           </div>
         ) : (
           <div className={`grid gap-6 stagger-children ${
