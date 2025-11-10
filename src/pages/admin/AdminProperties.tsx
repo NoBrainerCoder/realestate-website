@@ -48,7 +48,8 @@ import {
   User,
   Building2,
   ShoppingCart,
-  Trash2
+  Trash2,
+  Plus
 } from 'lucide-react';
 import { displayPrice } from '@/utils/priceFormatter';
 
@@ -234,12 +235,86 @@ const AdminProperties = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-properties'] });
       toast({
         title: 'Success',
-        description: 'Media file deleted successfully'
+        description: 'Media deleted successfully'
       });
     } catch (error: any) {
       toast({
         title: 'Error',
         description: error.message || 'Failed to delete media',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleAdminMediaUpload = async (propertyId: string, files: FileList) => {
+    try {
+      const fileArray = Array.from(files);
+      
+      // Count images and videos
+      const imageCount = fileArray.filter(f => f.type.startsWith('image/')).length;
+      const videoCount = fileArray.filter(f => f.type.startsWith('video/')).length;
+      const existingImages = selectedProperty?.property_images?.filter((m: any) => m.media_type === 'image').length || 0;
+      const existingVideos = selectedProperty?.property_images?.filter((m: any) => m.media_type === 'video').length || 0;
+      
+      if (existingImages + imageCount > 10) {
+        toast({
+          title: 'Error',
+          description: 'Maximum 10 images allowed',
+          variant: 'destructive'
+        });
+        return;
+      }
+      
+      if (existingVideos + videoCount > 3) {
+        toast({
+          title: 'Error',
+          description: 'Maximum 3 videos allowed',
+          variant: 'destructive'
+        });
+        return;
+      }
+
+      toast({
+        title: 'Uploading',
+        description: 'Uploading media files...'
+      });
+
+      for (const file of fileArray) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${propertyId}/${fileName}`;
+
+        const { error: uploadError, data } = await supabase.storage
+          .from('property-images')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('property-images')
+          .getPublicUrl(filePath);
+
+        const mediaType = file.type.startsWith('video/') ? 'video' : 'image';
+
+        await supabase
+          .from('property_images')
+          .insert({
+            property_id: propertyId,
+            image_url: publicUrl,
+            media_type: mediaType,
+          });
+      }
+
+      toast({
+        title: 'Success',
+        description: 'Media uploaded successfully'
+      });
+      await queryClient.invalidateQueries({ queryKey: ['admin-properties'] });
+    } catch (error: any) {
+      console.error('Error uploading media:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to upload media',
         variant: 'destructive'
       });
     }
@@ -466,9 +541,34 @@ const AdminProperties = () => {
                             </div>
                           </div>
                         )}
-                        {selectedProperty?.property_images && selectedProperty.property_images.length > 0 && (
-                          <div>
-                            <h4 className="font-semibold mb-2">Property Media</h4>
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-semibold">Property Media</h4>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="file"
+                                id="admin-media-upload"
+                                multiple
+                                accept="image/*,video/*"
+                                className="hidden"
+                                onChange={(e) => {
+                                  if (e.target.files && selectedProperty) {
+                                    handleAdminMediaUpload(selectedProperty.id, e.target.files);
+                                  }
+                                }}
+                              />
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => document.getElementById('admin-media-upload')?.click()}
+                                disabled={updatePropertyMutation.isPending}
+                              >
+                                <Plus className="h-4 w-4 mr-2" />
+                                Add Media
+                              </Button>
+                            </div>
+                          </div>
+                          {selectedProperty?.property_images && selectedProperty.property_images.length > 0 ? (
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                               {selectedProperty.property_images.map((media: any) => (
                                 <div key={media.id} className="relative group">
@@ -512,8 +612,10 @@ const AdminProperties = () => {
                                 </div>
                               ))}
                             </div>
-                          </div>
-                        )}
+                          ) : (
+                            <p className="text-sm text-muted-foreground">No media uploaded yet</p>
+                          )}
+                        </div>
                       </div>
                     </DialogContent>
                   </Dialog>

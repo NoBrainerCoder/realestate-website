@@ -42,7 +42,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   return (
     <div 
       onClick={handleCardClick}
-      className="bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-elegant group"
+      className="bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ease-smooth hover:scale-[1.03] hover:shadow-[0_8px_30px_rgba(59,130,246,0.2)] hover:border-primary/30 group"
     >
       {/* Image */}
       <div className="relative overflow-hidden">
@@ -69,7 +69,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         <div className="space-y-4">
           {/* Title and Location */}
           <div className="text-slide-up">
-            <h3 className="text-lg font-semibold text-foreground mb-1 line-clamp-2 transition-all duration-300 group-hover:-translate-y-1 hover:text-primary">
+            <h3 className="text-lg font-semibold text-foreground mb-1 line-clamp-2 transition-all duration-300 ease-smooth group-hover:-translate-y-1 hover:text-primary">
               {property.title}
             </h3>
             <div className="flex items-center text-muted-foreground hover:text-foreground transition-colors duration-300">
@@ -102,7 +102,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
 
           {/* Price */}
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-primary">
+            <div className="text-2xl font-bold text-primary transition-all duration-300 ease-smooth group-hover:-translate-y-1">
               {formatPrice(property.price)}
             </div>
           </div>

@@ -176,6 +176,13 @@ export default {
           "0%, 100%": { boxShadow: "0 0 5px hsl(var(--primary))" },
           "50%": { boxShadow: "0 0 20px hsl(var(--primary)), 0 0 30px hsl(var(--primary))" },
         },
+        
+        // Wind sweep
+        "wind-sweep": {
+          "0%": { transform: "translateX(-100%)", opacity: "0" },
+          "50%": { opacity: "0.5" },
+          "100%": { transform: "translateX(100%)", opacity: "0" },
+        },
       },
       animation: {
         // Default animations
@@ -203,6 +210,7 @@ export default {
         "shake": "shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97)",
         "float": "float 3s ease-in-out infinite",
         "glow": "glow 2s ease-in-out infinite alternate",
+        "wind-sweep": "wind-sweep 0.7s cubic-bezier(0.4, 0, 0.2, 1)",
         
         // Combined animations
         "enter": "fade-in 0.3s ease-out, scale-in 0.2s ease-out",
