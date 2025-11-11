@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Bed, Bath, Maximize, MapPin, Phone, Eye, Calendar, Mail } from 'lucide-react';
 import AppointmentDialog from './AppointmentDialog';
 import ContactInfoDialog from './ContactInfoDialog';
+import ImageLightbox from './ImageLightbox';
 
 interface PropertyCardProps {
   property: {
@@ -24,9 +26,15 @@ interface PropertyCardProps {
 
 const PropertyCard = ({ property }: PropertyCardProps) => {
   const navigate = useNavigate();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const handleCardClick = () => {
     navigate(`/property/${property.id}`);
+  };
+
+  const handleImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightboxOpen(true);
   };
 
   const formatPrice = (price: number) => {
@@ -45,13 +53,19 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
       className="property-card-animate bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ease-smooth hover:scale-[1.02] hover:shadow-[0_4px_20px_rgba(255,165,0,0.25)] hover:border-[#FFA500]/30 group"
     >
       {/* Image */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden cursor-pointer" onClick={handleImageClick}>
         <img 
           src={property.image} 
           alt={property.title}
           className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-white text-sm font-medium bg-black/50 px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Click to view
+            </span>
+          </div>
+        </div>
         {property.status === 'sold_out' && (
           <Badge className="absolute top-3 right-3 bg-destructive hover:bg-destructive text-destructive-foreground text-lg px-6 py-2 shadow-elegant animate-pulse z-10">
             SOLD OUT
@@ -161,6 +175,19 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           </div>
         </div>
       </div>
+
+      {/* Lightbox */}
+      <ImageLightbox
+        media={[{
+          id: property.id,
+          image_url: property.image,
+          media_type: 'image',
+          display_order: 0
+        }]}
+        initialIndex={0}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+      />
     </div>
   );
 };

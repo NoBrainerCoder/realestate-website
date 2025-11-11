@@ -548,6 +548,50 @@
     }
   }
 
+  /* Lightbox Animations */
+  .lightbox {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .lightbox-content {
+    animation: scaleIn 0.3s ease-out;
+  }
+
+  .lightbox-image {
+    animation: imageZoomIn 0.3s ease-out;
+  }
+
+  @keyframes imageZoomIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   /* Background Animations */
   .bg-image-slide {
     animation: backgroundSlide 5s infinite;

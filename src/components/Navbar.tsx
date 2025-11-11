@@ -126,17 +126,17 @@ const Navbar = () => {
                     onClick={signOut}
                     variant="outline" 
                     size="sm" 
-                    className="hover-lift ripple bg-transparent border-white text-white hover:bg-white/10 hover:text-white hover:border-white text-xs px-2.5 py-1.5 h-8"
+                    className="sign-btn hover-lift ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:scale-105 hover:border-[#7FB3FF] text-xs px-2.5 py-1.5 h-8 rounded-lg transition-all duration-300"
                   >
-                    <LogOut className="h-3.5 w-3.5 mr-1.5" />
+                    <LogOut className="h-3.5 w-3.5 mr-1.5 transition-transform duration-300 group-hover:translate-x-1" />
                     Sign Out
                   </Button>
                 </div>
               ) : (
                 <div className="flex items-center space-x-1.5">
                   <Link to="/sign-in">
-                    <Button variant="outline" size="sm" className="hover-lift ripple bg-transparent border-white text-white hover:bg-white/10 hover:text-white hover:border-white text-xs px-2.5 py-1.5 h-8">
-                      <LogIn className="h-3.5 w-3.5 mr-1.5" />
+                    <Button variant="outline" size="sm" className="sign-btn hover-lift ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:scale-105 hover:border-[#7FB3FF] text-xs px-2.5 py-1.5 h-8 rounded-lg transition-all duration-300 group">
+                      <LogIn className="h-3.5 w-3.5 mr-1.5 transition-transform duration-300 group-hover:translate-x-1" />
                       Sign In
                     </Button>
                   </Link>
@@ -224,7 +224,7 @@ const Navbar = () => {
                       }}
                       variant="outline"
                       size="sm"
-                      className="w-full justify-start mt-2 ripple bg-transparent border-white text-white hover:bg-white/10 hover:text-white hover:border-white"
+                      className="sign-btn w-full justify-start mt-2 ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:border-[#7FB3FF] rounded-lg transition-all duration-300"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
                       Sign Out
@@ -233,7 +233,7 @@ const Navbar = () => {
                 ) : (
                   <div className="space-y-2">
                     <Link to="/sign-in" onClick={closeMenu}>
-                      <Button variant="outline" size="sm" className="w-full justify-start ripple bg-transparent border-white text-white hover:bg-white/10 hover:text-white hover:border-white">
+                      <Button variant="outline" size="sm" className="sign-btn w-full justify-start ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:border-[#7FB3FF] rounded-lg transition-all duration-300">
                         <LogIn className="h-4 w-4 mr-2" />
                         Sign In
                       </Button>
