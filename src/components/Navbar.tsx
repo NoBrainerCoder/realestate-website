@@ -135,9 +135,8 @@ const Navbar = () => {
               ) : (
                 <div className="flex items-center space-x-1.5">
                   <Link to="/sign-in">
-                    <Button variant="outline" size="sm" className="sign-btn hover-lift ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:scale-105 hover:border-[#7FB3FF] text-xs px-2.5 py-1.5 h-8 rounded-lg transition-all duration-300 group">
-                      <LogIn className="h-3.5 w-3.5 mr-1.5 transition-transform duration-300 group-hover:translate-x-1" />
-                      Sign In
+                    <Button variant="outline" size="sm" className="sign-btn-glass hover-lift ripple bg-white/15 border-2 border-white/25 text-white backdrop-blur-sm hover:bg-gradient-to-br hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_15px_rgba(111,170,255,0.6)] hover:scale-105 hover:border-white/40 rounded-full w-10 h-10 p-0 flex items-center justify-center transition-all duration-300 group">
+                      <LogIn className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </Button>
                   </Link>
                   <Link to="/sign-up">
@@ -233,7 +232,7 @@ const Navbar = () => {
                 ) : (
                   <div className="space-y-2">
                     <Link to="/sign-in" onClick={closeMenu}>
-                      <Button variant="outline" size="sm" className="sign-btn w-full justify-start ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:border-[#7FB3FF] rounded-lg transition-all duration-300">
+                      <Button variant="outline" size="sm" className="sign-btn w-full justify-start ripple bg-white/15 border-2 border-white/25 text-white backdrop-blur-sm hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:border-white/40 rounded-lg transition-all duration-300">
                         <LogIn className="h-4 w-4 mr-2" />
                         Sign In
                       </Button>
