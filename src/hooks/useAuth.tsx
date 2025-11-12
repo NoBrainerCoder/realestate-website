@@ -106,14 +106,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const redirectUrl = `${window.location.origin}/`;
       
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl,
-          data: {
-            email_confirm: true
-          }
+          emailRedirectTo: redirectUrl
         }
       });
 
@@ -124,10 +121,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           variant: "destructive",
         });
       } else {
-        // Auto-login successful - no email verification needed
         toast({
-          title: "Account Created!",
-          description: "Welcome to MyInfraHub! You're now signed in.",
+          title: "Check Your Email",
+          description: "Please check your email for a confirmation link to complete your registration.",
         });
       }
 
