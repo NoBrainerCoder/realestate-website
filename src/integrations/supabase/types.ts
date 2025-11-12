@@ -54,7 +54,15 @@ export type Database = {
           visitor_name?: string
           visitor_phone?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "appointment_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       contact_submissions: {
         Row: {
@@ -249,7 +257,15 @@ export type Database = {
           media_type?: string
           property_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "property_images_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

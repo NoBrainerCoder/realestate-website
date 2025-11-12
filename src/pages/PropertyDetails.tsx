@@ -83,7 +83,7 @@ const PropertyDetails = () => {
             {/* Property Media Gallery */}
             {property.property_images && property.property_images.length > 0 ? (
               <PropertyImageCarousel 
-                images={property.property_images.map(img => ({
+                images={(property.property_images as any).map((img: any) => ({
                   ...img,
                   media_type: img.media_type as 'image' | 'video'
                 }))}

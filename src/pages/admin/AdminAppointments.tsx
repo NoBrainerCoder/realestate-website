@@ -116,10 +116,10 @@ const AdminAppointments = () => {
                       <TableCell>
                         <div>
                           <p className="font-medium">
-                            {appointment.properties?.title}
+                            {(appointment.properties as any)?.title}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            {appointment.properties?.location}
+                            {(appointment.properties as any)?.location}
                           </p>
                         </div>
                       </TableCell>

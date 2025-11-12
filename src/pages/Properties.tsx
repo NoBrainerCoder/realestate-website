@@ -42,7 +42,7 @@ const Properties = () => {
         type: property.property_type,
         bedrooms: parseInt(property.bedrooms),
         bathrooms: parseInt(property.bathrooms),
-        image: property.property_images?.[0]?.image_url || '/placeholder.svg',
+        image: (property.property_images as any)?.[0]?.image_url || '/placeholder.svg',
         isNew: new Date(property.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Properties less than 7 days old
       }));
     }
