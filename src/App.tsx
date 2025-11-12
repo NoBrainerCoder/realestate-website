@@ -18,6 +18,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import Appointments from "./pages/Appointments";
@@ -50,6 +52,8 @@ const App = () => (
                 <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
                 <Route path="/sign-in" element={<PageTransition><SignIn /></PageTransition>} />
                 <Route path="/sign-up" element={<PageTransition><SignUp /></PageTransition>} />
+                <Route path="/forgot-password" element={<PageTransition><ForgotPassword /></PageTransition>} />
+                <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
                 <Route path="/appointments" element={<PageTransition><Appointments /></PageTransition>} />
                 <Route path="/privacy-policy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
                 
