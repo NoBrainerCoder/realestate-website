@@ -110,10 +110,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl,
-          data: {
-            email_confirm: true
-          }
+          emailRedirectTo: redirectUrl
         }
       });
 
