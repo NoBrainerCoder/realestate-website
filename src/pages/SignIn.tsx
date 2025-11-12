@@ -9,7 +9,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
 const SignIn = () => {
-  const { signIn, signInWithGoogle, user } = useAuth();
+  const { signIn, signInWithGoogle, user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as any)?.from || '/';
@@ -21,12 +21,16 @@ const SignIn = () => {
     password: '',
   });
 
-  // Redirect if already authenticated
+  // Redirect authenticated users to appropriate dashboard
   useEffect(() => {
-    if (user) {
-      navigate(from);
+    if (user && !authLoading) {
+      if (isAdmin) {
+        navigate('/admin');
+      } else {
+        navigate(from);
+      }
     }
-  }, [user, navigate, from]);
+  }, [user, isAdmin, authLoading, navigate, from]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
