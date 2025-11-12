@@ -54,22 +54,7 @@ export type Database = {
           visitor_name?: string
           visitor_phone?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "appointment_requests_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "appointment_requests_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties_public"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       contact_submissions: {
         Row: {
@@ -264,22 +249,7 @@ export type Database = {
           media_type?: string
           property_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "property_images_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "property_images_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties_public"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_roles: {
         Row: {
@@ -304,66 +274,7 @@ export type Database = {
       }
     }
     Views: {
-      properties_public: {
-        Row: {
-          age: string | null
-          amenities: string[] | null
-          area: number | null
-          bathrooms: string | null
-          bedrooms: string | null
-          created_at: string | null
-          description: string | null
-          furnishing: string | null
-          id: string | null
-          location: string | null
-          poster_name: string | null
-          price: number | null
-          property_type: string | null
-          status: string | null
-          title: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          age?: string | null
-          amenities?: string[] | null
-          area?: number | null
-          bathrooms?: string | null
-          bedrooms?: string | null
-          created_at?: string | null
-          description?: string | null
-          furnishing?: string | null
-          id?: string | null
-          location?: string | null
-          poster_name?: string | null
-          price?: number | null
-          property_type?: string | null
-          status?: string | null
-          title?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          age?: string | null
-          amenities?: string[] | null
-          area?: number | null
-          bathrooms?: string | null
-          bedrooms?: string | null
-          created_at?: string | null
-          description?: string | null
-          furnishing?: string | null
-          id?: string | null
-          location?: string | null
-          poster_name?: string | null
-          price?: number | null
-          property_type?: string | null
-          status?: string | null
-          title?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       can_view_property_contact: {
