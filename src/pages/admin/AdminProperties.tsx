@@ -467,9 +467,10 @@ const AdminProperties = () => {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Poster Type</p>
                     <div className="flex items-center gap-1 text-sm">
-                      {property.poster_type === 'builder' && '🏗️ Builder'}
-                      {property.poster_type === 'agent' && '🧑‍💼 Agent'}
-                      {property.poster_type === 'owner' && '🏡 Owner'}
+                      {(property as any).poster_type === 'builder' && '🏗️ Builder'}
+                      {(property as any).poster_type === 'agent' && '🧑‍💼 Agent'}
+                      {(property as any).poster_type === 'owner' && '🏡 Owner'}
+                      {!(property as any).poster_type && '🏡 Owner'}
                     </div>
                   </div>
                   <div>
