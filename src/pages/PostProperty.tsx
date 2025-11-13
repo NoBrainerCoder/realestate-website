@@ -47,6 +47,7 @@ const PostProperty = () => {
     posterName: '',
     posterPhone: '',
     posterEmail: '',
+    posterType: 'owner' as 'owner' | 'agent' | 'builder',
   });
   
 
@@ -184,6 +185,7 @@ const PostProperty = () => {
         title: '', description: '', location: '', area: '', price: '',
         bedrooms: '', bathrooms: '', furnishing: '', propertyType: '',
         amenities: [], age: '', posterName: '', posterPhone: '', posterEmail: '',
+        posterType: 'owner',
       });
       setPriceDisplay('');
       clearMedia();
@@ -578,6 +580,23 @@ const PostProperty = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="posterType">You are a *</Label>
+                <Select
+                  value={formData.posterType}
+                  onValueChange={(value) => handleInputChange('posterType', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="owner">🏡 Owner</SelectItem>
+                    <SelectItem value="agent">🧑‍💼 Agent</SelectItem>
+                    <SelectItem value="builder">🏗️ Builder</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="posterName">Your Name *</Label>

@@ -69,8 +69,11 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-muted/30 page-transition">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Admin Dashboard</h1>
+        {/* Animated Greeting */}
+        <div className="mb-8 animate-fade-in">
+          <h1 className="text-4xl font-bold text-foreground mb-2 animate-slide-in-right">
+            👋 Welcome back, Mr. Khan!
+          </h1>
           <p className="text-lg text-muted-foreground">Manage properties, contacts, and more</p>
         </div>
 

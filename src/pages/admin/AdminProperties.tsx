@@ -463,7 +463,15 @@ const AdminProperties = () => {
               </CardHeader>
               
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Poster Type</p>
+                    <div className="flex items-center gap-1 text-sm">
+                      {property.poster_type === 'builder' && '🏗️ Builder'}
+                      {property.poster_type === 'agent' && '🧑‍💼 Agent'}
+                      {property.poster_type === 'owner' && '🏡 Owner'}
+                    </div>
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Contact Person</p>
                     <div className="flex items-center gap-1 text-sm">
