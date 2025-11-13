@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Upload, X, Building2, Clock, ImageIcon, Home, Key } from 'lucide-react';
+import { Upload, X, Building2, Clock, ImageIcon, Home, Key, Check, ChevronsUpDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -15,6 +15,10 @@ import { useEffect } from 'react';
 import { useMediaUpload } from '@/hooks/useMediaUpload';
 import { displayPrice, parsePriceShorthand } from '@/utils/priceFormatter';
 import { supabase } from '@/integrations/supabase/client';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 const PostProperty = () => {
   const { toast } = useToast();
@@ -32,6 +36,25 @@ const PostProperty = () => {
   const [priceDisplay, setPriceDisplay] = useState('');
   const [showPropertyTypeModal, setShowPropertyTypeModal] = useState(true);
   const [propertyFor, setPropertyFor] = useState<'rent' | 'sell' | ''>('');
+  const [locationOpen, setLocationOpen] = useState(false);
+
+  // Hyderabad areas list for autocomplete
+  const hyderabadAreas = [
+    'Ameerpet', 'Attapur', 'Banjara Hills', 'Begumpet', 'Chanda Nagar', 'Gachibowli', 'Hitech City',
+    'Kondapur', 'Kukatpally', 'Madhapur', 'Manikonda', 'Miyapur', 'Nizampet', 'Puppalaguda',
+    'Begum Bazar', 'Bholakpur', 'Chandrayangutta', 'Charminar', 'Chaderghat', 'Dabeerpura', 'Dilsukhnagar',
+    'Erragadda', 'Feelkhana', 'Golconda Fort', 'Goshamahal', 'Gudimalkapur', 'Himayatnagar', 'Hyderguda',
+    'Jubilee Hills', 'Karwan', 'Khairatabad', 'King Koti', 'Koti', 'Lakdikapool', 'Malakpet', 'Masab Tank',
+    'Mehdipatnam', 'Musheerabad', 'Narayanguda', 'Nampally', 'Old City', 'Panjagutta', 'Pragatinagar', 
+    'Purani Haveli', 'Rajendranagar', 'Red Hills', 'Sanathnagar', 'Sanjeeva Reddy Nagar', 'Santosh Nagar', 
+    'Secunderabad', 'Shahalibanda', 'Shalibanda', 'Somajiguda', 'Tappachabutra', 'Tolichowki', 'Yakutpura',
+    'Alwal', 'Bollaram', 'Bowenpally', 'Balanagar', 'Chintal', 'Compally', 'Dundigal', 'Gajularamaram',
+    'Jeedimetla', 'Medchal', 'Qutubullapur', 'Uppal', 'LB Nagar', 'Nagole', 'Hayathnagar', 'Vanasthalipuram',
+    'Boduppal', 'Peerzadiguda', 'Champapet', 'Narsingi', 'Financial District', 'Kokapet', 'Nanakramguda',
+    'Raidurg', 'Serilingampally', 'Shaikpet', 'Tellapur', 'Gopanpally', 'Kollur', 'Patancheru', 'Bachupally',
+    'Pragathi Nagar', 'KPHB', 'Moosapet', 'SR Nagar', 'Ameenpur', 'Lingampally'
+  ].sort();
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -271,6 +294,39 @@ const PostProperty = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
+          {/* User Type Selection */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Who are you?</CardTitle>
+              <CardDescription>
+                Select your classification
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <Label>I am a *</Label>
+                <RadioGroup
+                  value={formData.posterType}
+                  onValueChange={(value) => handleInputChange('posterType', value as 'owner' | 'agent' | 'builder')}
+                  className="flex flex-col space-y-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="owner" id="owner" />
+                    <Label htmlFor="owner" className="cursor-pointer">🏡 Owner</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="agent" id="agent" />
+                    <Label htmlFor="agent" className="cursor-pointer">🧑‍💼 Agent</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="builder" id="builder" />
+                    <Label htmlFor="builder" className="cursor-pointer">🏗️ Builder</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Basic Information */}
           <Card>
             <CardHeader>
@@ -293,13 +349,45 @@ const PostProperty = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="location">Location *</Label>
-                  <Input
-                    id="location"
-                    value={formData.location}
-                    onChange={(e) => handleInputChange('location', e.target.value)}
-                    placeholder="e.g., Gachibowli, Hyderabad"
-                    required
-                  />
+                  <Popover open={locationOpen} onOpenChange={setLocationOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={locationOpen}
+                        className="w-full justify-between"
+                      >
+                        {formData.location || "Select location..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command>
+                        <CommandInput placeholder="Search location..." />
+                        <CommandEmpty>No location found.</CommandEmpty>
+                        <CommandGroup className="max-h-64 overflow-auto">
+                          {hyderabadAreas.map((area) => (
+                            <CommandItem
+                              key={area}
+                              value={area}
+                              onSelect={(currentValue) => {
+                                handleInputChange('location', currentValue);
+                                setLocationOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  formData.location === area ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {area}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
 
@@ -580,23 +668,6 @@ const PostProperty = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="posterType">You are a *</Label>
-                <Select
-                  value={formData.posterType}
-                  onValueChange={(value) => handleInputChange('posterType', value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="owner">🏡 Owner</SelectItem>
-                    <SelectItem value="agent">🧑‍💼 Agent</SelectItem>
-                    <SelectItem value="builder">🏗️ Builder</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="posterName">Your Name *</Label>
