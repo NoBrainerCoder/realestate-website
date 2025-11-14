@@ -172,7 +172,9 @@ export type Database = {
           poster_email: string
           poster_name: string
           poster_phone: string
+          poster_type: string
           price: number
+          property_code: string | null
           property_for: string
           property_type: string
           rejection_reason: string | null
@@ -196,7 +198,9 @@ export type Database = {
           poster_email: string
           poster_name: string
           poster_phone: string
+          poster_type?: string
           price: number
+          property_code?: string | null
           property_for?: string
           property_type: string
           rejection_reason?: string | null
@@ -220,7 +224,9 @@ export type Database = {
           poster_email?: string
           poster_name?: string
           poster_phone?: string
+          poster_type?: string
           price?: number
+          property_code?: string | null
           property_for?: string
           property_type?: string
           rejection_reason?: string | null
@@ -297,6 +303,7 @@ export type Database = {
         Args: { property_user_id: string }
         Returns: boolean
       }
+      generate_property_code: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
