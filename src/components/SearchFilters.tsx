@@ -24,30 +24,35 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const hyderabadAreas = [
-    // Central Hyderabad
-    'Abids', 'Afzal Gunj', 'Ameerpet', 'Asif Nagar', 'Attapur', 'Azampur', 'Banjara Hills', 'Bahadurpura',
-    'Begum Bazar', 'Bholakpur', 'Chandrayangutta', 'Charminar', 'Chaderghat', 'Dabeerpura', 'Dilsukhnagar',
-    'Erragadda', 'Feelkhana', 'Golconda Fort', 'Goshamahal', 'Gudimalkapur', 'Himayatnagar', 'Hyderguda',
-    'Jubilee Hills', 'Karwan', 'Khairatabad', 'King Koti', 'Koti', 'Lakdikapool', 'Malakpet', 'Masab Tank',
-    'Mehdipatnam', 'Musheerabad', 'Narayanguda', 'Nampally', 'Old City', 'Panjagutta', 'Pragatinagar', 
-    'Purani Haveli', 'Rajendranagar', 'Red Hills', 'Sanathnagar', 'Sanjeeva Reddy Nagar', 'Santosh Nagar', 
-    'Secunderabad', 'Shahalibanda', 'Shalibanda', 'Somajiguda', 'Tappachabutra', 'Tolichowki', 'Yakutpura',
-    
-    // North Hyderabad
-    'Alwal', 'Bollaram', 'Bowenpally', 'Balanagar', 'Chintal', 'Compally', 'Dundigal', 'Gajularamaram',
-    'Hafeezpet', 'IDA Jeedimetla', 'Jeedimetla', 'Kukatpally', 'Malkajgiri', 'Medchal', 'Miyapur',
-    'Moosapet', 'Quthbullapur', 'Yapral',
-    
-    // West Hyderabad
-    'Chandanagar', 'Gachibowli', 'Gopanpally', 'Hitech City', 'Hydernagar', 'Kondapur', 'Lingampally',
-    'Madhapur', 'Madinaguda', 'Nizampet', 'Patancheru', 'Serilingampally', 'BHEL', 'Ramchandrapuram',
-    
-    // East Hyderabad
-    'Abdullapurmet', 'Amberpet', 'AS Rao Nagar', 'BN Reddy Nagar', 'Boduppal', 'Chaitanyapuri', 
-    'Chengicherla', 'Dammaiguda', 'ECIL', 'Falaknuma', 'Gaddiannaram', 'Ghatkesar', 'Hayathnagar',
-    'Habsiguda', 'KPHB Colony', 'Kapra', 'Keesara', 'L B Nagar', 'Mansoorabad', 'Moulali', 'Nagole',
-    'Nacharam', 'Peerzadiguda', 'Ramanthapur', 'RK Puram', 'Sainikpuri', 'Saroornagar', 'Tarnaka',
-    'Uppal', 'Vanasthalipuram', 'Vidyanagar', 'Moula Ali',
+    'Abids', 'Aghapura', 'Aler', 'Alkapur Township', 'Alwal', 'Amangal', 'Amberpet', 'Ameenpur', 
+    'Ameerpet', 'Anantharam', 'Anekal', 'Attapur', 'Aushapur', 'Bachupally', 'Badangpet', 
+    'Bahadurpally', 'Bandlaguda Jagir', 'Banjara Hills', 'Barkas', 'Beeramguda', 'Begumpet', 
+    'BHEL', 'Bhongir', 'Boduppal', 'Bolaram', 'Bonthapally', 'Borabanda', 'Bowenpally', 
+    'Chaderghat', 'Chaitanyapuri', 'Champapet', 'Chandanagar', 'Chandrayangutta', 'Cherlapally', 
+    'Chevella', 'Chilkuru', 'Chinthal', 'Chintakunta', 'Choutuppal', 'Dammaiguda', 'Dilsukhnagar', 
+    'Domalguda', 'Dr A.S.Rao Nagar', 'ECIL', 'Edulabad', 'Erragadda', 'Falaknuma', 'Farrukhnagar', 
+    'Gachibowli', 'Gaganpahad', 'Gajwel', 'Gandimaisamma', 'Ghatkesar', 'Gowlipura', 'Habsiguda', 
+    'Hafeezpet', 'Hayathnagar', 'Hyderguda', 'Himayatnagar', 'Hitech City', 'HMT Colony', 
+    'Hussain Sagar', 'Jadcherla', 'Jaggampet', 'Jeedimetla', 'Jillelaguda', 'Jubilee Hills', 
+    'Kachiguda', 'Kadthal', 'Kakatiya Hills', 'Kandlakoya', 'Kapra', 'Karmanghat', 'Keesara', 
+    'Kismatpur', 'Kokapet', 'Kompally', 'Kondapur', 'Kongara Kalan', 'Kothaguda', 'Kothapet', 
+    'KPHB', 'Kukatpally', 'Kurmaguda', 'LB Nagar', 'Lallaguda', 'Lingampally', 'Lingojiguda', 
+    'Madhapur', 'Madinaguda', 'Maheshwaram', 'Malkajgiri', 'Mallampet', 'Malakpet', 'Mamidpally', 
+    'Mandi Bazar', 'Mansoorabad', 'Manikonda', 'Medchal', 'Meerpet', 'Mehdipatnam', 'Miyapur', 
+    'Moinabad', 'Moosapet', 'Moula Ali', 'Nagaram', 'Nagole', 'Nallagandla', 'Nampally', 
+    'Narapally', 'Narsangi', 'Narsapur', 'Narsingi', 'Neknampur', 'Neredmet', 'Nizampet', 
+    'Omerkhan Daira', 'Osman Nagar', 'Osmania University', 'Padma Nagar', 'Patancheru', 
+    'Peerzadiguda', 'Peddamberpet', 'Peerancheru', 'Pocharam', 'Pragathi Nagar', 'Pragatinagar',
+    'Quthbullapur', 'Rajendra Nagar', 'Ramachandrapuram', 'Ramgopalpet', 'Rampally', 
+    'Ramanthapur', 'Ranga Reddy', 'Rani Gunj', 'RC Puram', 'Risalabazar', 'Safilguda', 
+    'Sangareddy', 'Saroornagar', 'Sathupalli', 'Secunderabad', 'Serilingampally', 'Shadnagar', 
+    'Shamirpet', 'Shankarpally', 'Sharadanagar', 'Shapur', 'Shivaji Nagar', 'Siddipet', 
+    'Sikandrabad', 'Sikenderguda', 'Sitaphalmandi', 'Sivarampalli', 'Somajiguda', 'Suchitra', 
+    'Sultan Bazar', 'Sun City', 'Suraram', 'Tarnaka', 'Tellapur', 'Thatti Annaram', 
+    'Tippu Khan Colony', 'Toli Chowki', 'Tolichowki', 'Tukkuguda', 'Turbalaguda', 'Uppal', 
+    'Vanastalipuram', 'Vanasthalipuram', 'Vanasthali Hills', 'Vattepally', 'Vikarabad', 
+    'Vijay Nagar Colony', 'Warangal Highway', 'Whitefields', 'Yadadri', 'Yapral', 'Yousufguda', 
+    'Zahirabad', 'Zaheerabad',
     
     // South Hyderabad
     'Adibatla', 'Aramghar', 'Badangpet', 'Bandlaguda', 'Balapur', 'Chintalkunta', 'Kothapet', 
