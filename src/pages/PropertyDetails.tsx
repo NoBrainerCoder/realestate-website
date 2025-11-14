@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield } from 'lucide-react';
+import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield } from 'lucide-react';
 import AppointmentDialog from '@/components/AppointmentDialog';
 import QuantumLoader from '@/components/QuantumLoader';
 import PropertyImageCarousel from '@/components/PropertyImageCarousel';
@@ -176,41 +176,16 @@ const PropertyDetails = () => {
           {/* Contact Sidebar */}
           <div className="space-y-6">
             <div className="bg-background rounded-2xl p-6 shadow-card sticky top-8">
-              <h3 className="text-xl font-semibold mb-4">Contact Details</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-primary" />
-                  <div>
-                    <div className="font-medium">Phone</div>
-                    <div className="text-muted-foreground">{property.poster_phone}</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="h-5 w-5 text-primary" />
-                  <div>
-                    <div className="font-medium">Email</div>
-                    <div className="text-muted-foreground">{property.poster_email}</div>
-                  </div>
-                </div>
-              </div>
+              <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
+              <p className="text-muted-foreground mb-6">
+                Schedule an appointment to get contact details and discuss this property.
+              </p>
 
-              <div className="space-y-3 mt-6">
+              <div className="space-y-3">
                 <AppointmentDialog 
                   propertyId={property.id} 
                   propertyTitle={property.title}
                 />
-                <a href={`tel:${property.poster_phone}`} className="block">
-                  <Button className="w-full btn-hero">
-                    <Phone className="h-4 w-4 mr-2" />
-                    Call Now
-                  </Button>
-                </a>
-                <a href={`mailto:${property.poster_email}`} className="block">
-                  <Button variant="outline" className="w-full">
-                    <Mail className="h-4 w-4 mr-2" />
-                    Send Email
-                  </Button>
-                </a>
               </div>
             </div>
           </div>
