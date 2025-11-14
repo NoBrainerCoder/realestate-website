@@ -679,7 +679,7 @@ const PostProperty = () => {
                         id="media-upload"
                         type="file"
                         multiple
-                        accept="image/*,video/mp4,video/webm,video/mov"
+                        accept={isAdmin ? "image/*,video/mp4,video/webm,video/mov" : "image/*"}
                         onChange={handleMediaUpload}
                         className="hidden"
                       />
@@ -688,8 +688,15 @@ const PostProperty = () => {
                       Drag & drop files here, or click to browse
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Supported: Images (JPEG, PNG, WebP) and Videos (MP4, MOV, WebM)
+                      {isAdmin 
+                        ? "Supported: Images (JPEG, PNG, WebP) and Videos (MP4, MOV, WebM)" 
+                        : "Supported: Images only (JPEG, PNG, WebP)"}
                     </p>
+                    {!isAdmin && (
+                      <p className="text-xs text-amber-600 mt-1">
+                        Note: Video uploads are only available for administrators
+                      </p>
+                    )}
                   </div>
                 </div>
                 
