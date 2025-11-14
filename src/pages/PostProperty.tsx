@@ -181,6 +181,7 @@ const PostProperty = () => {
           description: formData.description,
           location: formData.location,
           area: parseInt(formData.area),
+          area_unit: formData.areaUnit,
           price: parseFloat(formData.price),
           bedrooms: formData.bedrooms,
           bathrooms: formData.bathrooms,

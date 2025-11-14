@@ -162,6 +162,7 @@ export type Database = {
           age: string
           amenities: string[] | null
           area: number
+          area_unit: string
           bathrooms: string
           bedrooms: string
           created_at: string
@@ -188,6 +189,7 @@ export type Database = {
           age: string
           amenities?: string[] | null
           area: number
+          area_unit?: string
           bathrooms: string
           bedrooms: string
           created_at?: string
@@ -214,6 +216,7 @@ export type Database = {
           age?: string
           amenities?: string[] | null
           area?: number
+          area_unit?: string
           bathrooms?: string
           bedrooms?: string
           created_at?: string
