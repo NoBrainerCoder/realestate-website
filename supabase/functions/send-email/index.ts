@@ -1,5 +1,7 @@
-import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
+import { Resend } from "npm:resend@2.0.0";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.57.4';
+
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -188,41 +190,15 @@ Deno.serve(async (req) => {
     console.log('Sending email to:', to);
     console.log('Subject:', subject);
 
-    // Get SMTP credentials from environment
-    const smtpHost = Deno.env.get('SMTP_HOST');
-    const smtpPort = parseInt(Deno.env.get('SMTP_PORT') || '587');
-    const smtpUser = Deno.env.get('SMTP_USER');
-    const smtpPassword = Deno.env.get('SMTP_PASSWORD');
-    const smtpFrom = Deno.env.get('SMTP_FROM_EMAIL');
-
-    if (!smtpHost || !smtpUser || !smtpPassword || !smtpFrom) {
-      throw new Error('SMTP configuration is incomplete. Please check your environment variables.');
-    }
-
-    // Create SMTP client
-    const client = new SMTPClient({
-      connection: {
-        hostname: smtpHost,
-        port: smtpPort,
-        tls: smtpPort === 465,
-        auth: {
-          username: smtpUser,
-          password: smtpPassword,
-        },
-      },
-    });
-
-    // Send email
-    await client.send({
-      from: `MyInfraHub Notifications <${smtpFrom}>`,
-      to: to,
+    // Send email using Resend
+    const emailResponse = await resend.emails.send({
+      from: 'MyInfraHub <onboarding@resend.dev>',
+      to: [to],
       subject: subject,
       html: html,
     });
 
-    await client.close();
-
-    console.log('Email sent successfully to:', to);
+    console.log('Email sent successfully:', emailResponse);
 
     // Log email to database
     await supabase.from('email_logs').insert({
