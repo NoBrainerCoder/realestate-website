@@ -76,6 +76,7 @@ const PostProperty = () => {
     description: '',
     location: '',
     area: '',
+    areaUnit: 'SQFT' as 'SQFT' | 'SY',
     price: '',
     bedrooms: '',
     bathrooms: '',
@@ -105,12 +106,15 @@ const PostProperty = () => {
         [field]: numericValue.toString()
       }));
     } else if (field === 'propertyType') {
-      // Auto-fill N/A for land-only property types
-      const landPropertyTypes = ['plot', 'open-plot', 'farmhouse-land', 'agriculture-land', 'open-land'];
+      // Auto-fill N/A for land-only property types and set appropriate unit
+      const landPropertyTypes = ['residential-plot', 'commercial-plot', 'industrial-shed', 'agricultural-land'];
+      const shouldUseSY = landPropertyTypes.includes(value);
+      
       if (landPropertyTypes.includes(value)) {
         setFormData(prev => ({ 
           ...prev, 
           [field]: value,
+          areaUnit: 'SY',
           bedrooms: 'N/A',
           bathrooms: 'N/A',
           furnishing: 'N/A',
@@ -119,7 +123,8 @@ const PostProperty = () => {
       } else {
         setFormData(prev => ({
           ...prev,
-          [field]: value
+          [field]: value,
+          areaUnit: 'SQFT'
         }));
       }
     } else {
@@ -239,7 +244,7 @@ const PostProperty = () => {
 
       // Reset form
       setFormData({
-        title: '', description: '', location: '', area: '', price: '',
+        title: '', description: '', location: '', area: '', areaUnit: 'SQFT', price: '',
         bedrooms: '', bathrooms: '', furnishing: '', propertyType: '',
         amenities: [], age: '', posterName: '', posterPhone: '', posterEmail: '',
         posterType: 'owner',
@@ -494,17 +499,27 @@ const PostProperty = () => {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="area">
-                    Area ({formData.propertyType === 'open-plot' ? 'sq y' : 'sq ft'}) *
-                  </Label>
-                  <Input
-                    id="area"
-                    type="number"
-                    value={formData.area}
-                    onChange={(e) => handleInputChange('area', e.target.value)}
-                    placeholder={formData.propertyType === 'open-plot' ? 'e.g., 200' : 'e.g., 1450'}
-                    required
-                  />
+                  <Label htmlFor="area">Area *</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="area"
+                      type="number"
+                      value={formData.area}
+                      onChange={(e) => handleInputChange('area', e.target.value)}
+                      placeholder={formData.areaUnit === 'SY' ? 'e.g., 200' : 'e.g., 1450'}
+                      required
+                      className="flex-1"
+                    />
+                    <Select value={formData.areaUnit} onValueChange={(value) => handleInputChange('areaUnit', value)}>
+                      <SelectTrigger className="w-24">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="SQFT">SQFT</SelectItem>
+                        <SelectItem value="SY">SY</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="age">Property Age *</Label>

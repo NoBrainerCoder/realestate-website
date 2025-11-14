@@ -281,14 +281,17 @@ const AdminProperties = () => {
 
       for (const file of fileArray) {
         const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
         const filePath = `${propertyId}/${fileName}`;
 
-        const { error: uploadError, data } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('property-images')
           .upload(filePath, file);
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw uploadError;
+        }
 
         const { data: { publicUrl } } = supabase.storage
           .from('property-images')
@@ -296,20 +299,27 @@ const AdminProperties = () => {
 
         const mediaType = file.type.startsWith('video/') ? 'video' : 'image';
 
-        await supabase
+        const { error: insertError } = await supabase
           .from('property_images')
           .insert({
             property_id: propertyId,
             image_url: publicUrl,
             media_type: mediaType,
           });
+
+        if (insertError) {
+          console.error('Insert error:', insertError);
+          throw insertError;
+        }
       }
 
+      // Invalidate queries and close dialog
+      await queryClient.invalidateQueries({ queryKey: ['admin-properties'] });
+      
       toast({
         title: 'Success',
         description: 'Media uploaded successfully'
       });
-      await queryClient.invalidateQueries({ queryKey: ['admin-properties'] });
     } catch (error: any) {
       console.error('Error uploading media:', error);
       toast({
