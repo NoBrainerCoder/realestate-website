@@ -452,7 +452,7 @@ const AdminProperties = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <Ruler className="h-4 w-4" />
-                        {property.area} sq ft
+                        {property.area} {property.property_type === 'open-plot' ? 'sq y' : 'sq ft'}
                       </div>
                     </div>
                   </div>
@@ -463,7 +463,13 @@ const AdminProperties = () => {
               </CardHeader>
               
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Property Code</p>
+                    <div className="flex items-center gap-1 text-sm font-mono font-bold text-primary">
+                      {(property as any).property_code || 'N/A'}
+                    </div>
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Poster Type</p>
                     <div className="flex items-center gap-1 text-sm">

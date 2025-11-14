@@ -40,19 +40,35 @@ const PostProperty = () => {
 
   // Hyderabad areas list for autocomplete
   const hyderabadAreas = [
-    'Ameerpet', 'Attapur', 'Banjara Hills', 'Begumpet', 'Chanda Nagar', 'Gachibowli', 'Hitech City',
-    'Kondapur', 'Kukatpally', 'Madhapur', 'Manikonda', 'Miyapur', 'Nizampet', 'Puppalaguda',
-    'Begum Bazar', 'Bholakpur', 'Chandrayangutta', 'Charminar', 'Chaderghat', 'Dabeerpura', 'Dilsukhnagar',
-    'Erragadda', 'Feelkhana', 'Golconda Fort', 'Goshamahal', 'Gudimalkapur', 'Himayatnagar', 'Hyderguda',
-    'Jubilee Hills', 'Karwan', 'Khairatabad', 'King Koti', 'Koti', 'Lakdikapool', 'Malakpet', 'Masab Tank',
-    'Mehdipatnam', 'Musheerabad', 'Narayanguda', 'Nampally', 'Old City', 'Panjagutta', 'Pragatinagar', 
-    'Purani Haveli', 'Rajendranagar', 'Red Hills', 'Sanathnagar', 'Sanjeeva Reddy Nagar', 'Santosh Nagar', 
-    'Secunderabad', 'Shahalibanda', 'Shalibanda', 'Somajiguda', 'Tappachabutra', 'Tolichowki', 'Yakutpura',
-    'Alwal', 'Bollaram', 'Bowenpally', 'Balanagar', 'Chintal', 'Compally', 'Dundigal', 'Gajularamaram',
-    'Jeedimetla', 'Medchal', 'Qutubullapur', 'Uppal', 'LB Nagar', 'Nagole', 'Hayathnagar', 'Vanasthalipuram',
-    'Boduppal', 'Peerzadiguda', 'Champapet', 'Narsingi', 'Financial District', 'Kokapet', 'Nanakramguda',
-    'Raidurg', 'Serilingampally', 'Shaikpet', 'Tellapur', 'Gopanpally', 'Kollur', 'Patancheru', 'Bachupally',
-    'Pragathi Nagar', 'KPHB', 'Moosapet', 'SR Nagar', 'Ameenpur', 'Lingampally'
+    'Abids', 'Aghapura', 'Aler', 'Alkapur Township', 'Alwal', 'Amangal', 'Amberpet', 'Ameenpur', 
+    'Ameerpet', 'Anantharam', 'Anekal', 'Attapur', 'Aushapur', 'Bachupally', 'Badangpet', 
+    'Bahadurpally', 'Bandlaguda Jagir', 'Banjara Hills', 'Barkas', 'Beeramguda', 'Begumpet', 
+    'BHEL', 'Bhongir', 'Boduppal', 'Bolaram', 'Bonthapally', 'Borabanda', 'Bowenpally', 
+    'Chaderghat', 'Chaitanyapuri', 'Champapet', 'Chandanagar', 'Chandrayangutta', 'Cherlapally', 
+    'Chevella', 'Chilkuru', 'Chinthal', 'Chintakunta', 'Choutuppal', 'Dammaiguda', 'Dilsukhnagar', 
+    'Domalguda', 'Dr A.S.Rao Nagar', 'ECIL', 'Edulabad', 'Erragadda', 'Falaknuma', 'Farrukhnagar', 
+    'Gachibowli', 'Gaganpahad', 'Gajwel', 'Gandimaisamma', 'Ghatkesar', 'Gowlipura', 'Habsiguda', 
+    'Hafeezpet', 'Hayathnagar', 'Hyderguda', 'Himayatnagar', 'Hitech City', 'HMT Colony', 
+    'Hussain Sagar', 'Jadcherla', 'Jaggampet', 'Jeedimetla', 'Jillelaguda', 'Jubilee Hills', 
+    'Kachiguda', 'Kadthal', 'Kakatiya Hills', 'Kandlakoya', 'Kapra', 'Karmanghat', 'Keesara', 
+    'Kismatpur', 'Kokapet', 'Kompally', 'Kondapur', 'Kongara Kalan', 'Kothaguda', 'Kothapet', 
+    'KPHB', 'Kukatpally', 'Kurmaguda', 'LB Nagar', 'Lallaguda', 'Lingampally', 'Lingojiguda', 
+    'Madhapur', 'Madinaguda', 'Maheshwaram', 'Malkajgiri', 'Mallampet', 'Malakpet', 'Mamidpally', 
+    'Mandi Bazar', 'Mansoorabad', 'Manikonda', 'Medchal', 'Meerpet', 'Mehdipatnam', 'Miyapur', 
+    'Moinabad', 'Moosapet', 'Moula Ali', 'Nagaram', 'Nagole', 'Nallagandla', 'Nampally', 
+    'Narapally', 'Narsangi', 'Narsapur', 'Narsingi', 'Neknampur', 'Neredmet', 'Nizampet', 
+    'Omerkhan Daira', 'Osman Nagar', 'Osmania University', 'Padma Nagar', 'Patancheru', 
+    'Peerzadiguda', 'Peddamberpet', 'Peerancheru', 'Pocharam', 'Pragathi Nagar', 'Pragatinagar',
+    'Quthbullapur', 'Rajendra Nagar', 'Ramachandrapuram', 'Ramgopalpet', 'Rampally', 
+    'Ramanthapur', 'Ranga Reddy', 'Rani Gunj', 'RC Puram', 'Risalabazar', 'Safilguda', 
+    'Sangareddy', 'Saroornagar', 'Sathupalli', 'Secunderabad', 'Serilingampally', 'Shadnagar', 
+    'Shamirpet', 'Shankarpally', 'Sharadanagar', 'Shapur', 'Shivaji Nagar', 'Siddipet', 
+    'Sikandrabad', 'Sikenderguda', 'Sitaphalmandi', 'Sivarampalli', 'Somajiguda', 'Suchitra', 
+    'Sultan Bazar', 'Sun City', 'Suraram', 'Tarnaka', 'Tellapur', 'Thatti Annaram', 
+    'Tippu Khan Colony', 'Toli Chowki', 'Tolichowki', 'Tukkuguda', 'Turbalaguda', 'Uppal', 
+    'Vanastalipuram', 'Vanasthalipuram', 'Vanasthali Hills', 'Vattepally', 'Vikarabad', 
+    'Vijay Nagar Colony', 'Warangal Highway', 'Whitefields', 'Yadadri', 'Yapral', 'Yousufguda', 
+    'Zahirabad', 'Zaheerabad'
   ].sort();
 
   const [formData, setFormData] = useState({
@@ -88,6 +104,24 @@ const PostProperty = () => {
         ...prev,
         [field]: numericValue.toString()
       }));
+    } else if (field === 'propertyType') {
+      // Auto-fill N/A for land-only property types
+      const landPropertyTypes = ['plot', 'open-plot', 'farmhouse-land', 'agriculture-land', 'open-land'];
+      if (landPropertyTypes.includes(value)) {
+        setFormData(prev => ({ 
+          ...prev, 
+          [field]: value,
+          bedrooms: 'N/A',
+          bathrooms: 'N/A',
+          furnishing: 'N/A',
+          age: 'N/A'
+        }));
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          [field]: value
+        }));
+      }
     } else {
       setFormData(prev => ({
         ...prev,
@@ -460,13 +494,15 @@ const PostProperty = () => {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="area">Area (sq ft) *</Label>
+                  <Label htmlFor="area">
+                    Area ({formData.propertyType === 'open-plot' ? 'sq y' : 'sq ft'}) *
+                  </Label>
                   <Input
                     id="area"
                     type="number"
                     value={formData.area}
                     onChange={(e) => handleInputChange('area', e.target.value)}
-                    placeholder="e.g., 1450"
+                    placeholder={formData.propertyType === 'open-plot' ? 'e.g., 200' : 'e.g., 1450'}
                     required
                   />
                 </div>
@@ -477,6 +513,7 @@ const PostProperty = () => {
                       <SelectValue placeholder="Select age" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="N/A">N/A</SelectItem>
                       <SelectItem value="under-construction">Under Construction</SelectItem>
                       <SelectItem value="0-1">0-1 Years</SelectItem>
                       <SelectItem value="1-3">1-3 Years</SelectItem>
@@ -506,6 +543,10 @@ const PostProperty = () => {
                     <SelectContent>
                       <SelectItem value="flat">Flat</SelectItem>
                       <SelectItem value="plot">Plot</SelectItem>
+                      <SelectItem value="open-plot">Open Plot</SelectItem>
+                      <SelectItem value="farmhouse-land">Farmhouse Land</SelectItem>
+                      <SelectItem value="agriculture-land">Agriculture Land</SelectItem>
+                      <SelectItem value="open-land">Open Land</SelectItem>
                       <SelectItem value="independent-house">Independent House</SelectItem>
                       <SelectItem value="villa">Villa</SelectItem>
                       <SelectItem value="commercial">Commercial</SelectItem>
@@ -519,6 +560,7 @@ const PostProperty = () => {
                       <SelectValue placeholder="BHK" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="N/A">N/A</SelectItem>
                       <SelectItem value="1">1 BHK</SelectItem>
                       <SelectItem value="2">2 BHK</SelectItem>
                       <SelectItem value="3">3 BHK</SelectItem>
@@ -534,6 +576,7 @@ const PostProperty = () => {
                       <SelectValue placeholder="Count" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="N/A">N/A</SelectItem>
                       <SelectItem value="1">1</SelectItem>
                       <SelectItem value="2">2</SelectItem>
                       <SelectItem value="3">3</SelectItem>
@@ -549,6 +592,7 @@ const PostProperty = () => {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="N/A">N/A</SelectItem>
                       <SelectItem value="furnished">Furnished</SelectItem>
                       <SelectItem value="semi-furnished">Semi-Furnished</SelectItem>
                       <SelectItem value="unfurnished">Unfurnished</SelectItem>
