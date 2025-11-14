@@ -7,9 +7,15 @@ import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Maximize, Calendar, Home, Sh
 import AppointmentDialog from '@/components/AppointmentDialog';
 import QuantumLoader from '@/components/QuantumLoader';
 import PropertyImageCarousel from '@/components/PropertyImageCarousel';
+import { useEffect } from 'react';
 
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
+  
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
   
   const { data: property, isLoading } = useQuery({
     queryKey: ['property', id],
