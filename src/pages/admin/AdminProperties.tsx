@@ -226,6 +226,34 @@ const AdminProperties = () => {
 
   const handleDeleteMedia = async (mediaId: string) => {
     try {
+      // First, get the media URL to delete from storage
+      const { data: mediaData, error: fetchError } = await supabase
+        .from('property_images')
+        .select('image_url')
+        .eq('id', mediaId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      if (mediaData?.image_url) {
+        // Extract file path from URL
+        const url = new URL(mediaData.image_url);
+        const pathParts = url.pathname.split('/property-images/');
+        if (pathParts[1]) {
+          const filePath = pathParts[1];
+          
+          // Delete from storage
+          const { error: storageError } = await supabase.storage
+            .from('property-images')
+            .remove([filePath]);
+
+          if (storageError) {
+            console.error('Storage deletion error:', storageError);
+          }
+        }
+      }
+
+      // Delete from database
       const { error } = await supabase
         .from('property_images')
         .delete()
@@ -333,7 +361,41 @@ const AdminProperties = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      // First delete associated images
+      // First, fetch all media URLs for this property
+      const { data: mediaData, error: fetchError } = await supabase
+        .from('property_images')
+        .select('image_url')
+        .eq('property_id', id);
+
+      if (fetchError) throw fetchError;
+
+      // Delete files from storage
+      if (mediaData && mediaData.length > 0) {
+        const filePaths = mediaData
+          .map(media => {
+            try {
+              const url = new URL(media.image_url);
+              const pathParts = url.pathname.split('/property-images/');
+              return pathParts[1] || null;
+            } catch {
+              return null;
+            }
+          })
+          .filter(path => path !== null);
+
+        if (filePaths.length > 0) {
+          const { error: storageError } = await supabase.storage
+            .from('property-images')
+            .remove(filePaths);
+
+          if (storageError) {
+            console.error('Storage deletion error:', storageError);
+            // Continue with database deletion even if storage deletion fails
+          }
+        }
+      }
+
+      // Delete database records
       const { error: imagesError } = await supabase
         .from('property_images')
         .delete()
@@ -341,7 +403,6 @@ const AdminProperties = () => {
 
       if (imagesError) throw imagesError;
 
-      // Then delete the property
       const { error } = await supabase
         .from('properties')
         .delete()
@@ -353,7 +414,7 @@ const AdminProperties = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-properties-stats'] });
       toast({
         title: 'Success',
-        description: 'Property deleted successfully'
+        description: 'Property and all media deleted successfully'
       });
     } catch (error: any) {
       toast({

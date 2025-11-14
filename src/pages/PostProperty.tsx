@@ -389,45 +389,48 @@ const PostProperty = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="location">Location *</Label>
-                  <Popover open={locationOpen} onOpenChange={setLocationOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={locationOpen}
-                        className="w-full justify-between"
-                      >
-                        {formData.location || "Select location..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command>
-                        <CommandInput placeholder="Search location..." />
-                        <CommandEmpty>No location found.</CommandEmpty>
-                        <CommandGroup className="max-h-64 overflow-auto">
-                          {hyderabadAreas.map((area) => (
-                            <CommandItem
+                  <div className="relative">
+                    <Input
+                      id="location"
+                      value={formData.location}
+                      onChange={(e) => {
+                        handleInputChange('location', e.target.value);
+                        setLocationOpen(e.target.value.length > 0);
+                      }}
+                      onFocus={() => setLocationOpen(formData.location.length > 0)}
+                      placeholder="Enter or select location..."
+                      required
+                    />
+                    {locationOpen && formData.location && (
+                      <div className="absolute z-50 w-full mt-1 bg-popover border border-border rounded-md shadow-md max-h-64 overflow-auto">
+                        {hyderabadAreas
+                          .filter(area => 
+                            area.toLowerCase().includes(formData.location.toLowerCase())
+                          )
+                          .slice(0, 10)
+                          .map((area) => (
+                            <button
                               key={area}
-                              value={area}
-                              onSelect={(currentValue) => {
-                                handleInputChange('location', currentValue);
+                              type="button"
+                              className="w-full text-left px-3 py-2 hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                              onClick={() => {
+                                handleInputChange('location', area);
                                 setLocationOpen(false);
                               }}
                             >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  formData.location === area ? "opacity-100" : "opacity-0"
-                                )}
-                              />
                               {area}
-                            </CommandItem>
+                            </button>
                           ))}
-                        </CommandGroup>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                        {hyderabadAreas.filter(area => 
+                          area.toLowerCase().includes(formData.location.toLowerCase())
+                        ).length === 0 && (
+                          <div className="px-3 py-2 text-sm text-muted-foreground">
+                            Press Enter to use "{formData.location}"
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
