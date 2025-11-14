@@ -169,6 +169,7 @@ const AdminProperties = () => {
           bedrooms: property.bedrooms,
           bathrooms: property.bathrooms,
           area: property.area,
+          area_unit: property.area_unit,
           furnishing: property.furnishing,
           amenities: property.amenities
         })
@@ -390,6 +391,7 @@ const AdminProperties = () => {
       bedrooms: formData.get('bedrooms') as string,
       bathrooms: formData.get('bathrooms') as string,
       area: parseInt(formData.get('area') as string),
+      area_unit: formData.get('areaUnit') as string,
       furnishing: formData.get('furnishing') as string,
     };
     
@@ -462,7 +464,7 @@ const AdminProperties = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <Ruler className="h-4 w-4" />
-                        {property.area} {property.property_type === 'open-plot' ? 'sq y' : 'sq ft'}
+                        {property.area} {property.area_unit || 'SQFT'}
                       </div>
                     </div>
                   </div>
@@ -538,7 +540,7 @@ const AdminProperties = () => {
                               <p><strong>Location:</strong> {selectedProperty?.location}</p>
                               <p><strong>Bedrooms:</strong> {selectedProperty?.bedrooms}</p>
                               <p><strong>Bathrooms:</strong> {selectedProperty?.bathrooms}</p>
-                              <p><strong>Area:</strong> {selectedProperty?.area} sq ft</p>
+                              <p><strong>Area:</strong> {selectedProperty?.area} {selectedProperty?.area_unit || 'SQFT'}</p>
                               <p><strong>Furnishing:</strong> {selectedProperty?.furnishing}</p>
                               <p><strong>Age:</strong> {selectedProperty?.age}</p>
                             </div>
@@ -710,12 +712,23 @@ const AdminProperties = () => {
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="text-sm font-medium">Price</label>
+                              <label className="text-sm font-medium">Price (₹)</label>
                               <Input name="price" type="number" defaultValue={selectedProperty?.price} required />
                             </div>
                             <div>
-                              <label className="text-sm font-medium">Area (sq ft)</label>
-                              <Input name="area" type="number" defaultValue={selectedProperty?.area} required />
+                              <label className="text-sm font-medium">Area</label>
+                              <div className="flex gap-2">
+                                <Input name="area" type="number" defaultValue={selectedProperty?.area} required className="flex-1" />
+                                <Select name="areaUnit" defaultValue={selectedProperty?.area_unit || 'SQFT'}>
+                                  <SelectTrigger className="w-24">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="SQFT">SQFT</SelectItem>
+                                    <SelectItem value="SY">SY</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
                             </div>
                           </div>
                           <div>

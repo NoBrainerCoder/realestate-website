@@ -132,7 +132,7 @@ const PropertyDetails = () => {
                 <div className="text-center p-4 bg-muted/50 rounded-lg">
                   <Maximize className="h-6 w-6 mx-auto mb-2 text-primary" />
                   <div className="text-lg font-semibold">{property.area}</div>
-                  <div className="text-sm text-muted-foreground">Sq Ft</div>
+                  <div className="text-sm text-muted-foreground">{property.area_unit || 'SQFT'}</div>
                 </div>
                 <div className="text-center p-4 bg-muted/50 rounded-lg">
                   <Calendar className="h-6 w-6 mx-auto mb-2 text-primary" />
