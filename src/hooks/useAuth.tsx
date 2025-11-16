@@ -8,7 +8,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isAdmin: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, fullName?: string, phone?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
@@ -102,15 +102,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, fullName?: string, phone?: string) => {
     try {
       const redirectUrl = `${window.location.origin}/`;
       
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: fullName
+          }
         }
       });
 
@@ -121,9 +124,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           variant: "destructive",
         });
       } else {
+        // Save phone to profiles table if provided
+        if (data.user && phone) {
+          await supabase
+            .from('profiles')
+            .update({ phone, display_name: fullName })
+            .eq('user_id', data.user.id);
+        }
+        
         toast({
-          title: "Check Your Email",
-          description: "Please check your email for a confirmation link to complete your registration.",
+          title: "Success",
+          description: "Account created successfully! You can now sign in.",
         });
       }
 
