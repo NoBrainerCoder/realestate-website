@@ -194,7 +194,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
               disabled={isSubmitting || property.status === 'sold_out'}
             >
               <Send className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
-              {isSubmitting ? 'Sending...' : 'Send Contact Request'}
+              {isSubmitting ? 'Sending...' : 'Request a Call Back'}
             </Button>
           </div>
         </div>
