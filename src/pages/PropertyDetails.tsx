@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,6 @@ import PropertyImageCarousel from '@/components/PropertyImageCarousel';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -67,6 +66,57 @@ const PropertyDetails = () => {
       </div>
     );
   }
+
+  const handleContactRequest = async () => {
+    if (!user) {
+      navigate('/sign-in');
+      toast({
+        title: 'Sign in required',
+        description: 'Please sign in to send contact requests'
+      });
+      return;
+    }
+
+    if (!property) return;
+
+    setIsSubmitting(true);
+    
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name, phone')
+        .eq('user_id', user.id)
+        .single();
+
+      const { error } = await supabase
+        .from('contact_requests')
+        .insert({
+          property_id: property.id,
+          property_code: property.property_code || 'N/A',
+          property_title: property.title,
+          property_location: property.location,
+          user_id: user.id,
+          user_name: profile?.display_name || user.email?.split('@')[0] || 'User',
+          user_email: user.email || '',
+          user_phone: profile?.phone || null
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Success',
+        description: 'Your contact request has been submitted to our team.'
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to submit contact request',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
@@ -201,12 +251,17 @@ const PropertyDetails = () => {
               </div>
 
               <div className="space-y-3 mt-6">
-                <AppointmentDialog 
-                  propertyId={property.id} 
-                  propertyTitle={property.title}
-                />
+                <Button
+                  className="w-full"
+                  size="lg"
+                  onClick={handleContactRequest}
+                  disabled={isSubmitting}
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  {isSubmitting ? 'Sending...' : 'Send Contact Request'}
+                </Button>
                 <a href="tel:+919866123350" className="block">
-                  <Button className="w-full btn-hero">
+                  <Button variant="outline" className="w-full">
                     <Phone className="h-4 w-4 mr-2" />
                     Call Now
                   </Button>
