@@ -64,6 +64,59 @@ export type Database = {
           },
         ]
       }
+      contact_requests: {
+        Row: {
+          created_at: string
+          id: string
+          property_code: string
+          property_id: string
+          property_location: string
+          property_title: string
+          status: string
+          updated_at: string
+          user_email: string
+          user_id: string
+          user_name: string
+          user_phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          property_code: string
+          property_id: string
+          property_location: string
+          property_title: string
+          status?: string
+          updated_at?: string
+          user_email: string
+          user_id: string
+          user_name: string
+          user_phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          property_code?: string
+          property_id?: string
+          property_location?: string
+          property_title?: string
+          status?: string
+          updated_at?: string
+          user_email?: string
+          user_id?: string
+          user_name?: string
+          user_phone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_submissions: {
         Row: {
           created_at: string

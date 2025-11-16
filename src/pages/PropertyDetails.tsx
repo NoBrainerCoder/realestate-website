@@ -1,16 +1,22 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield } from 'lucide-react';
-import AppointmentDialog from '@/components/AppointmentDialog';
+import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield, Send, Hash, Phone, Mail } from 'lucide-react';
 import QuantumLoader from '@/components/QuantumLoader';
 import PropertyImageCarousel from '@/components/PropertyImageCarousel';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
+  const { toast } = useToast();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Scroll to top when component mounts
   useEffect(() => {

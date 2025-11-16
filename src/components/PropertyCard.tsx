@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Bed, Bath, Maximize, MapPin, Phone, Eye, Calendar, Mail } from 'lucide-react';
-import AppointmentDialog from './AppointmentDialog';
-import ContactInfoDialog from './ContactInfoDialog';
+import { Bed, Bath, Maximize, MapPin, Send, Hash } from 'lucide-react';
 import ImageLightbox from './ImageLightbox';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 
 interface PropertyCardProps {
   property: {
@@ -14,19 +15,23 @@ interface PropertyCardProps {
     location: string;
     price: number;
     area: number;
-    bedrooms: number;
-    bathrooms: number;
+    bedrooms: string | number;
+    bathrooms: string | number;
     type: string;
     furnishing: string;
     image: string;
     isNew?: boolean;
     status?: string;
+    property_code?: string;
   };
 }
 
 const PropertyCard = ({ property }: PropertyCardProps) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { user } = useAuth();
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCardClick = () => {
     navigate(`/property/${property.id}`);
@@ -35,6 +40,57 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   const handleImageClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setLightboxOpen(true);
+  };
+
+  const handleContactRequest = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (!user) {
+      navigate('/sign-in');
+      toast({
+        title: 'Sign in required',
+        description: 'Please sign in to send contact requests'
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name, phone')
+        .eq('user_id', user.id)
+        .single();
+
+      const { error } = await supabase
+        .from('contact_requests')
+        .insert({
+          property_id: property.id,
+          property_code: property.property_code || 'N/A',
+          property_title: property.title,
+          property_location: property.location,
+          user_id: user.id,
+          user_name: profile?.display_name || user.email?.split('@')[0] || 'User',
+          user_email: user.email || '',
+          user_phone: profile?.phone || null
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Success',
+        description: 'Your contact request has been submitted to our team.'
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to submit contact request',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const formatPrice = (price: number) => {
@@ -92,6 +148,14 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             </div>
           </div>
 
+          {/* Property Code */}
+          {property.property_code && (
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Hash className="h-3 w-3" />
+              <span className="font-mono">{property.property_code}</span>
+            </div>
+          )}
+
           {/* Property Details */}
           <div className="flex items-center gap-4 text-sm text-muted-foreground stagger-children">
             <div className="flex items-center gap-1 hover:text-primary transition-colors duration-300 cursor-pointer hover-scale">
@@ -121,57 +185,17 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             </div>
           </div>
 
-          {/* Actions - 2x2 Grid Layout */}
-          <div className="space-y-2 pt-2">
-            {/* Top Row: View Details + Contact */}
-            <div className="grid grid-cols-2 gap-2 stagger-children">
-              <Link to={`/property/${property.id}`} onClick={(e) => e.stopPropagation()}>
-                <Button variant="outline" className="w-full hover-lift ripple group">
-                  <Eye className="h-4 w-4 mr-1.5 group-hover:scale-110 transition-transform duration-300" />
-                  <span className="text-xs">View Details</span>
-                </Button>
-              </Link>
-              <div onClick={(e) => e.stopPropagation()}>
-                <ContactInfoDialog 
-                  trigger={
-                    <Button className="w-full btn-hero ripple group">
-                      <Phone className="h-4 w-4 mr-1.5 group-hover:rotate-12 transition-transform duration-300" />
-                      <span className="text-xs">Contact</span>
-                    </Button>
-                  }
-                />
-              </div>
-            </div>
-            
-            {/* Bottom Row: Call Now + Send Email */}
-            <div className="grid grid-cols-2 gap-2 stagger-children">
-              <a 
-                href="tel:+919866123350"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Button variant="outline" className="w-full hover-lift ripple group">
-                  <Phone className="h-4 w-4 mr-1.5 group-hover:scale-110 transition-transform duration-300" />
-                  <span className="text-xs">Call Now</span>
-                </Button>
-              </a>
-              <a 
-                href="mailto:myinfrahub.com@gmail.com"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Button variant="outline" className="w-full hover-lift ripple group">
-                  <Mail className="h-4 w-4 mr-1.5 group-hover:scale-110 transition-transform duration-300" />
-                  <span className="text-xs">Send Email</span>
-                </Button>
-              </a>
-            </div>
-            
-            {/* Schedule Visit - Full Width Below */}
-            <div onClick={(e) => e.stopPropagation()}>
-              <AppointmentDialog 
-                propertyId={property.id} 
-                propertyTitle={property.title}
-              />
-            </div>
+          {/* Action Button */}
+          <div className="mt-4">
+            <Button
+              variant="default"
+              className="w-full group transition-all duration-300 ease-smooth hover:shadow-md"
+              onClick={handleContactRequest}
+              disabled={isSubmitting || property.status === 'sold_out'}
+            >
+              <Send className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
+              {isSubmitting ? 'Sending...' : 'Send Contact Request'}
+            </Button>
           </div>
         </div>
       </div>
