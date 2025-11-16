@@ -15,6 +15,7 @@ const AdminContactRequests = () => {
   const queryClient = useQueryClient();
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [propertyOwner, setPropertyOwner] = useState<any>(null);
+  const [requesterPhone, setRequesterPhone] = useState<string | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   const { data: requests, isLoading } = useQuery({
@@ -88,18 +89,18 @@ const AdminContactRequests = () => {
       setPropertyOwner(propertyData);
     }
     
-    // If user_phone is not in contact_requests, fetch from profiles
-    if (!request.user_phone) {
+    // Fetch phone from profiles if not in contact_requests
+    let phone = request.user_phone;
+    if (!phone) {
       const { data: profileData } = await supabase
         .from('profiles')
         .select('phone')
         .eq('user_id', request.user_id)
         .single();
       
-      if (profileData?.phone) {
-        request.user_phone = profileData.phone;
-      }
+      phone = profileData?.phone || null;
     }
+    setRequesterPhone(phone);
     
     setDetailsOpen(true);
   };
@@ -279,16 +280,16 @@ const AdminContactRequests = () => {
                 <h3 className="font-semibold mb-2">Requester Information (User Who Requested Callback)</h3>
                 <div className="bg-muted/50 p-4 rounded-lg space-y-2">
                   <p><span className="font-medium">Name:</span> {selectedRequest.user_name}</p>
-                  <p><span className="font-medium">Phone:</span> {selectedRequest.user_phone || 'Not provided'}</p>
+                  <p><span className="font-medium">Phone:</span> {requesterPhone || 'Not provided'}</p>
                   <p><span className="font-medium">Email:</span> {selectedRequest.user_email}</p>
                   <p><span className="font-medium">Requested:</span> {new Date(selectedRequest.created_at).toLocaleString()}</p>
                   <p><span className="font-medium">Status:</span> {selectedRequest.status}</p>
                 </div>
-                {selectedRequest.user_phone && (
+                {requesterPhone && (
                   <Button
                     className="w-full mt-4"
                     variant="success"
-                    onClick={() => handleWhatsApp(selectedRequest.user_phone)}
+                    onClick={() => handleWhatsApp(requesterPhone)}
                   >
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Chat on WhatsApp
