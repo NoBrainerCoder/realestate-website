@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield, Send, Hash, Phone, Mail } from 'lucide-react';
+import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield, Send, Hash } from 'lucide-react';
 import QuantumLoader from '@/components/QuantumLoader';
 import PropertyImageCarousel from '@/components/PropertyImageCarousel';
 import { useEffect, useState } from 'react';
@@ -240,24 +240,6 @@ const PropertyDetails = () => {
           {/* Contact Sidebar */}
           <div className="space-y-6">
             <div className="bg-background rounded-2xl p-6 shadow-card sticky top-8">
-              <h3 className="text-xl font-semibold mb-4">Contact Details</h3>
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-primary" />
-                  <div>
-                    <div className="font-medium">Phone</div>
-                    <div className="text-muted-foreground">+91 9866123350</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="h-5 w-5 text-primary" />
-                  <div>
-                    <div className="font-medium">Email</div>
-                    <div className="text-muted-foreground text-sm">myinfrahub.com@gmail.com</div>
-                  </div>
-                </div>
-              </div>
-
               <Button
                 className="w-full"
                 size="lg"
@@ -265,7 +247,7 @@ const PropertyDetails = () => {
                 disabled={isSubmitting}
               >
                 <Send className="h-4 w-4 mr-2" />
-                {isSubmitting ? 'Sending...' : 'Send Contact Request'}
+                {isSubmitting ? 'Sending...' : 'Request a Call Back'}
               </Button>
             </div>
           </div>
