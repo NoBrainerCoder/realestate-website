@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, CheckCircle, Trash2, Mail, Phone, User, MapPin, Building2, Hash } from 'lucide-react';
+import { Eye, CheckCircle, Trash2, Mail, Phone, User, MapPin, Building2, Hash, MessageCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import QuantumLoader from '@/components/QuantumLoader';
 import { formatDistanceToNow } from 'date-fns';
@@ -76,6 +76,23 @@ const AdminContactRequests = () => {
   const handleViewDetails = (request: any) => {
     setSelectedRequest(request);
     setDetailsOpen(true);
+  };
+
+  const handleWhatsApp = (phone: string | null) => {
+    if (!phone) {
+      toast({
+        title: 'Error',
+        description: 'Phone number not available',
+        variant: 'destructive'
+      });
+      return;
+    }
+    
+    // Sanitize phone number - remove all non-digits
+    const sanitizedPhone = phone.replace(/\D/g, '');
+    
+    // Open WhatsApp
+    window.open(`https://wa.me/${sanitizedPhone}`, '_blank');
   };
 
   if (isLoading) {
@@ -158,11 +175,22 @@ const AdminContactRequests = () => {
                         <Badge variant={request.status === 'contacted' ? 'default' : 'secondary'}>
                           {request.status === 'contacted' ? 'Contacted' : 'Pending'}
                         </Badge>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
+                          {request.user_phone && (
+                            <Button
+                              size="sm"
+                              variant="success"
+                              onClick={() => handleWhatsApp(request.user_phone)}
+                              title="Chat on WhatsApp"
+                            >
+                              <MessageCircle className="h-4 w-4" />
+                            </Button>
+                          )}
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => handleViewDetails(request)}
+                            title="View Details"
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
@@ -171,6 +199,7 @@ const AdminContactRequests = () => {
                               size="sm"
                               variant="default"
                               onClick={() => handleMarkContacted(request.id)}
+                              title="Mark as Contacted"
                             >
                               <CheckCircle className="h-4 w-4" />
                             </Button>
@@ -179,6 +208,7 @@ const AdminContactRequests = () => {
                             size="sm"
                             variant="destructive"
                             onClick={() => handleDelete(request.id)}
+                            title="Delete"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -220,6 +250,16 @@ const AdminContactRequests = () => {
                   <p><span className="font-medium">Requested:</span> {new Date(selectedRequest.created_at).toLocaleString()}</p>
                   <p><span className="font-medium">Status:</span> {selectedRequest.status}</p>
                 </div>
+                {selectedRequest.user_phone && (
+                  <Button
+                    className="w-full mt-4"
+                    variant="success"
+                    onClick={() => handleWhatsApp(selectedRequest.user_phone)}
+                  >
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Chat on WhatsApp
+                  </Button>
+                )}
               </div>
             </div>
           )}
