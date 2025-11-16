@@ -50,6 +50,22 @@ const AdminDashboard = () => {
     }
   });
 
+  // Fetch contact requests count
+  const { data: contactRequestStats } = useQuery({
+    queryKey: ['admin-contact-request-stats'],
+    queryFn: async () => {
+      const [pending, total] = await Promise.all([
+        supabase.from('contact_requests').select('id', { count: 'exact' }).eq('status', 'pending'),
+        supabase.from('contact_requests').select('id', { count: 'exact' })
+      ]);
+      
+      return {
+        pending: pending.count || 0,
+        total: total.count || 0
+      };
+    }
+  });
+
   // Fetch appointments count
   const { data: appointmentStats } = useQuery({
     queryKey: ['admin-appointment-stats'],
@@ -135,7 +151,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="card-elegant">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -144,20 +160,48 @@ const AdminDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Review, approve, or reject property submissions.
               </p>
               <div className="flex flex-col gap-3">
                 <Link to="/admin/properties" className="flex-1">
-                  <Button className="w-full" variant="default">
+                  <Button className="w-full" variant="default" size="sm">
                     <Eye className="h-4 w-4 mr-2" />
                     View All Properties
                   </Button>
                 </Link>
                 <Link to="/admin/properties?status=pending" className="flex-1">
-                  <Button className="w-full" variant="outline">
+                  <Button className="w-full" variant="outline" size="sm">
                     <Clock className="h-4 w-4 mr-2" />
                     Review Pending ({propertiesStats?.pending || 0})
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="card-elegant">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Contact Requests
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground text-sm">
+                View property contact requests from users.
+              </p>
+              <div className="flex flex-col gap-3">
+                <Link to="/admin/contact-requests" className="flex-1">
+                  <Button className="w-full" variant="default" size="sm">
+                    <Eye className="h-4 w-4 mr-2" />
+                    View All Requests
+                  </Button>
+                </Link>
+                <Link to="/admin/contact-requests?status=pending" className="flex-1">
+                  <Button className="w-full" variant="outline" size="sm">
+                    <Clock className="h-4 w-4 mr-2" />
+                    Pending ({contactRequestStats?.pending || 0})
                   </Button>
                 </Link>
               </div>
@@ -172,18 +216,18 @@ const AdminDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Manage property viewing appointments and requests.
               </p>
               <div className="flex flex-col gap-3">
                 <Link to="/admin/appointments" className="flex-1">
-                  <Button className="w-full" variant="default">
+                  <Button className="w-full" variant="default" size="sm">
                     <Eye className="h-4 w-4 mr-2" />
                     View All Appointments
                   </Button>
                 </Link>
                 <Link to="/admin/appointments?status=pending" className="flex-1">
-                  <Button className="w-full" variant="outline">
+                  <Button className="w-full" variant="outline" size="sm">
                     <Clock className="h-4 w-4 mr-2" />
                     Pending ({appointmentStats?.pending || 0})
                   </Button>
@@ -200,18 +244,18 @@ const AdminDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 View and respond to customer inquiries.
               </p>
               <div className="flex flex-col gap-3">
                 <Link to="/admin/contacts" className="flex-1">
-                  <Button className="w-full" variant="default">
+                  <Button className="w-full" variant="default" size="sm">
                     <Eye className="h-4 w-4 mr-2" />
                     View All Contacts
                   </Button>
                 </Link>
                 <Link to="/admin/contacts?status=new" className="flex-1">
-                  <Button className="w-full" variant="outline">
+                  <Button className="w-full" variant="outline" size="sm">
                     <MessageSquare className="h-4 w-4 mr-2" />
                     New Messages ({contactStats?.new || 0})
                   </Button>

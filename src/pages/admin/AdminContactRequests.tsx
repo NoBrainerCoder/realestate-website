@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, CheckCircle, Trash2, Mail, Phone, User, MapPin, Building2 } from 'lucide-react';
+import { Eye, CheckCircle, Trash2, Mail, Phone, User, MapPin, Building2, Hash } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import QuantumLoader from '@/components/QuantumLoader';
 import { formatDistanceToNow } from 'date-fns';
@@ -124,9 +124,12 @@ const AdminContactRequests = () => {
                               <MapPin className="h-3 w-3" />
                               {request.property_location}
                             </p>
-                            <Badge variant="outline" className="mt-1">
-                              {request.property_code}
-                            </Badge>
+                            <div className="flex items-center gap-1 mt-1">
+                              <Hash className="h-3 w-3 text-primary" />
+                              <Badge variant="outline" className="text-xs">
+                                {request.property_code}
+                              </Badge>
+                            </div>
                           </div>
                         </div>
                       </div>
