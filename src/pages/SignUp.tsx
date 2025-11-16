@@ -50,7 +50,7 @@ const SignUp = () => {
 
     setLoading(true);
     
-    const { error } = await signUp(formData.email, formData.password);
+    const { error } = await signUp(formData.email, formData.password, formData.fullName, formData.phone);
     
     if (!error) {
       // Success is handled by the auth hook

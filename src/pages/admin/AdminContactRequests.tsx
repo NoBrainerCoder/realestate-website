@@ -88,6 +88,19 @@ const AdminContactRequests = () => {
       setPropertyOwner(propertyData);
     }
     
+    // If user_phone is not in contact_requests, fetch from profiles
+    if (!request.user_phone) {
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('phone')
+        .eq('user_id', request.user_id)
+        .single();
+      
+      if (profileData?.phone) {
+        request.user_phone = profileData.phone;
+      }
+    }
+    
     setDetailsOpen(true);
   };
 
@@ -189,16 +202,26 @@ const AdminContactRequests = () => {
                           {request.status === 'contacted' ? 'Contacted' : 'Pending'}
                         </Badge>
                         <div className="flex flex-wrap gap-2">
-                          {request.user_phone && (
-                            <Button
-                              size="sm"
-                              variant="success"
-                              onClick={() => handleWhatsApp(request.user_phone)}
-                              title="Chat on WhatsApp"
-                            >
-                              <MessageCircle className="h-4 w-4" />
-                            </Button>
-                          )}
+                          <Button
+                            size="sm"
+                            variant="success"
+                            onClick={async () => {
+                              let phone = request.user_phone;
+                              // If no phone in request, fetch from profile
+                              if (!phone) {
+                                const { data: profileData } = await supabase
+                                  .from('profiles')
+                                  .select('phone')
+                                  .eq('user_id', request.user_id)
+                                  .single();
+                                phone = profileData?.phone;
+                              }
+                              handleWhatsApp(phone);
+                            }}
+                            title="Chat on WhatsApp"
+                          >
+                            <MessageCircle className="h-4 w-4" />
+                          </Button>
                           <Button
                             size="sm"
                             variant="outline"
