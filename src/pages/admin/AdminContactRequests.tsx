@@ -14,6 +14,7 @@ const AdminContactRequests = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
+  const [propertyOwner, setPropertyOwner] = useState<any>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   const { data: requests, isLoading } = useQuery({
@@ -73,8 +74,20 @@ const AdminContactRequests = () => {
     });
   };
 
-  const handleViewDetails = (request: any) => {
+  const handleViewDetails = async (request: any) => {
     setSelectedRequest(request);
+    
+    // Fetch property owner details
+    const { data: propertyData, error } = await supabase
+      .from('properties')
+      .select('poster_name, poster_phone, poster_email, poster_type')
+      .eq('id', request.property_id)
+      .single();
+    
+    if (!error && propertyData) {
+      setPropertyOwner(propertyData);
+    }
+    
     setDetailsOpen(true);
   };
 
@@ -240,13 +253,11 @@ const AdminContactRequests = () => {
               </div>
 
               <div>
-                <h3 className="font-semibold mb-2">Requester Information</h3>
+                <h3 className="font-semibold mb-2">Requester Information (User Who Requested Callback)</h3>
                 <div className="bg-muted/50 p-4 rounded-lg space-y-2">
                   <p><span className="font-medium">Name:</span> {selectedRequest.user_name}</p>
+                  <p><span className="font-medium">Phone:</span> {selectedRequest.user_phone || 'Not provided'}</p>
                   <p><span className="font-medium">Email:</span> {selectedRequest.user_email}</p>
-                  {selectedRequest.user_phone && (
-                    <p><span className="font-medium">Phone:</span> {selectedRequest.user_phone}</p>
-                  )}
                   <p><span className="font-medium">Requested:</span> {new Date(selectedRequest.created_at).toLocaleString()}</p>
                   <p><span className="font-medium">Status:</span> {selectedRequest.status}</p>
                 </div>
@@ -261,6 +272,18 @@ const AdminContactRequests = () => {
                   </Button>
                 )}
               </div>
+
+              {propertyOwner && (
+                <div>
+                  <h3 className="font-semibold mb-2">Property Owner / Agent Information</h3>
+                  <div className="bg-muted/50 p-4 rounded-lg space-y-2">
+                    <p><span className="font-medium">Type:</span> {propertyOwner.poster_type}</p>
+                    <p><span className="font-medium">Name:</span> {propertyOwner.poster_name}</p>
+                    <p><span className="font-medium">Phone:</span> {propertyOwner.poster_phone}</p>
+                    <p><span className="font-medium">Email:</span> {propertyOwner.poster_email}</p>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </DialogContent>
