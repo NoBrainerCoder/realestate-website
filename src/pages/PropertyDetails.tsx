@@ -4,6 +4,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield, Send, Hash } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import QuantumLoader from '@/components/QuantumLoader';
 import PropertyImageCarousel from '@/components/PropertyImageCarousel';
 import { useEffect, useState } from 'react';
@@ -16,6 +19,8 @@ const PropertyDetails = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneDialogOpen, setPhoneDialogOpen] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
   
   // Scroll to top when component mounts
   useEffect(() => {
@@ -77,6 +82,20 @@ const PropertyDetails = () => {
       return;
     }
 
+    // Open dialog to ask for phone number
+    setPhoneDialogOpen(true);
+  };
+
+  const submitContactRequest = async () => {
+    if (!phoneNumber || phoneNumber.trim().length < 10) {
+      toast({
+        title: 'Phone number required',
+        description: 'Please enter a valid 10-digit phone number',
+        variant: 'destructive'
+      });
+      return;
+    }
+
     if (!property) return;
 
     setIsSubmitting(true);
@@ -84,7 +103,7 @@ const PropertyDetails = () => {
     try {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('display_name, phone')
+        .select('display_name')
         .eq('user_id', user.id)
         .single();
 
@@ -98,15 +117,17 @@ const PropertyDetails = () => {
           user_id: user.id,
           user_name: profile?.display_name || user.email?.split('@')[0] || 'User',
           user_email: user.email || '',
-          user_phone: profile?.phone || null
+          user_phone: phoneNumber
         });
 
       if (error) throw error;
 
       toast({
         title: 'Success',
-        description: 'Your contact request has been submitted to our team.'
+        description: 'Contact request sent successfully! We will call you back soon.'
       });
+      setPhoneDialogOpen(false);
+      setPhoneNumber('');
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -253,6 +274,38 @@ const PropertyDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Phone Number Dialog */}
+      <Dialog open={phoneDialogOpen} onOpenChange={setPhoneDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Request a Call Back</DialogTitle>
+            <DialogDescription>
+              Please provide your phone number so we can call you back about this property.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 pt-4">
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number *</Label>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="Enter your 10-digit phone number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                maxLength={10}
+              />
+            </div>
+            <Button 
+              className="w-full" 
+              onClick={submitContactRequest}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit Request'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

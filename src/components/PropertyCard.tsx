@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Bed, Bath, Maximize, MapPin, Send, Hash } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import ImageLightbox from './ImageLightbox';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -32,6 +35,8 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   const { user } = useAuth();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneDialogOpen, setPhoneDialogOpen] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleCardClick = () => {
     navigate(`/property/${property.id}`);
@@ -54,12 +59,26 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
       return;
     }
 
+    // Open dialog to ask for phone number
+    setPhoneDialogOpen(true);
+  };
+
+  const submitContactRequest = async () => {
+    if (!phoneNumber || phoneNumber.trim().length < 10) {
+      toast({
+        title: 'Phone number required',
+        description: 'Please enter a valid 10-digit phone number',
+        variant: 'destructive'
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('display_name, phone')
+        .select('display_name')
         .eq('user_id', user.id)
         .single();
 
@@ -73,19 +92,22 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           user_id: user.id,
           user_name: profile?.display_name || user.email?.split('@')[0] || 'User',
           user_email: user.email || '',
-          user_phone: profile?.phone || null
+          user_phone: phoneNumber
         });
 
       if (error) throw error;
 
       toast({
         title: 'Success',
-        description: 'Your contact request has been submitted to our team.'
+        description: 'Contact request sent successfully! We will call you back soon.'
       });
-    } catch (error: any) {
+      setPhoneDialogOpen(false);
+      setPhoneNumber('');
+    } catch (error) {
+      console.error('Error sending contact request:', error);
       toast({
         title: 'Error',
-        description: error.message || 'Failed to submit contact request',
+        description: 'Failed to send contact request',
         variant: 'destructive'
       });
     } finally {
@@ -212,6 +234,38 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
       />
+
+      {/* Phone Number Dialog */}
+      <Dialog open={phoneDialogOpen} onOpenChange={setPhoneDialogOpen}>
+        <DialogContent onClick={(e) => e.stopPropagation()}>
+          <DialogHeader>
+            <DialogTitle>Request a Call Back</DialogTitle>
+            <DialogDescription>
+              Please provide your phone number so we can call you back about this property.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 pt-4">
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number *</Label>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="Enter your 10-digit phone number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                maxLength={10}
+              />
+            </div>
+            <Button 
+              className="w-full" 
+              onClick={submitContactRequest}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit Request'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
