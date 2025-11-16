@@ -164,6 +164,14 @@ const PropertyDetails = () => {
                 <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
                   {property.title}
                 </h1>
+                {property.property_code && (
+                  <div className="flex items-center gap-2 mb-3">
+                    <Hash className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-muted-foreground">
+                      Property Code: {property.property_code}
+                    </span>
+                  </div>
+                )}
                 <div className="flex items-center text-muted-foreground mb-4">
                   <MapPin className="h-5 w-5 mr-2" />
                   <span className="text-lg">{property.location}</span>
@@ -233,7 +241,7 @@ const PropertyDetails = () => {
           <div className="space-y-6">
             <div className="bg-background rounded-2xl p-6 shadow-card sticky top-8">
               <h3 className="text-xl font-semibold mb-4">Contact Details</h3>
-              <div className="space-y-4">
+              <div className="space-y-4 mb-6">
                 <div className="flex items-center gap-3">
                   <Phone className="h-5 w-5 text-primary" />
                   <div>
@@ -245,34 +253,20 @@ const PropertyDetails = () => {
                   <Mail className="h-5 w-5 text-primary" />
                   <div>
                     <div className="font-medium">Email</div>
-                    <div className="text-muted-foreground">MyInfraHub.com@gmail.com</div>
+                    <div className="text-muted-foreground text-sm">myinfrahub.com@gmail.com</div>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-3 mt-6">
-                <Button
-                  className="w-full"
-                  size="lg"
-                  onClick={handleContactRequest}
-                  disabled={isSubmitting}
-                >
-                  <Send className="h-4 w-4 mr-2" />
-                  {isSubmitting ? 'Sending...' : 'Send Contact Request'}
-                </Button>
-                <a href="tel:+919866123350" className="block">
-                  <Button variant="outline" className="w-full">
-                    <Phone className="h-4 w-4 mr-2" />
-                    Call Now
-                  </Button>
-                </a>
-                <a href="mailto:MyInfraHub.com@gmail.com" className="block">
-                  <Button variant="outline" className="w-full">
-                    <Mail className="h-4 w-4 mr-2" />
-                    Send Email
-                  </Button>
-                </a>
-              </div>
+              <Button
+                className="w-full"
+                size="lg"
+                onClick={handleContactRequest}
+                disabled={isSubmitting}
+              >
+                <Send className="h-4 w-4 mr-2" />
+                {isSubmitting ? 'Sending...' : 'Send Contact Request'}
+              </Button>
             </div>
           </div>
         </div>
