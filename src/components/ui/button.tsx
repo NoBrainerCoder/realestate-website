@@ -17,6 +17,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline hover:text-primary-glow",
         hero: "btn-hero bg-gradient-to-r from-primary to-primary-glow text-primary-foreground border-0 shadow-button hover:shadow-elegant hover:-translate-y-1 active:translate-y-0",
         premium: "bg-gradient-to-r from-primary via-primary-glow to-primary text-primary-foreground border-0 shadow-button hover:shadow-elegant hover:-translate-y-1 hover:scale-105",
+        success: "bg-green-600 text-white hover:bg-green-700 hover:shadow-lg hover:-translate-y-0.5",
       },
       size: {
         default: "h-10 px-4 py-2",
