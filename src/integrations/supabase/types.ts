@@ -220,7 +220,10 @@ export type Database = {
           bedrooms: string
           created_at: string
           description: string
+          eco_rating: number | null
+          energy_efficiency_rating: number | null
           furnishing: string
+          green_certified: boolean | null
           id: string
           location: string
           poster_email: string
@@ -231,12 +234,15 @@ export type Database = {
           property_code: string | null
           property_for: string
           property_type: string
+          rainwater_harvesting: boolean | null
           rejection_reason: string | null
+          solar_panels: boolean | null
           sold_out_date: string | null
           status: string
           title: string
           updated_at: string
           user_id: string
+          waste_management: boolean | null
         }
         Insert: {
           age: string
@@ -247,7 +253,10 @@ export type Database = {
           bedrooms: string
           created_at?: string
           description: string
+          eco_rating?: number | null
+          energy_efficiency_rating?: number | null
           furnishing: string
+          green_certified?: boolean | null
           id?: string
           location: string
           poster_email: string
@@ -258,12 +267,15 @@ export type Database = {
           property_code?: string | null
           property_for?: string
           property_type: string
+          rainwater_harvesting?: boolean | null
           rejection_reason?: string | null
+          solar_panels?: boolean | null
           sold_out_date?: string | null
           status?: string
           title: string
           updated_at?: string
           user_id: string
+          waste_management?: boolean | null
         }
         Update: {
           age?: string
@@ -274,7 +286,10 @@ export type Database = {
           bedrooms?: string
           created_at?: string
           description?: string
+          eco_rating?: number | null
+          energy_efficiency_rating?: number | null
           furnishing?: string
+          green_certified?: boolean | null
           id?: string
           location?: string
           poster_email?: string
@@ -285,12 +300,15 @@ export type Database = {
           property_code?: string | null
           property_for?: string
           property_type?: string
+          rainwater_harvesting?: boolean | null
           rejection_reason?: string | null
+          solar_panels?: boolean | null
           sold_out_date?: string | null
           status?: string
           title?: string
           updated_at?: string
           user_id?: string
+          waste_management?: boolean | null
         }
         Relationships: []
       }
