@@ -16,6 +16,7 @@ import { useMediaUpload } from '@/hooks/useMediaUpload';
 import { displayPrice, parsePriceShorthand } from '@/utils/priceFormatter';
 import { supabase } from '@/integrations/supabase/client';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Switch } from '@/components/ui/switch';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
@@ -88,6 +89,11 @@ const PostProperty = () => {
     posterPhone: '',
     posterEmail: '',
     posterType: 'owner' as 'owner' | 'agent' | 'builder',
+    solarPanels: false,
+    rainwaterHarvesting: false,
+    energyEfficiencyRating: '',
+    wasteManagement: false,
+    greenCertified: false,
   });
   
 
@@ -193,7 +199,12 @@ const PostProperty = () => {
           poster_name: formData.posterName,
           poster_phone: formData.posterPhone,
           poster_email: formData.posterEmail,
-          status: propertyStatus
+          status: propertyStatus,
+          solar_panels: formData.solarPanels,
+          rainwater_harvesting: formData.rainwaterHarvesting,
+          energy_efficiency_rating: formData.energyEfficiencyRating ? parseInt(formData.energyEfficiencyRating) : null,
+          waste_management: formData.wasteManagement,
+          green_certified: formData.greenCertified,
         })
         .select()
         .single();
@@ -249,6 +260,8 @@ const PostProperty = () => {
         bedrooms: '', bathrooms: '', furnishing: '', propertyType: '',
         amenities: [], age: '', posterName: '', posterPhone: '', posterEmail: '',
         posterType: 'owner',
+        solarPanels: false, rainwaterHarvesting: false, energyEfficiencyRating: '',
+        wasteManagement: false, greenCertified: false,
       });
       setPriceDisplay('');
       clearMedia();
@@ -734,6 +747,67 @@ const PostProperty = () => {
                     ))}
                   </div>
                 )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Sustainability Details */}
+          <Card>
+            <CardHeader>
+              <CardTitle>🌿 Sustainability Details</CardTitle>
+              <CardDescription>
+                Provide sustainability information about your property
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="solarPanels" className="cursor-pointer">☀️ Solar Panels Available</Label>
+                  <Switch
+                    id="solarPanels"
+                    checked={formData.solarPanels}
+                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, solarPanels: checked }))}
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="rainwater" className="cursor-pointer">💧 Rainwater Harvesting System</Label>
+                  <Switch
+                    id="rainwater"
+                    checked={formData.rainwaterHarvesting}
+                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, rainwaterHarvesting: checked }))}
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="waste" className="cursor-pointer">♻️ Waste Management System</Label>
+                  <Switch
+                    id="waste"
+                    checked={formData.wasteManagement}
+                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, wasteManagement: checked }))}
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="greenCert" className="cursor-pointer">🏅 Green Building Certified</Label>
+                  <Switch
+                    id="greenCert"
+                    checked={formData.greenCertified}
+                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, greenCertified: checked }))}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="energyRating">⚡ Energy Efficiency Rating</Label>
+                <Select value={formData.energyEfficiencyRating} onValueChange={(value) => setFormData(prev => ({ ...prev, energyEfficiencyRating: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select rating (1-5)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">1 - Poor</SelectItem>
+                    <SelectItem value="2">2 - Below Average</SelectItem>
+                    <SelectItem value="3">3 - Average</SelectItem>
+                    <SelectItem value="4">4 - Good</SelectItem>
+                    <SelectItem value="5">5 - Excellent</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
           </Card>

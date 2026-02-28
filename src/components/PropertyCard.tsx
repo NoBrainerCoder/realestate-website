@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Bed, Bath, Maximize, MapPin, Send, Hash } from 'lucide-react';
+import { Bed, Bath, Maximize, MapPin, Send, Hash, Leaf } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,6 +26,7 @@ interface PropertyCardProps {
     isNew?: boolean;
     status?: string;
     property_code?: string;
+    eco_rating?: number | null;
   };
 }
 
@@ -198,6 +199,21 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           <div className="flex flex-wrap gap-2 stagger-children">
             <Badge variant="outline" className="hover-scale cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all duration-300">{property.type}</Badge>
             <Badge variant="outline" className="hover-scale cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all duration-300">{property.furnishing}</Badge>
+            {property.eco_rating != null ? (
+              <Badge className={`hover-scale cursor-pointer transition-all duration-300 ${
+                property.eco_rating >= 8 ? 'bg-green-500 hover:bg-green-600 text-white' :
+                property.eco_rating >= 5 ? 'bg-yellow-500 hover:bg-yellow-600 text-white' :
+                'bg-red-500 hover:bg-red-600 text-white'
+              }`}>
+                <Leaf className="h-3 w-3 mr-1" />
+                Eco {property.eco_rating}/10
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="text-muted-foreground">
+                <Leaf className="h-3 w-3 mr-1" />
+                Eco Rating Pending
+              </Badge>
+            )}
           </div>
 
           {/* Price with better visibility */}
