@@ -55,7 +55,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center hover-scale">
             <span className="text-xl md:text-2xl font-bold">
               <span className="text-white">MyInfra</span>
-              <span className="text-yellow-400">Hub</span>
+              <span className="text-accent">Hub</span>
             </span>
           </Link>
 
@@ -69,7 +69,7 @@ const Navbar = () => {
                   className={`nav-link-hover flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-200 ${
                     location.pathname === to
                       ? 'text-primary bg-white shadow-sm'
-                      : 'text-white/90 hover:text-[#FFA500] hover:bg-white/20'
+                    : 'text-white/90 hover:text-accent hover:bg-white/20'
                   }`}
                 >
                   <Icon className="h-3.5 w-3.5" />
@@ -83,7 +83,7 @@ const Navbar = () => {
                 className={`nav-link-hover flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-200 ${
                   location.pathname === '/appointments'
                     ? 'text-primary bg-white shadow-sm'
-                    : 'text-white/90 hover:text-[#FFA500] hover:bg-white/20'
+                    : 'text-white/90 hover:text-accent hover:bg-white/20'
                 }`}
               >
                 <Calendar className="h-3.5 w-3.5" />
@@ -95,7 +95,7 @@ const Navbar = () => {
             <Link to="/post-property" className="ml-3">
               <Button 
                 size="sm"
-                className="btn-post-property bg-gradient-to-r from-[#FF8C00] to-[#FFB84D] hover:from-[#ff6600] hover:to-[#ff8c2e] text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-0 text-xs px-3 py-1.5 h-8"
+                className="btn-post-property bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-0 text-xs px-3 py-1.5 h-8"
               >
                 <PlusCircle className="h-3.5 w-3.5 mr-1.5" />
                 Post Property
@@ -126,7 +126,7 @@ const Navbar = () => {
                     onClick={signOut}
                     variant="outline" 
                     size="sm" 
-                    className="sign-btn hover-lift ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:scale-105 hover:border-[#7FB3FF] text-xs px-2.5 py-1.5 h-8 rounded-lg transition-all duration-300"
+                    className="sign-btn hover-lift ripple bg-transparent border-2 border-accent text-white hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:shadow-[0_0_10px_hsl(122_39%_49%/0.5)] hover:scale-105 hover:border-accent text-xs px-2.5 py-1.5 h-8 rounded-lg transition-all duration-300"
                   >
                     <LogOut className="h-3.5 w-3.5 mr-1.5 transition-transform duration-300 group-hover:translate-x-1" />
                     Sign Out
@@ -135,7 +135,7 @@ const Navbar = () => {
               ) : (
                 <div className="flex items-center space-x-1.5">
                   <Link to="/sign-in">
-                    <Button variant="outline" size="sm" className="sign-btn hover-lift ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:scale-105 hover:border-[#7FB3FF] text-xs px-2.5 py-1.5 h-8 rounded-lg transition-all duration-300 group">
+                    <Button variant="outline" size="sm" className="sign-btn hover-lift ripple bg-transparent border-2 border-accent text-white hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:shadow-[0_0_10px_hsl(122_39%_49%/0.5)] hover:scale-105 hover:border-accent text-xs px-2.5 py-1.5 h-8 rounded-lg transition-all duration-300 group">
                       <LogIn className="h-3.5 w-3.5 mr-1.5 transition-transform duration-300 group-hover:translate-x-1" />
                       Sign In
                     </Button>
@@ -187,7 +187,7 @@ const Navbar = () => {
               {/* Post Free Property CTA - Mobile */}
               <Link to="/post-property" onClick={closeMenu}>
                 <Button 
-                  className="w-full bg-gradient-to-r from-[#ff7b00] to-[#ff9f40] hover:from-[#ff6600] hover:to-[#ff8c2e] text-white shadow-lg hover:scale-105 transition-all duration-300 border-0"
+                  className="w-full bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary text-white shadow-lg hover:scale-105 transition-all duration-300 border-0"
                 >
                   <PlusCircle className="h-4 w-4 mr-2" />
                   Post Free Property
@@ -224,7 +224,7 @@ const Navbar = () => {
                       }}
                       variant="outline"
                       size="sm"
-                      className="sign-btn w-full justify-start mt-2 ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:border-[#7FB3FF] rounded-lg transition-all duration-300"
+                      className="sign-btn w-full justify-start mt-2 ripple bg-transparent border-2 border-accent text-white hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:shadow-[0_0_10px_hsl(122_39%_49%/0.5)] hover:border-accent rounded-lg transition-all duration-300"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
                       Sign Out
@@ -233,7 +233,7 @@ const Navbar = () => {
                 ) : (
                   <div className="space-y-2">
                     <Link to="/sign-in" onClick={closeMenu}>
-                      <Button variant="outline" size="sm" className="sign-btn w-full justify-start ripple bg-transparent border-2 border-[#7FB3FF] text-white hover:bg-gradient-to-r hover:from-[#6CA6FF] hover:to-[#1E90FF] hover:shadow-[0_0_10px_rgba(111,170,255,0.7)] hover:border-[#7FB3FF] rounded-lg transition-all duration-300">
+                      <Button variant="outline" size="sm" className="sign-btn w-full justify-start ripple bg-transparent border-2 border-accent text-white hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:shadow-[0_0_10px_hsl(122_39%_49%/0.5)] hover:border-accent rounded-lg transition-all duration-300">
                         <LogIn className="h-4 w-4 mr-2" />
                         Sign In
                       </Button>

@@ -129,7 +129,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   return (
     <div 
       onClick={handleCardClick}
-      className="property-card-animate bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ease-smooth hover:scale-[1.02] hover:shadow-[0_4px_20px_rgba(255,165,0,0.25)] hover:border-[#FFA500]/30 group"
+      className="property-card-animate bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ease-smooth hover:scale-[1.02] hover:shadow-elegant hover:border-accent/30 group"
     >
       {/* Image */}
       <div className="relative overflow-hidden cursor-pointer" onClick={handleImageClick}>
@@ -151,7 +151,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           </Badge>
         )}
         {property.isNew && property.status !== 'sold_out' && (
-          <Badge className="absolute top-3 left-3 bg-green-500 hover:bg-green-600 animate-bounce-in">
+          <Badge className="absolute top-3 left-3 bg-accent hover:bg-accent/80 animate-bounce-in">
             New
           </Badge>
         )}
@@ -201,15 +201,15 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             <Badge variant="outline" className="hover-scale cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all duration-300">{property.furnishing}</Badge>
             {property.eco_rating != null ? (
               <Badge className={`hover-scale cursor-pointer transition-all duration-300 ${
-                property.eco_rating >= 8 ? 'bg-green-500 hover:bg-green-600 text-white' :
-                property.eco_rating >= 5 ? 'bg-yellow-500 hover:bg-yellow-600 text-white' :
-                'bg-red-500 hover:bg-red-600 text-white'
+                property.eco_rating >= 8 ? 'bg-eco-high hover:bg-eco-high/80 text-white' :
+                property.eco_rating >= 5 ? 'bg-eco-mid hover:bg-eco-mid/80 text-white' :
+                'bg-eco-low hover:bg-eco-low/80 text-white'
               }`}>
                 <Leaf className="h-3 w-3 mr-1" />
                 Eco {property.eco_rating}/10
               </Badge>
             ) : (
-              <Badge variant="outline" className="text-muted-foreground">
+              <Badge variant="outline" className="text-eco-pending border-eco-pending/30">
                 <Leaf className="h-3 w-3 mr-1" />
                 Eco Rating Pending
               </Badge>
@@ -218,7 +218,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
 
           {/* Price with better visibility */}
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-primary transition-all duration-300 ease-smooth group-hover:-translate-y-1" style={{ textShadow: '0 2px 8px rgba(59, 130, 246, 0.3)' }}>
+            <div className="text-2xl font-bold text-accent transition-all duration-300 ease-smooth group-hover:-translate-y-1" style={{ textShadow: '0 2px 8px hsl(122 39% 49% / 0.3)' }}>
               {formatPrice(property.price)}
             </div>
           </div>
