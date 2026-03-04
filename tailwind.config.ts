@@ -45,6 +45,10 @@ export default {
           mid: "hsl(var(--eco-mid))",
           low: "hsl(var(--eco-low))",
           pending: "hsl(var(--eco-pending))",
+          accent: "hsl(var(--eco-accent))",
+          "card-bg": "hsl(var(--eco-card-bg))",
+          "card-available": "hsl(var(--eco-card-available))",
+          "card-unavailable": "hsl(var(--eco-card-unavailable))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
