@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import HeroSection from '@/components/HeroSection';
+import SustainabilitySection from '@/components/SustainabilitySection';
 import PropertyCard from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -122,6 +123,9 @@ const Index = () => {
     <div className="min-h-screen page-transition">
       {/* Hero Section */}
       <HeroSection onFiltersChange={handleFiltersChange} />
+
+      {/* Sustainable Housing Features */}
+      <SustainabilitySection />
 
       {/* Search Results - Only show if filters are applied */}
       {filteredProperties.length !== approvedProperties.length && (

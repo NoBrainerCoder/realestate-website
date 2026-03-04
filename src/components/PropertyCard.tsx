@@ -133,11 +133,18 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
     >
       {/* Image */}
       <div className="relative overflow-hidden cursor-pointer" onClick={handleImageClick}>
-        <img 
-          src={property.image} 
-          alt={property.title}
-          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+        {property.image && property.image !== '/placeholder.svg' ? (
+          <img 
+            src={property.image} 
+            alt={property.title}
+            className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="w-full h-48 bg-muted flex flex-col items-center justify-center text-muted-foreground">
+            <Maximize className="h-8 w-8 mb-2 opacity-40" />
+            <span className="text-sm font-medium">No Image Available</span>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-white text-sm font-medium bg-black/50 px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -206,7 +213,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
                 'bg-eco-low hover:bg-eco-low/80 text-white'
               }`}>
                 <Leaf className="h-3 w-3 mr-1" />
-                Eco {property.eco_rating}/10
+                🌱 Eco Score: {property.eco_rating} / 10
               </Badge>
             ) : (
               <Badge variant="outline" className="text-eco-pending border-eco-pending/30">

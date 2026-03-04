@@ -40,6 +40,10 @@
     --eco-mid: 45 93% 47%;
     --eco-low: 0 62.8% 50%;
     --eco-pending: 150 15% 50%;
+    --eco-accent: 45 100% 50%;
+    --eco-card-bg: 140 20% 96%;
+    --eco-card-available: 122 39% 95%;
+    --eco-card-unavailable: 150 10% 95%;
     
     /* Destructive/Error States */
     --destructive: 0 62.8% 50%;
@@ -99,6 +103,10 @@
     --eco-mid: 45 93% 47%;
     --eco-low: 0 62.8% 50%;
     --eco-pending: 150 15% 50%;
+    --eco-accent: 45 100% 50%;
+    --eco-card-bg: 150 15% 22%;
+    --eco-card-available: 122 30% 20%;
+    --eco-card-unavailable: 150 10% 20%;
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
     --border: 150 15% 25%;
