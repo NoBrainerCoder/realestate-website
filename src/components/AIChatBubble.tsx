@@ -15,7 +15,7 @@ const AIChatBubble = () => {
   const [messages, setMessages] = useState<Message[]>([
     { 
       role: 'assistant', 
-      content: 'Hi! I\'m your AI assistant. Ask me anything about properties in Hyderabad!\n\nNeed immediate help?\n📞 Call: +91 9866123350\n📧 Email: myinfrahub.com@gmail.com\n💬 WhatsApp: Click button below' 
+      content: 'Hi! I\'m EcoNest\'s AI assistant. Ask me about properties, eco scores, nearby facilities, or anything about sustainable living in Hyderabad!\n\n📞 Call: +91 9866123350\n📧 Email: myinfrahub.com@gmail.com\n💬 WhatsApp: Click button below' 
     }
   ]);
   const [input, setInput] = useState('');
