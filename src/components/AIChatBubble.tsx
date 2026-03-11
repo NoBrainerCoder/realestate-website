@@ -52,14 +52,9 @@ const AIChatBubble = () => {
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
     } catch (error) {
       console.error('Chat error:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to get response. Please try again.',
-        variant: 'destructive',
-      });
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: 'Sorry, I encountered an error. Please try again.' 
+        content: 'AI service temporarily unavailable. Please try again later.' 
       }]);
     } finally {
       setIsLoading(false);
