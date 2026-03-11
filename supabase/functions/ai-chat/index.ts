@@ -19,33 +19,30 @@ serve(async (req) => {
     const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
 
     if (!OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY is not configured');
+      console.error('OPENAI_API_KEY is not configured');
+      return new Response(
+        JSON.stringify({ reply: 'AI service temporarily unavailable. Please try again later.' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Fetch some property data to provide context
     const { data: properties } = await supabase
       .from('properties')
-      .select('id, title, location, price, bedrooms, bathrooms, property_type, furnishing')
+      .select('id, title, location, price, bedrooms, bathrooms, property_type, furnishing, eco_rating, energy_efficiency_rating, solar_panels, rainwater_harvesting, green_certified')
       .eq('status', 'approved')
       .limit(10);
 
-    console.log('Received chat message:', message);
+    const systemPrompt = `You are EcoNest's AI real estate assistant. Help users understand property details, eco scores, nearby facilities, and assist them in contacting the real estate agent. Keep responses short, helpful, and professional.
 
-    const systemPrompt = `You are a helpful AI assistant for MyInfraHub, a real estate platform in Hyderabad, India. 
-Your role is to help users find properties, answer questions about listings, and provide information about the real estate market.
-
-Available properties in the system:
+Available properties:
 ${JSON.stringify(properties, null, 2)}
 
-Guidelines:
-- Be friendly, professional, and helpful
-- Provide specific property recommendations when asked
-- Explain property features and benefits clearly
-- Suggest users view property details or contact the owner for more information
-- If asked about properties not in the database, politely explain you can only help with listed properties
-- Keep responses concise but informative (2-3 sentences typically)`;
+Contact info:
+📞 Phone: +91 9866123350
+📧 Email: myinfrahub.com@gmail.com
+💬 WhatsApp: https://wa.me/919866123350`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -67,13 +64,14 @@ Guidelines:
     if (!response.ok) {
       const errorText = await response.text();
       console.error('OpenAI API error:', response.status, errorText);
-      throw new Error(`OpenAI API error: ${response.status}`);
+      return new Response(
+        JSON.stringify({ reply: 'AI service temporarily unavailable. Please try again later.' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const data = await response.json();
     const reply = data.choices[0].message.content;
-
-    console.log('Generated AI response');
 
     return new Response(
       JSON.stringify({ reply }),
@@ -82,11 +80,8 @@ Guidelines:
   } catch (error) {
     console.error('Error in ai-chat function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
-      { 
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
+      JSON.stringify({ reply: 'AI service temporarily unavailable. Please try again later.' }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
