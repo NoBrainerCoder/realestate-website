@@ -334,9 +334,9 @@ const PropertyDetails = () => {
             </div>
           </div>
 
-          {/* Contact Sidebar */}
+          {/* Sidebar */}
           <div className="space-y-6">
-            <div className="bg-background rounded-2xl p-6 shadow-card sticky top-8">
+            <div className="bg-background rounded-2xl p-6 shadow-card sticky top-8 space-y-6">
               <Button
                 className="w-full"
                 size="lg"
@@ -347,6 +347,9 @@ const PropertyDetails = () => {
                 {isSubmitting ? 'Sending...' : 'Request a Call Back'}
               </Button>
             </div>
+
+            {/* Smart Property Insights */}
+            <SmartPropertyInsights property={property} />
           </div>
         </div>
       </div>
