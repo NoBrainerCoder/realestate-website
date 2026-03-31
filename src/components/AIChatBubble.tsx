@@ -15,7 +15,7 @@ const AIChatBubble = () => {
   const [messages, setMessages] = useState<Message[]>([
     { 
       role: 'assistant', 
-      content: 'Hi! I\'m EcoNest\'s AI assistant. Ask me about properties, eco scores, nearby facilities, or anything about sustainable living in Hyderabad!\n\n📞 Call: +91 9866123350\n📧 Email: myinfrahub.com@gmail.com\n💬 WhatsApp: Click button below' 
+      content: 'Hi! I\'m your AI assistant. Ask me anything about properties in Hyderabad!\n\nNeed immediate help?\n📞 Call: +91 9866123350\n📧 Email: myinfrahub.com@gmail.com\n💬 WhatsApp: Click button below' 
     }
   ]);
   const [input, setInput] = useState('');
@@ -52,9 +52,14 @@ const AIChatBubble = () => {
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
     } catch (error) {
       console.error('Chat error:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to get response. Please try again.',
+        variant: 'destructive',
+      });
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: 'AI service temporarily unavailable. Please try again later.' 
+        content: 'Sorry, I encountered an error. Please try again.' 
       }]);
     } finally {
       setIsLoading(false);
@@ -88,7 +93,7 @@ const AIChatBubble = () => {
           <div className="flex items-center justify-between p-4 border-b border-border bg-primary text-primary-foreground rounded-t-2xl">
             <div className="flex items-center gap-2">
               <MessageCircle className="h-5 w-5" />
-              <h3 className="font-semibold">EcoNest Assistant</h3>
+              <h3 className="font-semibold">AI Assistant</h3>
             </div>
             <Button
               variant="ghost"

@@ -3,13 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield, Send, Hash, Leaf, Sun, Droplets, Zap, Recycle, Award } from 'lucide-react';
+import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield, Send, Hash } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import QuantumLoader from '@/components/QuantumLoader';
 import PropertyImageCarousel from '@/components/PropertyImageCarousel';
-import SmartPropertyInsights from '@/components/SmartPropertyInsights';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -175,9 +174,8 @@ const PropertyDetails = () => {
                 autoplayDelay={3000}
               />
             ) : (
-              <div className="rounded-2xl overflow-hidden bg-muted flex flex-col items-center justify-center h-64 md:h-96">
-                <Maximize className="h-10 w-10 mb-3 text-muted-foreground opacity-40" />
-                <p className="text-muted-foreground font-medium">No Image Available</p>
+              <div className="rounded-2xl overflow-hidden bg-muted flex items-center justify-center h-64 md:h-96">
+                <p className="text-muted-foreground">No media available</p>
               </div>
             )}
 
@@ -245,80 +243,6 @@ const PropertyDetails = () => {
                 </p>
               </div>
 
-              {/* Sustainability Information */}
-              <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                  <Leaf className="h-5 w-5 text-accent" />
-                  Sustainability Information
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  <div className={`flex items-center p-3 rounded-lg ${property.solar_panels ? 'bg-eco-card-available' : 'bg-eco-card-unavailable'}`}>
-                    <Sun className={`h-5 w-5 mr-2 ${property.solar_panels ? 'text-accent' : 'text-muted-foreground'}`} />
-                    <div>
-                      <div className="text-sm font-medium">Solar Panels</div>
-                      <div className={`text-xs ${property.solar_panels ? 'text-accent' : 'text-muted-foreground'}`}>
-                        {property.solar_panels ? 'Available' : 'Not Available'}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`flex items-center p-3 rounded-lg ${property.rainwater_harvesting ? 'bg-eco-card-available' : 'bg-eco-card-unavailable'}`}>
-                    <Droplets className={`h-5 w-5 mr-2 ${property.rainwater_harvesting ? 'text-accent' : 'text-muted-foreground'}`} />
-                    <div>
-                      <div className="text-sm font-medium">Rainwater Harvesting</div>
-                      <div className={`text-xs ${property.rainwater_harvesting ? 'text-accent' : 'text-muted-foreground'}`}>
-                        {property.rainwater_harvesting ? 'Available' : 'Not Available'}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`flex items-center p-3 rounded-lg ${property.energy_efficiency_rating ? 'bg-eco-card-available' : 'bg-eco-card-unavailable'}`}>
-                    <Zap className={`h-5 w-5 mr-2 ${property.energy_efficiency_rating ? 'text-eco-accent' : 'text-muted-foreground'}`} />
-                    <div>
-                      <div className="text-sm font-medium">Energy Rating</div>
-                      <div className={`text-xs ${property.energy_efficiency_rating ? 'text-eco-accent' : 'text-muted-foreground'}`}>
-                        {property.energy_efficiency_rating ? `${property.energy_efficiency_rating}/5` : 'Not Rated'}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`flex items-center p-3 rounded-lg ${property.waste_management ? 'bg-eco-card-available' : 'bg-eco-card-unavailable'}`}>
-                    <Recycle className={`h-5 w-5 mr-2 ${property.waste_management ? 'text-accent' : 'text-muted-foreground'}`} />
-                    <div>
-                      <div className="text-sm font-medium">Waste Management</div>
-                      <div className={`text-xs ${property.waste_management ? 'text-accent' : 'text-muted-foreground'}`}>
-                        {property.waste_management ? 'Available' : 'Not Available'}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`flex items-center p-3 rounded-lg ${property.green_certified ? 'bg-eco-card-available' : 'bg-eco-card-unavailable'}`}>
-                    <Award className={`h-5 w-5 mr-2 ${property.green_certified ? 'text-accent' : 'text-muted-foreground'}`} />
-                    <div>
-                      <div className="text-sm font-medium">Green Certified</div>
-                      <div className={`text-xs ${property.green_certified ? 'text-accent' : 'text-muted-foreground'}`}>
-                        {property.green_certified ? 'Certified' : 'Not Certified'}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`flex items-center p-3 rounded-lg ${property.eco_rating != null ? (property.eco_rating >= 8 ? 'bg-eco-card-available' : property.eco_rating >= 5 ? 'bg-eco-card-available' : 'bg-eco-card-unavailable') : 'bg-eco-card-unavailable'}`}>
-                    <Leaf className={`h-5 w-5 mr-2 ${property.eco_rating != null ? (property.eco_rating >= 8 ? 'text-eco-high' : property.eco_rating >= 5 ? 'text-eco-mid' : 'text-eco-low') : 'text-muted-foreground'}`} />
-                    <div>
-                      <div className="text-sm font-medium">Eco Score</div>
-                      <div className={`text-xs font-bold ${property.eco_rating != null ? (property.eco_rating >= 8 ? 'text-eco-high' : property.eco_rating >= 5 ? 'text-eco-mid' : 'text-eco-low') : 'text-muted-foreground'}`}>
-                        {property.eco_rating != null ? `🌱 ${property.eco_rating} / 10` : 'Pending'}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Eco Insight Line */}
-                {property.eco_rating != null && (
-                  <p className="mt-3 text-sm text-muted-foreground italic">
-                    {property.eco_rating >= 8
-                      ? 'This property is a highly sustainable property.'
-                      : property.eco_rating >= 5
-                      ? 'This property meets moderate sustainability standards.'
-                      : 'This property has basic sustainability features.'}
-                  </p>
-                )}
-              </div>
-
               {/* Amenities */}
               <div>
                 <h3 className="text-xl font-semibold mb-3">Amenities</h3>
@@ -334,9 +258,9 @@ const PropertyDetails = () => {
             </div>
           </div>
 
-          {/* Sidebar */}
+          {/* Contact Sidebar */}
           <div className="space-y-6">
-            <div className="bg-background rounded-2xl p-6 shadow-card sticky top-8 space-y-6">
+            <div className="bg-background rounded-2xl p-6 shadow-card sticky top-8">
               <Button
                 className="w-full"
                 size="lg"
@@ -347,9 +271,6 @@ const PropertyDetails = () => {
                 {isSubmitting ? 'Sending...' : 'Request a Call Back'}
               </Button>
             </div>
-
-            {/* Smart Property Insights */}
-            <SmartPropertyInsights property={property} />
           </div>
         </div>
       </div>

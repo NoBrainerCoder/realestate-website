@@ -16,12 +16,10 @@ serve(async (req) => {
     const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
 
     if (!OPENAI_API_KEY) {
-      console.error('OPENAI_API_KEY is not configured');
-      return new Response(
-        JSON.stringify({ error: 'AI service temporarily unavailable. Please try again later.' }),
-        { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      throw new Error('OPENAI_API_KEY is not configured');
     }
+
+    console.log('Generating description for property:', propertyData);
 
     const prompt = `Generate a compelling, professional property description for the following property in Hyderabad, India:
 
@@ -33,21 +31,14 @@ Area: ${propertyData.area} sq ft
 Furnishing: ${propertyData.furnishing}
 Age: ${propertyData.age}
 Amenities: ${propertyData.amenities?.join(', ') || 'None specified'}
-Sustainability: ${[
-  propertyData.solar_panels && 'Solar Panels',
-  propertyData.rainwater_harvesting && 'Rainwater Harvesting',
-  propertyData.waste_management && 'Waste Management',
-  propertyData.green_certified && 'Green Certified',
-].filter(Boolean).join(', ') || 'None specified'}
 
 Write a description that:
 1. Highlights the key features and benefits
 2. Describes the location advantages
 3. Mentions nearby facilities and connectivity
-4. Highlights sustainability features if available
-5. Creates an inviting tone for potential buyers/renters
-6. Is between 100-150 words
-7. Uses professional real estate language
+4. Creates an inviting tone for potential buyers/renters
+5. Is between 100-150 words
+6. Uses professional real estate language
 
 Description:`;
 
@@ -62,7 +53,7 @@ Description:`;
         messages: [
           { 
             role: 'system', 
-            content: 'You are a professional real estate copywriter specializing in Indian property markets with expertise in eco-friendly and sustainable properties.' 
+            content: 'You are a professional real estate copywriter specializing in Indian property markets.' 
           },
           { role: 'user', content: prompt }
         ],
@@ -74,14 +65,13 @@ Description:`;
     if (!response.ok) {
       const errorText = await response.text();
       console.error('OpenAI API error:', response.status, errorText);
-      return new Response(
-        JSON.stringify({ error: 'AI service temporarily unavailable. Please try again later.' }),
-        { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      throw new Error(`OpenAI API error: ${response.status}`);
     }
 
     const data = await response.json();
     const description = data.choices[0].message.content;
+
+    console.log('Generated description successfully');
 
     return new Response(
       JSON.stringify({ description }),
@@ -90,8 +80,11 @@ Description:`;
   } catch (error) {
     console.error('Error in generate-description function:', error);
     return new Response(
-      JSON.stringify({ error: 'AI service temporarily unavailable. Please try again later.' }),
-      { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ error: error.message }),
+      { 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
     );
   }
 });

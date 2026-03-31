@@ -49,11 +49,8 @@ import {
   Building2,
   ShoppingCart,
   Trash2,
-  Plus,
-  Leaf
+  Plus
 } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
 import { displayPrice } from '@/utils/priceFormatter';
 
 const AdminProperties = () => {
@@ -63,7 +60,6 @@ const AdminProperties = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
-  const [ecoRating, setEcoRating] = useState<number>(0);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -585,7 +581,7 @@ const AdminProperties = () => {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => { setSelectedProperty(property); setEcoRating(property.eco_rating ?? 0); }}
+                        onClick={() => setSelectedProperty(property)}
                       >
                         <Eye className="h-4 w-4 mr-2" />
                         View Details
@@ -628,94 +624,11 @@ const AdminProperties = () => {
                             <h4 className="font-semibold mb-2">Amenities</h4>
                             <div className="flex flex-wrap gap-2">
                               {selectedProperty.amenities.map((amenity: string, index: number) => (
-                         <Badge key={index} variant="secondary">{amenity}</Badge>
+                                <Badge key={index} variant="secondary">{amenity}</Badge>
                               ))}
                             </div>
                           </div>
                         )}
-
-                        {/* Sustainability Details */}
-                        <div>
-                          <h4 className="font-semibold mb-2 flex items-center gap-2">
-                            <Leaf className="h-4 w-4 text-green-500" />
-                            Sustainability Details
-                          </h4>
-                          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
-                            <div className="p-2 bg-muted/50 rounded-lg">
-                              <span className="font-medium">Solar Panels:</span>{' '}
-                              {selectedProperty?.solar_panels ? '✅ Yes' : '❌ No'}
-                            </div>
-                            <div className="p-2 bg-muted/50 rounded-lg">
-                              <span className="font-medium">Rainwater Harvesting:</span>{' '}
-                              {selectedProperty?.rainwater_harvesting ? '✅ Yes' : '❌ No'}
-                            </div>
-                            <div className="p-2 bg-muted/50 rounded-lg">
-                              <span className="font-medium">Energy Rating:</span>{' '}
-                              {selectedProperty?.energy_efficiency_rating ? `${selectedProperty.energy_efficiency_rating}/5` : 'N/A'}
-                            </div>
-                            <div className="p-2 bg-muted/50 rounded-lg">
-                              <span className="font-medium">Waste Management:</span>{' '}
-                              {selectedProperty?.waste_management ? '✅ Yes' : '❌ No'}
-                            </div>
-                            <div className="p-2 bg-muted/50 rounded-lg">
-                              <span className="font-medium">Green Certified:</span>{' '}
-                              {selectedProperty?.green_certified ? '✅ Yes' : '❌ No'}
-                            </div>
-                            <div className="p-2 bg-muted/50 rounded-lg">
-                              <span className="font-medium">Eco Rating:</span>{' '}
-                              <span className={selectedProperty?.eco_rating != null ? (
-                                selectedProperty.eco_rating >= 8 ? 'text-green-600 font-bold' :
-                                selectedProperty.eco_rating >= 5 ? 'text-yellow-600 font-bold' :
-                                'text-red-600 font-bold'
-                              ) : 'text-muted-foreground'}>
-                                {selectedProperty?.eco_rating != null ? `${selectedProperty.eco_rating}/10` : 'Not Assigned'}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Admin Eco Rating Control */}
-                          <div className="mt-4 p-4 border rounded-lg bg-muted/30">
-                            <Label className="text-sm font-semibold mb-2 block">
-                              🌿 Assign Eco Rating (0–10)
-                            </Label>
-                            <div className="flex items-center gap-4">
-                              <Slider
-                                value={[ecoRating]}
-                                onValueChange={(val) => setEcoRating(val[0])}
-                                max={10}
-                                min={0}
-                                step={1}
-                                className="flex-1"
-                              />
-                              <span className={`text-lg font-bold min-w-[3rem] text-center ${
-                                ecoRating >= 8 ? 'text-green-600' :
-                                ecoRating >= 5 ? 'text-yellow-600' :
-                                'text-red-600'
-                              }`}>
-                                {ecoRating}/10
-                              </span>
-                              <Button
-                                size="sm"
-                                onClick={async () => {
-                                  try {
-                                    const { error } = await supabase
-                                      .from('properties')
-                                      .update({ eco_rating: ecoRating })
-                                      .eq('id', selectedProperty.id);
-                                    if (error) throw error;
-                                    queryClient.invalidateQueries({ queryKey: ['admin-properties'] });
-                                    toast({ title: 'Success', description: `Eco rating set to ${ecoRating}/10` });
-                                  } catch (error: any) {
-                                    toast({ title: 'Error', description: error.message, variant: 'destructive' });
-                                  }
-                                }}
-                              >
-                                Save Rating
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-
                         <div>
                           <div className="flex items-center justify-between mb-2">
                             <h4 className="font-semibold">Property Media</h4>
