@@ -557,7 +557,75 @@ const PostProperty = () => {
             </CardContent>
           </Card>
 
-          {/* Property Details */}
+          {/* Basic Facilities */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Basic Facilities</CardTitle>
+              <CardDescription>Select the basic facilities available in your property</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="waterSupply" className="cursor-pointer">💧 Water Supply</Label>
+                  <input
+                    type="checkbox"
+                    id="waterSupply"
+                    checked={formData.waterSupply}
+                    onChange={(e) => setFormData(prev => ({ ...prev, waterSupply: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="parkingAvailable" className="cursor-pointer">🅿️ Parking Available</Label>
+                  <input
+                    type="checkbox"
+                    id="parkingAvailable"
+                    checked={formData.parkingAvailable}
+                    onChange={(e) => setFormData(prev => ({ ...prev, parkingAvailable: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="liftAvailable" className="cursor-pointer">🛗 Lift Available</Label>
+                  <input
+                    type="checkbox"
+                    id="liftAvailable"
+                    checked={formData.liftAvailable}
+                    onChange={(e) => setFormData(prev => ({ ...prev, liftAvailable: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="powerBackup" className="cursor-pointer">⚡ Power Backup</Label>
+                  <input
+                    type="checkbox"
+                    id="powerBackup"
+                    checked={formData.powerBackup}
+                    onChange={(e) => setFormData(prev => ({ ...prev, powerBackup: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                </div>
+              </div>
+              {formData.powerBackup && (
+                <div className="space-y-2">
+                  <Label>Power Backup Type</Label>
+                  <Select
+                    value={formData.powerBackupType}
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, powerBackupType: value as any }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Inverter">Inverter</SelectItem>
+                      <SelectItem value="Generator">Generator</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle>Property Details</CardTitle>
