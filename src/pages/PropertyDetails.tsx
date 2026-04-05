@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield, Send, Hash } from 'lucide-react';
+import { ArrowLeft, MapPin, Bed, Bath, Maximize, Calendar, Home, Shield, Send, Hash, Droplets, Zap, Car, ArrowUpFromDot, GraduationCap, Hospital, ShoppingCart } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
