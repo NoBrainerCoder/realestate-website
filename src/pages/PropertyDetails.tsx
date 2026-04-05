@@ -243,18 +243,57 @@ const PropertyDetails = () => {
                 </p>
               </div>
 
-              {/* Amenities */}
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Amenities</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  {property.amenities.map((amenity, index) => (
-                    <div key={index} className="flex items-center p-2 bg-muted/50 rounded-lg">
-                      <Shield className="h-4 w-4 mr-2 text-primary" />
-                      <span className="text-sm">{amenity}</span>
+              {/* Basic Facilities */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold mb-3">Basic Facilities</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className={`flex items-center gap-2 p-3 rounded-lg ${(property as any).water_supply ? 'bg-green-50 dark:bg-green-950/30' : 'bg-muted/50'}`}>
+                    <Droplets className={`h-5 w-5 ${(property as any).water_supply ? 'text-green-600' : 'text-muted-foreground'}`} />
+                    <div>
+                      <div className="text-sm font-medium">Water Supply</div>
+                      <div className="text-xs text-muted-foreground">{(property as any).water_supply ? 'Available' : 'Not Available'}</div>
                     </div>
+                  </div>
+                  <div className={`flex items-center gap-2 p-3 rounded-lg ${(property as any).power_backup ? 'bg-green-50 dark:bg-green-950/30' : 'bg-muted/50'}`}>
+                    <Zap className={`h-5 w-5 ${(property as any).power_backup ? 'text-green-600' : 'text-muted-foreground'}`} />
+                    <div>
+                      <div className="text-sm font-medium">Power Backup</div>
+                      <div className="text-xs text-muted-foreground">{(property as any).power_backup ? (property as any).power_backup_type || 'Available' : 'Not Available'}</div>
+                    </div>
+                  </div>
+                  <div className={`flex items-center gap-2 p-3 rounded-lg ${(property as any).parking_available ? 'bg-green-50 dark:bg-green-950/30' : 'bg-muted/50'}`}>
+                    <Car className={`h-5 w-5 ${(property as any).parking_available ? 'text-green-600' : 'text-muted-foreground'}`} />
+                    <div>
+                      <div className="text-sm font-medium">Parking</div>
+                      <div className="text-xs text-muted-foreground">{(property as any).parking_available ? 'Available' : 'Not Available'}</div>
+                    </div>
+                  </div>
+                  <div className={`flex items-center gap-2 p-3 rounded-lg ${(property as any).lift_available ? 'bg-green-50 dark:bg-green-950/30' : 'bg-muted/50'}`}>
+                    <ArrowUpFromDot className={`h-5 w-5 ${(property as any).lift_available ? 'text-green-600' : 'text-muted-foreground'}`} />
+                    <div>
+                      <div className="text-sm font-medium">Lift</div>
+                      <div className="text-xs text-muted-foreground">{(property as any).lift_available ? 'Available' : 'Not Available'}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Amenities */}
+              {property.amenities && property.amenities.length > 0 && (
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold mb-3">Amenities</h3>
+                <div className="flex flex-wrap gap-2">
+                  {property.amenities.map((amenity, index) => (
+                    <Badge key={index} variant="secondary" className="px-3 py-1.5 text-sm">
+                      {amenity}
+                    </Badge>
                   ))}
                 </div>
               </div>
+              )}
+
+              {/* Nearby Facilities */}
+              <NearbyFacilities location={property.location} />
             </div>
           </div>
 
