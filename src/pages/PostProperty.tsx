@@ -258,6 +258,8 @@ const PostProperty = () => {
         bedrooms: '', bathrooms: '', furnishing: '', propertyType: '',
         amenities: [], age: '', posterName: '', posterPhone: '', posterEmail: '',
         posterType: 'owner',
+        waterSupply: false, powerBackup: false, powerBackupType: 'None',
+        parkingAvailable: false, liftAvailable: false,
       });
       setPriceDisplay('');
       clearMedia();
