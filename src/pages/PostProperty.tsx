@@ -191,14 +191,19 @@ const PostProperty = () => {
           bathrooms: formData.bathrooms,
           furnishing: formData.furnishing,
           property_type: formData.propertyType,
-          property_for: propertyFor, // Add this field
+          property_for: propertyFor,
           amenities: formData.amenities,
           age: formData.age,
           poster_name: formData.posterName,
           poster_phone: formData.posterPhone,
           poster_email: formData.posterEmail,
-          status: propertyStatus
-        })
+          status: propertyStatus,
+          water_supply: formData.waterSupply,
+          power_backup: formData.powerBackup,
+          power_backup_type: formData.powerBackupType,
+          parking_available: formData.parkingAvailable,
+          lift_available: formData.liftAvailable,
+        } as any)
         .select()
         .single();
 
