@@ -13,6 +13,67 @@ import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 
+// Nearby facilities mapping
+const nearbyFacilitiesData: Record<string, { schools: string[]; hospitals: string[]; supermarkets: string[] }> = {
+  'Gachibowli': { schools: ['Delhi Public School', 'Oakridge International'], hospitals: ['Continental Hospital', 'CARE Hospital'], supermarkets: ['Ratnadeep', 'DMart'] },
+  'Madhapur': { schools: ['Meridian School', 'Chirec Public School'], hospitals: ['Apollo Hospital', 'Yashoda Hospital'], supermarkets: ['More Supermarket', 'Ratnadeep'] },
+  'Kondapur': { schools: ['Jubilee Hills Public School', 'FIITJEE School'], hospitals: ['AIG Hospital', 'Sunshine Hospital'], supermarkets: ['Spar', 'Ratnadeep'] },
+  'Kukatpally': { schools: ['Sri Chaitanya School', 'Narayana School'], hospitals: ['KIMS Hospital', 'Maxcure Hospital'], supermarkets: ['Big Bazaar', 'DMart'] },
+  'Hitech City': { schools: ['DPS Miyapur', 'Oakridge'], hospitals: ['Citizens Hospital', 'Continental Hospital'], supermarkets: ['Ratnadeep', 'More Supermarket'] },
+  'Jubilee Hills': { schools: ['Jubilee Hills Public School', 'Chirec'], hospitals: ['Apollo Hospital', 'Care Hospital'], supermarkets: ['Ratnadeep', 'Nature Fresh'] },
+  'Banjara Hills': { schools: ['Hyderabad Public School', 'St. George Grammar'], hospitals: ['Yashoda Hospital', 'Krishna Institute'], supermarkets: ['Ratnadeep', 'Heritage Fresh'] },
+  'Secunderabad': { schools: ['All Saints High School', 'Wesley Grammar'], hospitals: ['Gandhi Hospital', 'Aware Global Hospital'], supermarkets: ['Ratnadeep', 'Big Bazaar'] },
+  'LB Nagar': { schools: ['Sri Chaitanya School', 'Narayana School'], hospitals: ['Kamineni Hospital', 'Yashoda Hospital'], supermarkets: ['DMart', 'More Supermarket'] },
+  'Dilsukhnagar': { schools: ['Gowtham Model School', 'Sri Chaitanya'], hospitals: ['Aware Gleneagles', 'Care Hospital'], supermarkets: ['Big Bazaar', 'Ratnadeep'] },
+  'Miyapur': { schools: ['DPS Miyapur', 'Delhi Public School'], hospitals: ['Aster Prime', 'Sunshine Hospital'], supermarkets: ['DMart', 'Ratnadeep'] },
+  'KPHB': { schools: ['Bhashyam School', 'Sri Chaitanya'], hospitals: ['KIMS', 'Star Hospital'], supermarkets: ['Ratnadeep', 'More Supermarket'] },
+  'Attapur': { schools: ['Pallavi Model School', 'Delhi Public School'], hospitals: ['NIMS', 'Sunshine Hospital'], supermarkets: ['DMart', 'More'] },
+  'Manikonda': { schools: ['Oakridge International', 'Pallavi Model'], hospitals: ['Continental Hospital', 'Citizens Hospital'], supermarkets: ['Ratnadeep', 'DMart'] },
+  'Uppal': { schools: ['Sri Chaitanya School', 'Narayana School'], hospitals: ['Yashoda Hospital', 'Apollo Clinic'], supermarkets: ['More Supermarket', 'DMart'] },
+};
+
+const NearbyFacilities = ({ location }: { location: string }) => {
+  const data = nearbyFacilitiesData[location];
+  
+  if (!data) {
+    return (
+      <div>
+        <h3 className="text-xl font-semibold mb-3">Nearby Facilities</h3>
+        <p className="text-muted-foreground text-sm">Data not available for this location</p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h3 className="text-xl font-semibold mb-3">Nearby Facilities</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="p-4 bg-muted/50 rounded-lg">
+          <div className="flex items-center gap-2 mb-2">
+            <GraduationCap className="h-5 w-5 text-primary" />
+            <span className="font-medium">Schools</span>
+          </div>
+          {data.schools.map((s, i) => <p key={i} className="text-sm text-muted-foreground ml-7">{s}</p>)}
+        </div>
+        <div className="p-4 bg-muted/50 rounded-lg">
+          <div className="flex items-center gap-2 mb-2">
+            <Hospital className="h-5 w-5 text-primary" />
+            <span className="font-medium">Hospitals</span>
+          </div>
+          {data.hospitals.map((h, i) => <p key={i} className="text-sm text-muted-foreground ml-7">{h}</p>)}
+        </div>
+        <div className="p-4 bg-muted/50 rounded-lg">
+          <div className="flex items-center gap-2 mb-2">
+            <ShoppingCart className="h-5 w-5 text-primary" />
+            <span className="font-medium">Supermarkets</span>
+          </div>
+          {data.supermarkets.map((m, i) => <p key={i} className="text-sm text-muted-foreground ml-7">{m}</p>)}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
