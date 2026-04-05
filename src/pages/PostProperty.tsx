@@ -88,6 +88,11 @@ const PostProperty = () => {
     posterPhone: '',
     posterEmail: '',
     posterType: 'owner' as 'owner' | 'agent' | 'builder',
+    waterSupply: false,
+    powerBackup: false,
+    powerBackupType: 'None' as 'None' | 'Inverter' | 'Generator',
+    parkingAvailable: false,
+    liftAvailable: false,
   });
   
 
