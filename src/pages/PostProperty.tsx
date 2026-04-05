@@ -88,13 +88,17 @@ const PostProperty = () => {
     posterPhone: '',
     posterEmail: '',
     posterType: 'owner' as 'owner' | 'agent' | 'builder',
+    waterSupply: false,
+    powerBackup: false,
+    powerBackupType: 'None' as 'None' | 'Inverter' | 'Generator',
+    parkingAvailable: false,
+    liftAvailable: false,
   });
   
 
   const amenitiesList = [
-    'Gym', 'Swimming Pool', 'Parking', 'Security', '24/7 Power Backup',
-    'Lift', 'Garden', 'Terrace', 'CCTV', 'Generator', 'Water Supply',
-    'Solar Panels', 'Central AC', 'Clubhouse', 'Children Play Area'
+    'Gym', 'Swimming Pool', 'Security', 'CCTV', 'Garden', 'Terrace',
+    'Clubhouse', 'Children Play Area', 'Solar Panels'
   ];
 
   const handleInputChange = (field: string, value: string) => {
@@ -187,14 +191,19 @@ const PostProperty = () => {
           bathrooms: formData.bathrooms,
           furnishing: formData.furnishing,
           property_type: formData.propertyType,
-          property_for: propertyFor, // Add this field
+          property_for: propertyFor,
           amenities: formData.amenities,
           age: formData.age,
           poster_name: formData.posterName,
           poster_phone: formData.posterPhone,
           poster_email: formData.posterEmail,
-          status: propertyStatus
-        })
+          status: propertyStatus,
+          water_supply: formData.waterSupply,
+          power_backup: formData.powerBackup,
+          power_backup_type: formData.powerBackupType,
+          parking_available: formData.parkingAvailable,
+          lift_available: formData.liftAvailable,
+        } as any)
         .select()
         .single();
 
@@ -249,6 +258,8 @@ const PostProperty = () => {
         bedrooms: '', bathrooms: '', furnishing: '', propertyType: '',
         amenities: [], age: '', posterName: '', posterPhone: '', posterEmail: '',
         posterType: 'owner',
+        waterSupply: false, powerBackup: false, powerBackupType: 'None',
+        parkingAvailable: false, liftAvailable: false,
       });
       setPriceDisplay('');
       clearMedia();
@@ -546,7 +557,75 @@ const PostProperty = () => {
             </CardContent>
           </Card>
 
-          {/* Property Details */}
+          {/* Basic Facilities */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Basic Facilities</CardTitle>
+              <CardDescription>Select the basic facilities available in your property</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="waterSupply" className="cursor-pointer">💧 Water Supply</Label>
+                  <input
+                    type="checkbox"
+                    id="waterSupply"
+                    checked={formData.waterSupply}
+                    onChange={(e) => setFormData(prev => ({ ...prev, waterSupply: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="parkingAvailable" className="cursor-pointer">🅿️ Parking Available</Label>
+                  <input
+                    type="checkbox"
+                    id="parkingAvailable"
+                    checked={formData.parkingAvailable}
+                    onChange={(e) => setFormData(prev => ({ ...prev, parkingAvailable: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="liftAvailable" className="cursor-pointer">🛗 Lift Available</Label>
+                  <input
+                    type="checkbox"
+                    id="liftAvailable"
+                    checked={formData.liftAvailable}
+                    onChange={(e) => setFormData(prev => ({ ...prev, liftAvailable: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label htmlFor="powerBackup" className="cursor-pointer">⚡ Power Backup</Label>
+                  <input
+                    type="checkbox"
+                    id="powerBackup"
+                    checked={formData.powerBackup}
+                    onChange={(e) => setFormData(prev => ({ ...prev, powerBackup: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                </div>
+              </div>
+              {formData.powerBackup && (
+                <div className="space-y-2">
+                  <Label>Power Backup Type</Label>
+                  <Select
+                    value={formData.powerBackupType}
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, powerBackupType: value as any }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Inverter">Inverter</SelectItem>
+                      <SelectItem value="Generator">Generator</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle>Property Details</CardTitle>

@@ -220,29 +220,28 @@ export type Database = {
           bedrooms: string
           created_at: string
           description: string
-          eco_rating: number | null
-          energy_efficiency_rating: number | null
           furnishing: string
-          green_certified: boolean | null
           id: string
+          lift_available: boolean | null
           location: string
+          parking_available: boolean | null
           poster_email: string
           poster_name: string
           poster_phone: string
           poster_type: string
+          power_backup: boolean | null
+          power_backup_type: string | null
           price: number
           property_code: string | null
           property_for: string
           property_type: string
-          rainwater_harvesting: boolean | null
           rejection_reason: string | null
-          solar_panels: boolean | null
           sold_out_date: string | null
           status: string
           title: string
           updated_at: string
           user_id: string
-          waste_management: boolean | null
+          water_supply: boolean | null
         }
         Insert: {
           age: string
@@ -253,29 +252,28 @@ export type Database = {
           bedrooms: string
           created_at?: string
           description: string
-          eco_rating?: number | null
-          energy_efficiency_rating?: number | null
           furnishing: string
-          green_certified?: boolean | null
           id?: string
+          lift_available?: boolean | null
           location: string
+          parking_available?: boolean | null
           poster_email: string
           poster_name: string
           poster_phone: string
           poster_type?: string
+          power_backup?: boolean | null
+          power_backup_type?: string | null
           price: number
           property_code?: string | null
           property_for?: string
           property_type: string
-          rainwater_harvesting?: boolean | null
           rejection_reason?: string | null
-          solar_panels?: boolean | null
           sold_out_date?: string | null
           status?: string
           title: string
           updated_at?: string
           user_id: string
-          waste_management?: boolean | null
+          water_supply?: boolean | null
         }
         Update: {
           age?: string
@@ -286,29 +284,28 @@ export type Database = {
           bedrooms?: string
           created_at?: string
           description?: string
-          eco_rating?: number | null
-          energy_efficiency_rating?: number | null
           furnishing?: string
-          green_certified?: boolean | null
           id?: string
+          lift_available?: boolean | null
           location?: string
+          parking_available?: boolean | null
           poster_email?: string
           poster_name?: string
           poster_phone?: string
           poster_type?: string
+          power_backup?: boolean | null
+          power_backup_type?: string | null
           price?: number
           property_code?: string | null
           property_for?: string
           property_type?: string
-          rainwater_harvesting?: boolean | null
           rejection_reason?: string | null
-          solar_panels?: boolean | null
           sold_out_date?: string | null
           status?: string
           title?: string
           updated_at?: string
           user_id?: string
-          waste_management?: boolean | null
+          water_supply?: boolean | null
         }
         Relationships: []
       }
