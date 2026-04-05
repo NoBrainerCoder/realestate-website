@@ -97,9 +97,8 @@ const PostProperty = () => {
   
 
   const amenitiesList = [
-    'Gym', 'Swimming Pool', 'Parking', 'Security', '24/7 Power Backup',
-    'Lift', 'Garden', 'Terrace', 'CCTV', 'Generator', 'Water Supply',
-    'Solar Panels', 'Central AC', 'Clubhouse', 'Children Play Area'
+    'Gym', 'Swimming Pool', 'Security', 'CCTV', 'Garden', 'Terrace',
+    'Clubhouse', 'Children Play Area', 'Solar Panels'
   ];
 
   const handleInputChange = (field: string, value: string) => {
