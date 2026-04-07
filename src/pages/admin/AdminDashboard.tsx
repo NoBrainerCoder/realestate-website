@@ -10,7 +10,8 @@ import {
   Clock, 
   CheckCircle, 
   XCircle,
-  Eye
+  Eye,
+  Monitor
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -91,6 +92,16 @@ const AdminDashboard = () => {
             👋 Welcome back, Mr. Khan!
           </h1>
           <p className="text-lg text-muted-foreground">Manage properties, contacts, and more</p>
+        </div>
+
+        {/* Slideshow CTA */}
+        <div className="mb-8">
+          <Link to="/admin/slideshow">
+            <Button className="bg-gradient-to-r from-[#FF8C00] to-[#FFB84D] hover:from-[#ff6600] hover:to-[#ff8c2e] text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 text-base">
+              <Monitor className="h-5 w-5 mr-2" />
+              Start Property Slideshow
+            </Button>
+          </Link>
         </div>
 
         {/* Statistics Cards */}
