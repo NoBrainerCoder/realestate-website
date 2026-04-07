@@ -10,6 +10,7 @@ const PageTransition = ({ children }: PageTransitionProps) => {
   const [isTransitioning, setIsTransitioning] = useState(true);
   
   useEffect(() => {
+    window.scrollTo(0, 0);
     setIsTransitioning(true);
     const timer = setTimeout(() => setIsTransitioning(false), 100);
     return () => clearTimeout(timer);
