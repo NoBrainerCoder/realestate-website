@@ -219,55 +219,6 @@ const EMICalculator = () => {
               </CardContent>
             </Card>
 
-            {/* Visual Breakdown */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Payment Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Principal</span>
-                    <span className="text-sm font-medium">
-                      {((loanAmount[0] / totalPayment) * 100).toFixed(1)}%
-                    </span>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
-                    <div 
-                      className="h-full bg-primary transition-all duration-500"
-                      style={{ width: `${(loanAmount[0] / totalPayment) * 100}%` }}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Interest</span>
-                    <span className="text-sm font-medium">
-                      {((totalInterest / totalPayment) * 100).toFixed(1)}%
-                    </span>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
-                    <div 
-                      className="h-full bg-amber-500 transition-all duration-500"
-                      style={{ width: `${(totalInterest / totalPayment) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Action Buttons */}
-            <div className="space-y-3">
-              <Link to="/properties">
-                <Button className="w-full btn-hero">
-                  <Home className="h-4 w-4 mr-2" />
-                  Browse Properties
-                </Button>
-              </Link>
-              <Link to="/contact">
-                <Button variant="outline" className="w-full">
-                  Get Expert Advice
-                </Button>
-              </Link>
-            </div>
           </div>
         </div>
       </div>

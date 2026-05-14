@@ -599,24 +599,10 @@ const PostProperty = () => {
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="flat">Flat / Apartment</SelectItem>
-                      <SelectItem value="studio">Single Room / Studio Apartment</SelectItem>
-                      <SelectItem value="penthouse">Penthouse</SelectItem>
-                      <SelectItem value="independent-house">Independent House</SelectItem>
-                      <SelectItem value="independent-building">Independent Building</SelectItem>
-                      <SelectItem value="duplex">Duplex House</SelectItem>
+                      <SelectItem value="flat">Apartment</SelectItem>
                       <SelectItem value="villa">Villa</SelectItem>
-                      <SelectItem value="residential-plot">Residential Plot</SelectItem>
-                      <SelectItem value="commercial-building">Commercial Building</SelectItem>
-                      <SelectItem value="office-space">Office Space</SelectItem>
-                      <SelectItem value="retail-space">Retail Space / Showroom</SelectItem>
-                      <SelectItem value="shop">Shop / Showroom</SelectItem>
-                      <SelectItem value="commercial-plot">Commercial Plot</SelectItem>
-                      <SelectItem value="hostel">Hostel Building</SelectItem>
-                      <SelectItem value="industrial-shed">Industrial Shed / Land</SelectItem>
-                      <SelectItem value="warehouse">Warehouse / Godown</SelectItem>
-                      <SelectItem value="farmhouse">Farmhouse</SelectItem>
-                      <SelectItem value="agricultural-land">Agricultural Land</SelectItem>
+                      <SelectItem value="residential-plot">Plot</SelectItem>
+                      <SelectItem value="commercial-building">Commercial</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
