@@ -1,18 +1,4 @@
-import { useEffect } from 'react';
-import { useTheme } from 'next-themes';
-
-// Declare the custom element type
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'l-quantum': {
-        size?: string | number;
-        speed?: string | number;
-        color?: string | number;
-      };
-    }
-  }
-}
+import { Loader2 } from 'lucide-react';
 
 interface QuantumLoaderProps {
   size?: string;
@@ -20,30 +6,11 @@ interface QuantumLoaderProps {
   className?: string;
 }
 
-const QuantumLoader = ({ 
-  size = "45", 
-  speed = "1.75",
-  className = ""
-}: QuantumLoaderProps) => {
-  const { theme } = useTheme();
-
-  useEffect(() => {
-    // Dynamically import and register the quantum loader
-    import('ldrs').then((ldrs) => {
-      ldrs.quantum.register();
-    });
-  }, []);
-
-  // Set color based on theme
-  const color = theme === 'dark' ? 'white' : 'hsl(221, 83%, 53%)';
-
+const QuantumLoader = ({ size = "45", className = "" }: QuantumLoaderProps) => {
+  const px = parseInt(size, 10) || 45;
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <l-quantum
-        size={size}
-        speed={speed}
-        color={color}
-      />
+      <Loader2 className="animate-spin text-primary" style={{ width: px, height: px }} />
     </div>
   );
 };
