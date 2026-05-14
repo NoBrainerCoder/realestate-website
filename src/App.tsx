@@ -7,7 +7,6 @@ import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AIChatBubble from "@/components/AIChatBubble";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Properties from "./pages/Properties";
@@ -29,7 +28,6 @@ import AdminProperties from "./pages/admin/AdminProperties";
 import AdminAppointments from "./pages/admin/AdminAppointments";
 import AdminContacts from "./pages/admin/AdminContacts";
 import AdminContactRequests from "./pages/admin/AdminContactRequests";
-import AdminSlideshow from "./pages/admin/AdminSlideshow";
 
 const queryClient = new QueryClient();
 
@@ -65,14 +63,12 @@ const App = () => (
                 <Route path="/admin/appointments" element={<AdminRoute><PageTransition><AdminAppointments /></PageTransition></AdminRoute>} />
                 <Route path="/admin/contacts" element={<AdminRoute><PageTransition><AdminContacts /></PageTransition></AdminRoute>} />
                 <Route path="/admin/contact-requests" element={<AdminRoute><PageTransition><AdminContactRequests /></PageTransition></AdminRoute>} />
-                <Route path="/admin/slideshow" element={<AdminRoute><PageTransition><AdminSlideshow /></PageTransition></AdminRoute>} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
               </Routes>
             </main>
             <Footer />
-            <AIChatBubble />
           </div>
           </BrowserRouter>
         </AuthProvider>
