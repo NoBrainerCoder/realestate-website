@@ -87,41 +87,50 @@ const Navbar = () => {
           </div>
         </div>
 
-        {isOpen && (
-          <div className="lg:hidden py-3 space-y-1 border-t border-white/10">
-            {navLinks.map(({ to, icon: Icon, label }) => (
-              <Link
-                key={to}
-                to={to}
-                onClick={closeMenu}
-                className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm ${
-                  location.pathname === to ? 'bg-white text-primary' : 'text-white/90 hover:bg-white/10'
-                }`}
-              >
-                <Icon className="h-4 w-4" /> {label}
-              </Link>
-            ))}
-            <div className="border-t border-white/10 pt-2 mt-2 space-y-2">
+        <div
+          className={`lg:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+            isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="py-3 space-y-1 border-t border-white/10">
+            {navLinks.map(({ to, icon: Icon, label }) => {
+              const active = location.pathname === to;
+              return (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={closeMenu}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                    active
+                      ? 'bg-white text-primary shadow-sm'
+                      : 'text-white/90 hover:bg-white/10 active:bg-white/15'
+                  }`}
+                >
+                  <Icon className="h-5 w-5" /> {label}
+                </Link>
+              );
+            })}
+            <div className="border-t border-white/10 pt-3 mt-2 space-y-2 px-1">
               {user ? (
                 <>
                   {isAdmin && (
-                    <Link to="/admin" onClick={closeMenu} className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-white/90 hover:bg-white/10">
-                      <Shield className="h-4 w-4" /> Admin
+                    <Link to="/admin" onClick={closeMenu} className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-white/90 hover:bg-white/10">
+                      <Shield className="h-5 w-5" /> Admin
                     </Link>
                   )}
-                  <Button onClick={() => { signOut(); closeMenu(); }} variant="outline" size="sm" className="w-full bg-transparent border-white/30 text-white hover:bg-white/10">
+                  <Button onClick={() => { signOut(); closeMenu(); }} variant="outline" className="w-full h-11 bg-transparent border-white/30 text-white hover:bg-white/10">
                     <LogOut className="h-4 w-4 mr-1.5" /> Sign Out
                   </Button>
                 </>
               ) : (
                 <>
-                  <Link to="/sign-in" onClick={closeMenu}>
-                    <Button variant="outline" size="sm" className="w-full bg-transparent border-white/30 text-white hover:bg-white/10">
+                  <Link to="/sign-in" onClick={closeMenu} className="block">
+                    <Button variant="outline" className="w-full h-11 bg-transparent border-white/30 text-white hover:bg-white/10">
                       <LogIn className="h-4 w-4 mr-1.5" /> Sign In
                     </Button>
                   </Link>
-                  <Link to="/sign-up" onClick={closeMenu}>
-                    <Button size="sm" className="w-full bg-white text-primary hover:bg-white/90">
+                  <Link to="/sign-up" onClick={closeMenu} className="block">
+                    <Button className="w-full h-11 bg-white text-primary hover:bg-white/90">
                       <UserPlus className="h-4 w-4 mr-1.5" /> Sign Up
                     </Button>
                   </Link>
@@ -129,7 +138,7 @@ const Navbar = () => {
               )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );
