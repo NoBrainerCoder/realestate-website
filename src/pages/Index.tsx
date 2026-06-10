@@ -125,13 +125,13 @@ const Index = () => {
 
       {/* Search Results - Only show if filters are applied */}
       {filteredProperties.length !== approvedProperties.length && (
-        <section className="py-16 bg-muted/50">
+        <section className="py-8 md:py-16 bg-muted/50">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-8 reveal-up revealed">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <div className="text-center mb-6 md:mb-8 reveal-up revealed">
+              <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
                 Search Results
               </h2>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-sm md:text-lg text-muted-foreground">
                 Found {filteredProperties.length} properties matching your criteria
               </p>
             </div>
@@ -162,13 +162,13 @@ const Index = () => {
       )}
 
       {/* Featured Properties */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-8 md:py-16 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12 reveal-up revealed">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <div className="text-center mb-6 md:mb-12 reveal-up revealed">
+            <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
               Featured Properties
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto">
               Discover handpicked properties that offer the best value and location in Hyderabad
             </p>
           </div>
