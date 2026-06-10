@@ -150,12 +150,12 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="bg-card backdrop-blur-sm rounded-xl shadow-card p-2.5 border border-border w-fit mx-auto" style={{ maxHeight: '85%' }}>
-        <div className="space-y-2">
-          {/* Search Bar with Multi-Location Tags - Centered */}
-          <div className="flex gap-2 justify-center">
-            <div className="w-full md:w-[500px] relative" ref={searchRef}>
+    <div className="flex justify-center w-full">
+      <div className="bg-card backdrop-blur-sm rounded-xl shadow-card p-3 border border-border w-full max-w-[640px] mx-auto">
+        <div className="space-y-2.5">
+          {/* Search Bar */}
+          <div className="flex flex-col sm:flex-row gap-2">
+            <div className="w-full sm:flex-1 relative" ref={searchRef}>
               <div className="flex items-center flex-wrap gap-1.5 min-h-[32px] rounded-md border border-input bg-background px-2 py-1 text-xs ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 shadow-md">
               {/* Selected Area Tags - More compact */}
               {selectedAreas.map((area) => (
