@@ -100,7 +100,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
       className="property-card-animate bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ease-smooth hover:scale-[1.02] hover:shadow-[0_4px_20px_rgba(255,165,0,0.25)] hover:border-[#FFA500]/30 group"
     >
       {/* Image / Placeholder */}
-      <div className="relative overflow-hidden cursor-pointer h-48" onClick={handleImageClick}>
+      <div className="relative overflow-hidden cursor-pointer h-52 sm:h-48" onClick={handleImageClick}>
         {hasImage ? (
           <>
             <img
@@ -133,15 +133,15 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        <div className="space-y-4">
+      <div className="p-4 sm:p-6">
+        <div className="space-y-3 sm:space-y-4">
           <div className="text-slide-up">
-            <h3 className="text-lg font-semibold text-foreground mb-1 line-clamp-2 transition-all duration-300 ease-smooth group-hover:-translate-y-1 hover:text-primary">
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-1 line-clamp-2 transition-all duration-300 ease-smooth group-hover:-translate-y-1 hover:text-primary">
               {property.title}
             </h3>
             <div className="flex items-center text-muted-foreground hover:text-foreground transition-colors duration-300">
               <MapPin className="h-4 w-4 mr-1 animate-float" />
-              <span className="text-sm">{property.location}</span>
+              <span className="text-sm font-medium">{property.location}</span>
             </div>
           </div>
 
@@ -170,7 +170,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-primary">{formatPrice(property.price)}</div>
+            <div className="text-xl sm:text-2xl font-bold text-primary">{formatPrice(property.price)}</div>
           </div>
 
           <div className="mt-4">
