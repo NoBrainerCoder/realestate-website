@@ -13,16 +13,16 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-[#0f1b3d] to-[#1a2f5a] py-16 md:py-24">
+    <section className="relative bg-gradient-to-br from-[#0f1b3d] to-[#1a2f5a] py-6 md:py-20">
       <div className="container mx-auto px-4">
-        <div className="text-center text-white mb-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="text-center text-white mb-4 md:mb-10">
+          <h1 className="text-2xl md:text-5xl font-bold mb-2 md:mb-4">
             Welcome to <span className="text-yellow-400">MyInfraHub</span>
           </h1>
-          <p className="text-base md:text-lg mb-6 text-white/80 max-w-2xl mx-auto">
+          <p className="text-xs md:text-lg mb-3 md:mb-6 text-white/80 max-w-2xl mx-auto">
             Find Your Perfect Property in Hyderabad's Prime Locations
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+          <div className="hidden md:flex flex-col sm:flex-row gap-3 justify-center mb-8">
             <Link to="/properties">
               <Button size="default">
                 <Search className="h-4 w-4 mr-2" />
