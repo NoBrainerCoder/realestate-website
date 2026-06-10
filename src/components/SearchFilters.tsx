@@ -200,18 +200,18 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
                 </div>
               )}
             </div>
-            <Button onClick={applyFilters} className="h-8 px-4 text-xs shadow-md">
-              <Search className="h-3 w-3 mr-1" />
+            <Button onClick={applyFilters} className="h-10 sm:h-8 px-4 text-sm sm:text-xs shadow-md w-full sm:w-auto">
+              <Search className="h-4 w-4 sm:h-3 sm:w-3 mr-1.5" />
               Search
             </Button>
           </div>
 
-          {/* Compact Filters Row - Centered */}
-          <div className="flex flex-wrap gap-1.5 items-center justify-center">
+          {/* Compact Filters Row */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 items-center sm:justify-center">
             {/* BHK Select - More compact */}
             <div className="w-full sm:w-[85px]">
             <Select value={bhk} onValueChange={setBhk}>
-              <SelectTrigger className="h-7 text-[11px] px-2">
+              <SelectTrigger className="h-10 sm:h-7 text-sm sm:text-[11px] px-3 sm:px-2">
                 <SelectValue placeholder="BHK" />
               </SelectTrigger>
               <SelectContent className="bg-popover z-50">
@@ -227,7 +227,7 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
           {/* Property Type Select - More compact */}
           <div className="w-full sm:w-[120px]">
             <Select value={propertyType} onValueChange={setPropertyType}>
-              <SelectTrigger className="h-7 text-[11px] px-2">
+              <SelectTrigger className="h-10 sm:h-7 text-sm sm:text-[11px] px-3 sm:px-2">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent className="max-h-[300px] overflow-y-auto bg-popover z-50">
@@ -242,7 +242,7 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
           {/* Furnishing Status - More compact */}
           <div className="w-full sm:w-[130px]">
             <Select value={furnishing} onValueChange={setFurnishing}>
-              <SelectTrigger className="h-7 text-[11px] px-2">
+              <SelectTrigger className="h-10 sm:h-7 text-sm sm:text-[11px] px-3 sm:px-2">
                 <SelectValue placeholder="Furnishing" />
               </SelectTrigger>
               <SelectContent className="bg-popover z-50">
@@ -261,7 +261,7 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
               placeholder="Max Budget"
               value={maxInput}
               onChange={(e) => handleMaxChange(e.target.value)}
-              className="flex h-7 w-full rounded-md border border-input bg-background px-2 py-1 text-[11px] ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-foreground"
+              className="flex h-10 sm:h-7 w-full rounded-md border border-input bg-background px-3 sm:px-2 py-1 text-sm sm:text-[11px] ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-foreground"
             />
             </div>
           </div>
