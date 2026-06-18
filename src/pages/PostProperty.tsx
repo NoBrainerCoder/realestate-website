@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Upload, X, Building2, Clock, ImageIcon, Home, Key, Check, ChevronsUpDown } from 'lucide-react';
+import { Sparkles, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -37,6 +38,7 @@ const PostProperty = () => {
   const [showPropertyTypeModal, setShowPropertyTypeModal] = useState(true);
   const [propertyFor, setPropertyFor] = useState<'rent' | 'sell' | ''>('');
   const [locationOpen, setLocationOpen] = useState(false);
+  const [generatingDesc, setGeneratingDesc] = useState(false);
 
   // Hyderabad areas list for autocomplete
   const hyderabadAreas = [
@@ -446,7 +448,62 @@ const PostProperty = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Description *</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="description">Description *</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={generatingDesc}
+                    onClick={async () => {
+                      if (!formData.propertyType || !formData.location) {
+                        toast({
+                          title: 'Add details first',
+                          description: 'Please select property type and location before generating.',
+                          variant: 'destructive',
+                        });
+                        return;
+                      }
+                      setGeneratingDesc(true);
+                      try {
+                        const { data, error } = await supabase.functions.invoke('generate-description', {
+                          body: {
+                            propertyData: {
+                              property_type: formData.propertyType,
+                              location: formData.location,
+                              bedrooms: formData.bedrooms || '0',
+                              bathrooms: formData.bathrooms || '0',
+                              area: formData.area || 'N/A',
+                              furnishing: formData.furnishing || 'unfurnished',
+                              age: formData.age || 'new',
+                              amenities: formData.amenities,
+                            },
+                          },
+                        });
+                        if (error) throw error;
+                        if (data?.description) {
+                          handleInputChange('description', data.description);
+                          toast({ title: 'Description generated!' });
+                        }
+                      } catch (err: any) {
+                        toast({
+                          title: 'Generation failed',
+                          description: err.message || 'Please try again.',
+                          variant: 'destructive',
+                        });
+                      } finally {
+                        setGeneratingDesc(false);
+                      }
+                    }}
+                  >
+                    {generatingDesc ? (
+                      <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-4 w-4 mr-1" />
+                    )}
+                    Generate with AI
+                  </Button>
+                </div>
                 <Textarea
                   id="description"
                   value={formData.description}

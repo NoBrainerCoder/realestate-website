@@ -28,6 +28,7 @@ import AdminProperties from "./pages/admin/AdminProperties";
 import AdminAppointments from "./pages/admin/AdminAppointments";
 import AdminContacts from "./pages/admin/AdminContacts";
 import AdminContactRequests from "./pages/admin/AdminContactRequests";
+import AIChatBubble from "@/components/AIChatBubble";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +71,7 @@ const App = () => (
             </main>
             <Footer />
           </div>
+          <AIChatBubble />
           </BrowserRouter>
         </AuthProvider>
       </TooltipProvider>
