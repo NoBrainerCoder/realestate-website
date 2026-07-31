@@ -328,6 +328,7 @@ const PostProperty = () => {
         parkingAvailable: false, liftAvailable: false,
       });
       setPriceDisplay('');
+      setPriceInput('');
       clearMedia();
       
     } catch (error: any) {
