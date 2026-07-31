@@ -35,6 +35,7 @@ const PostProperty = () => {
   const { media, uploading, addMedia, removeMedia, clearMedia, uploadAllMedia } = useMediaUpload();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [priceDisplay, setPriceDisplay] = useState('');
+  const [priceInput, setPriceInput] = useState('');
   const [showPropertyTypeModal, setShowPropertyTypeModal] = useState(true);
   const [propertyFor, setPropertyFor] = useState<'rent' | 'sell' | ''>('');
   const [locationOpen, setLocationOpen] = useState(false);
