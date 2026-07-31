@@ -584,7 +584,11 @@ const PostProperty = () => {
                   <Input
                     id="price"
                     type="text"
-                    onChange={(e) => handleInputChange('price', e.target.value)}
+                    value={priceInput}
+                    onChange={(e) => {
+                      setPriceInput(e.target.value);
+                      handleInputChange('price', e.target.value);
+                    }}
                     placeholder="e.g., 1.25 cr, 50 lakh, 2.5L"
                     required
                   />
