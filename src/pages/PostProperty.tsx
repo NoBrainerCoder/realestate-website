@@ -169,11 +169,73 @@ const PostProperty = () => {
       return;
     }
 
+    // Make sure the stored session is still valid (expired sessions caused
+    // silent "row level security" failures on submit)
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      toast({
+        title: "Session Expired",
+        description: "Please sign in again to post your property.",
+        variant: "destructive",
+      });
+      navigate('/sign-in', { state: { from: '/post-property' } });
+      return;
+    }
+    const currentUserId = sessionData.session.user.id;
+
+    // Validate required fields that are not covered by native form validation
+    if (!propertyFor) {
+      setShowPropertyTypeModal(true);
+      toast({
+        title: "Select Listing Type",
+        description: "Please choose whether you want to rent or sell this property.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const missing: string[] = [];
+    if (!formData.propertyType) missing.push('Property Type');
+    if (!formData.bedrooms) missing.push('Bedrooms');
+    if (!formData.bathrooms) missing.push('Bathrooms');
+    if (!formData.furnishing) missing.push('Furnishing');
+    if (!formData.age) missing.push('Property Age');
+    if (missing.length > 0) {
+      toast({
+        title: "Missing Details",
+        description: `Please select: ${missing.join(', ')}.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const priceValue = parseFloat(formData.price);
+    const areaValue = parseInt(formData.area);
+    if (!Number.isFinite(priceValue) || priceValue <= 0) {
+      toast({
+        title: "Invalid Price",
+        description: "Enter a valid price, e.g. 50 lakh, 1.25 cr or 5000000.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!Number.isFinite(areaValue) || areaValue <= 0) {
+      toast({
+        title: "Invalid Area",
+        description: "Enter a valid area in numbers.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
       // Upload media files first
       const uploadedMedia = await uploadAllMedia();
+      if (media.length > 0 && uploadedMedia.length !== media.length) {
+        throw new Error('Some images could not be uploaded. Please try again.');
+      }
       
       // All properties require admin approval
       const propertyStatus = 'pending';
@@ -182,13 +244,13 @@ const PostProperty = () => {
       const { data: propertyData, error: propertyError } = await supabase
         .from('properties')
         .insert({
-          user_id: user.id,
+          user_id: currentUserId,
           title: formData.title,
           description: formData.description,
           location: formData.location,
-          area: parseInt(formData.area),
+          area: areaValue,
           area_unit: formData.areaUnit,
-          price: parseFloat(formData.price),
+          price: priceValue,
           bedrooms: formData.bedrooms,
           bathrooms: formData.bathrooms,
           furnishing: formData.furnishing,
@@ -199,6 +261,7 @@ const PostProperty = () => {
           poster_name: formData.posterName,
           poster_phone: formData.posterPhone,
           poster_email: formData.posterEmail,
+          poster_type: formData.posterType,
           status: propertyStatus,
           water_supply: formData.waterSupply,
           power_backup: formData.powerBackup,
