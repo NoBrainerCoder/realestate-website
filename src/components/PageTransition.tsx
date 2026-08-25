@@ -12,7 +12,11 @@ const PageTransition = ({ children }: PageTransitionProps) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  return <div key={location.pathname}>{children}</div>;
+  return (
+    <div key={location.pathname} className="animate-wind-sweep will-change-transform">
+      {children}
+    </div>
+  );
 };
 
 export default PageTransition;
