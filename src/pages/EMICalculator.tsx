@@ -219,6 +219,55 @@ const EMICalculator = () => {
               </CardContent>
             </Card>
 
+            {/* Payment distribution */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Payment Distribution</CardTitle>
+                <CardDescription>Principal versus interest over the full tenure</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[240px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={distributionData}
+                        dataKey="value"
+                        nameKey="name"
+                        innerRadius={55}
+                        outerRadius={90}
+                        paddingAngle={2}
+                        stroke="none"
+                      >
+                        {distributionData.map((entry) => (
+                          <Cell key={entry.name} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        formatter={(value: number) => formatCurrency(value)}
+                        contentStyle={{
+                          background: 'hsl(var(--popover))',
+                          border: '1px solid hsl(var(--border))',
+                          borderRadius: '0.5rem',
+                          color: 'hsl(var(--popover-foreground))',
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="flex items-center justify-center gap-6 mt-2">
+                  {distributionData.map((entry) => (
+                    <div key={entry.name} className="flex items-center gap-2 text-sm">
+                      <span className="h-3 w-3 rounded-full" style={{ backgroundColor: entry.color }} />
+                      <span className="text-muted-foreground">{entry.name}</span>
+                      <span className="font-medium">
+                        {totalPayment > 0 ? Math.round((entry.value / totalPayment) * 100) : 0}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
           </div>
         </div>
       </div>
