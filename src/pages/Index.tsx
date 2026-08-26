@@ -196,17 +196,80 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 stagger-children">
-            {featuredProperties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
+          {featuredProperties.length === 0 ? (
+            <div className="text-center py-10 fade-in-scale">
+              <h3 className="text-lg font-semibold mb-2">No properties listed yet</h3>
+              <p className="text-muted-foreground text-sm">
+                New listings appear here as soon as they are approved.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 stagger-children">
+              {featuredProperties.map((property) => (
+                <PropertyCard key={property.id} property={property} />
+              ))}
+            </div>
+          )}
 
           <div className="text-center fade-in-scale">
             <Link to="/properties">
               <Button size="lg" className="btn-hero ripple group">
                 View All Properties
                 <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="py-10 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8 md:mb-12 reveal-up revealed">
+            <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
+              Why Choose MyInfraHub
+            </h2>
+            <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto">
+              A simpler, safer way to buy, sell and rent property in Hyderabad
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 stagger-children">
+            {whyChooseUs.map(({ icon: Icon, title, description }) => (
+              <div
+                key={title}
+                className="bg-card border border-border rounded-lg p-5 md:p-6 transition-all duration-300 ease-smooth hover:-translate-y-1 hover:shadow-[0_4px_20px_hsl(var(--primary)/0.2)]"
+              >
+                <div className="h-11 w-11 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <Icon className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="font-semibold text-foreground mb-1.5">{title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Call to action */}
+      <section className="py-10 md:py-16 bg-gradient-to-br from-[#0f1b3d] to-[#1a2f5a]">
+        <div className="container mx-auto px-4 text-center text-white">
+          <h2 className="text-2xl md:text-4xl font-bold mb-3">
+            Have a property to <span className="text-yellow-400">list?</span>
+          </h2>
+          <p className="text-sm md:text-lg text-white/80 max-w-2xl mx-auto mb-6">
+            Post your property for free. Our team reviews every listing before it goes live.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link to="/post-property">
+              <Button size="lg" className="w-full sm:w-auto hover-scale">
+                Post Your Property
+                <ArrowRight className="h-5 w-5 ml-2" />
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent border-white/30 text-white hover:bg-white/10">
+                Talk to Our Team
               </Button>
             </Link>
           </div>
