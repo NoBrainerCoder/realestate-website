@@ -89,10 +89,23 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
 
   const formatPrice = (price: number) => {
-    if (price >= 10000000) return `₹${(price / 10000000).toFixed(2)} Cr`;
-    if (price >= 100000) return `₹${(price / 100000).toFixed(2)} L`;
-    return `₹${price.toLocaleString()}`;
+    const value = Number(price);
+    if (!Number.isFinite(value) || value <= 0) return 'Price on request';
+    if (value >= 10000000) return `₹${(value / 10000000).toFixed(2)} Cr`;
+    if (value >= 100000) return `₹${(value / 100000).toFixed(2)} L`;
+    return `₹${value.toLocaleString('en-IN')}`;
   };
+
+  const displayValue = (value: any) => {
+    if (value === null || value === undefined || value === '') return 'N/A';
+    if (typeof value === 'number' && !Number.isFinite(value)) return 'N/A';
+    return value;
+  };
+
+  const areaValue = Number(property.area);
+  const areaLabel = Number.isFinite(areaValue) && areaValue > 0
+    ? `${areaValue.toLocaleString('en-IN')} ${(property as any).area_unit === 'SY' ? 'sq yd' : 'sq ft'}`
+    : 'N/A';
 
   return (
     <div
@@ -154,13 +167,13 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1 hover:text-primary transition-colors duration-300">
-              <Bed className="h-4 w-4" /><span>{property.bedrooms}</span>
+              <Bed className="h-4 w-4" /><span>{displayValue(property.bedrooms)}</span>
             </div>
             <div className="flex items-center gap-1 hover:text-primary transition-colors duration-300">
-              <Bath className="h-4 w-4" /><span>{property.bathrooms}</span>
+              <Bath className="h-4 w-4" /><span>{displayValue(property.bathrooms)}</span>
             </div>
             <div className="flex items-center gap-1 hover:text-primary transition-colors duration-300">
-              <Maximize className="h-4 w-4" /><span>{property.area} sq ft</span>
+              <Maximize className="h-4 w-4" /><span>{areaLabel}</span>
             </div>
           </div>
 

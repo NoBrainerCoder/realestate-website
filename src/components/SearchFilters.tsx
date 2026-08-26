@@ -231,10 +231,24 @@ const SearchFilters = ({ onFiltersChange }: SearchFiltersProps) => {
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent className="max-h-[300px] overflow-y-auto bg-popover z-50">
-                <SelectItem value="flat" className="text-[11px]">Apartment</SelectItem>
+                <SelectItem value="flat" className="text-[11px]">Flat / Apartment</SelectItem>
+                <SelectItem value="studio" className="text-[11px]">Studio Apartment</SelectItem>
+                <SelectItem value="penthouse" className="text-[11px]">Penthouse</SelectItem>
+                <SelectItem value="independent-house" className="text-[11px]">Independent House</SelectItem>
+                <SelectItem value="independent-building" className="text-[11px]">Independent Building</SelectItem>
+                <SelectItem value="duplex" className="text-[11px]">Duplex</SelectItem>
                 <SelectItem value="villa" className="text-[11px]">Villa</SelectItem>
-                <SelectItem value="residential-plot" className="text-[11px]">Plot</SelectItem>
-                <SelectItem value="commercial-building" className="text-[11px]">Commercial</SelectItem>
+                <SelectItem value="residential-plot" className="text-[11px]">Residential Plot</SelectItem>
+                <SelectItem value="commercial-building" className="text-[11px]">Commercial Building</SelectItem>
+                <SelectItem value="office-space" className="text-[11px]">Office Space</SelectItem>
+                <SelectItem value="retail-showroom" className="text-[11px]">Retail / Showroom</SelectItem>
+                <SelectItem value="shop" className="text-[11px]">Shop</SelectItem>
+                <SelectItem value="commercial-plot" className="text-[11px]">Commercial Plot</SelectItem>
+                <SelectItem value="hostel" className="text-[11px]">Hostel / PG</SelectItem>
+                <SelectItem value="industrial-shed" className="text-[11px]">Industrial Shed</SelectItem>
+                <SelectItem value="warehouse" className="text-[11px]">Warehouse / Godown</SelectItem>
+                <SelectItem value="farmhouse" className="text-[11px]">Farmhouse</SelectItem>
+                <SelectItem value="agricultural-land" className="text-[11px]">Agricultural Land</SelectItem>
               </SelectContent>
             </Select>
           </div>

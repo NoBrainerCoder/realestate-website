@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Slider } from '@/components/ui/slider';
 import { ArrowLeft, Calculator, Home, Percent, Calendar, IndianRupee } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
 const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState([5000000]);
@@ -42,8 +43,13 @@ const EMICalculator = () => {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0,
-    }).format(amount);
+    }).format(Number.isFinite(amount) ? amount : 0);
   };
+
+  const distributionData = [
+    { name: 'Principal', value: loanAmount[0], color: 'hsl(var(--primary))' },
+    { name: 'Interest', value: totalInterest, color: '#FFA500' },
+  ];
 
   return (
     <div className="min-h-screen bg-muted/30 py-8">
@@ -215,6 +221,55 @@ const EMICalculator = () => {
                 <div className="flex justify-between items-center py-3">
                   <span className="text-muted-foreground">Total Payment</span>
                   <span className="font-bold text-lg">{formatCurrency(totalPayment)}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Payment distribution */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Payment Distribution</CardTitle>
+                <CardDescription>Principal versus interest over the full tenure</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[240px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={distributionData}
+                        dataKey="value"
+                        nameKey="name"
+                        innerRadius={55}
+                        outerRadius={90}
+                        paddingAngle={2}
+                        stroke="none"
+                      >
+                        {distributionData.map((entry) => (
+                          <Cell key={entry.name} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        formatter={(value: number) => formatCurrency(value)}
+                        contentStyle={{
+                          background: 'hsl(var(--popover))',
+                          border: '1px solid hsl(var(--border))',
+                          borderRadius: '0.5rem',
+                          color: 'hsl(var(--popover-foreground))',
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="flex items-center justify-center gap-6 mt-2">
+                  {distributionData.map((entry) => (
+                    <div key={entry.name} className="flex items-center gap-2 text-sm">
+                      <span className="h-3 w-3 rounded-full" style={{ backgroundColor: entry.color }} />
+                      <span className="text-muted-foreground">{entry.name}</span>
+                      <span className="font-medium">
+                        {totalPayment > 0 ? Math.round((entry.value / totalPayment) * 100) : 0}%
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
