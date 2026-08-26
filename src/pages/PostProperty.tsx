@@ -724,11 +724,25 @@ const PostProperty = () => {
                     <SelectTrigger>
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="flat">Apartment</SelectItem>
+                    <SelectContent className="max-h-[300px]">
+                      <SelectItem value="flat">Flat / Apartment</SelectItem>
+                      <SelectItem value="studio">Studio Apartment</SelectItem>
+                      <SelectItem value="penthouse">Penthouse</SelectItem>
+                      <SelectItem value="independent-house">Independent House</SelectItem>
+                      <SelectItem value="independent-building">Independent Building</SelectItem>
+                      <SelectItem value="duplex">Duplex</SelectItem>
                       <SelectItem value="villa">Villa</SelectItem>
-                      <SelectItem value="residential-plot">Plot</SelectItem>
-                      <SelectItem value="commercial-building">Commercial</SelectItem>
+                      <SelectItem value="residential-plot">Residential Plot</SelectItem>
+                      <SelectItem value="commercial-building">Commercial Building</SelectItem>
+                      <SelectItem value="office-space">Office Space</SelectItem>
+                      <SelectItem value="retail-showroom">Retail / Showroom</SelectItem>
+                      <SelectItem value="shop">Shop</SelectItem>
+                      <SelectItem value="commercial-plot">Commercial Plot</SelectItem>
+                      <SelectItem value="hostel">Hostel / PG</SelectItem>
+                      <SelectItem value="industrial-shed">Industrial Shed</SelectItem>
+                      <SelectItem value="warehouse">Warehouse / Godown</SelectItem>
+                      <SelectItem value="farmhouse">Farmhouse</SelectItem>
+                      <SelectItem value="agricultural-land">Agricultural Land</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
