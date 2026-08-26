@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Slider } from '@/components/ui/slider';
 import { ArrowLeft, Calculator, Home, Percent, Calendar, IndianRupee } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
 const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState([5000000]);
@@ -42,8 +43,13 @@ const EMICalculator = () => {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0,
-    }).format(amount);
+    }).format(Number.isFinite(amount) ? amount : 0);
   };
+
+  const distributionData = [
+    { name: 'Principal', value: loanAmount[0], color: 'hsl(var(--primary))' },
+    { name: 'Interest', value: totalInterest, color: '#FFA500' },
+  ];
 
   return (
     <div className="min-h-screen bg-muted/30 py-8">
