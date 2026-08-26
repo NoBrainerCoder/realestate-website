@@ -5,8 +5,31 @@ import HeroSection from '@/components/HeroSection';
 import PropertyCard from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ShieldCheck, MapPinned, BadgeIndianRupee, Headphones } from 'lucide-react';
 import QuantumLoader from '@/components/QuantumLoader';
+
+const whyChooseUs = [
+  {
+    icon: ShieldCheck,
+    title: 'Verified Listings',
+    description: 'Every property is reviewed and approved by our team before it goes live.',
+  },
+  {
+    icon: MapPinned,
+    title: 'Hyderabad Expertise',
+    description: 'Deep coverage of 150+ localities, from Gachibowli to Uppal.',
+  },
+  {
+    icon: BadgeIndianRupee,
+    title: 'Zero Brokerage Leads',
+    description: 'Request a call back and talk to our team directly — no hidden charges.',
+  },
+  {
+    icon: Headphones,
+    title: 'Support That Answers',
+    description: 'Call +91 9866123350 or write to us and get a response the same day.',
+  },
+];
 
 const Index = () => {
   const [filteredProperties, setFilteredProperties] = useState<any[]>([]);
